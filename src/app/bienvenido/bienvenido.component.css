@@ -1,0 +1,109 @@
+:host {
+    color: white;
+    background-color: black;
+}
+
+.mensaje-error {
+    color: red
+}
+
+.Btn,
+.Btn_login {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-weight: bold;
+    overflow: hidden;
+    transition-duration: .3s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, .3);
+    background-color: #820000;
+    font-size: 15px;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    text-align: center;
+    z-index: 10
+}
+
+.Btn_login {
+    bottom: 100px
+}
+
+.BtnPuntuaciones {
+    bottom: 180px
+}
+
+.Btn_quienSoy {
+    bottom: 100px
+}
+
+.sign {
+    width: 100%;
+    transition-duration: .3s;
+    display: flex;
+    align-items: center;
+    justify-content: center
+}
+
+.sign svg {
+    width: 24px;
+    height: 24px
+}
+
+.sign svg path {
+    fill: white;
+    stroke: white
+}
+
+.text {
+    position: absolute;
+    right: 0;
+    width: 0;
+    opacity: 0;
+    color: white;
+    font-size: 1.2em;
+    font-weight: 600;
+    transition-duration: .3s
+}
+
+.Btn:hover,
+.Btn_login:hover {
+    width: 125px;
+    border-radius: 40px;
+    transition-duration: .3s
+}
+
+.Btn:hover .sign,
+.Btn_login:hover .sign {
+    width: 30%;
+    transition-duration: .3s;
+    padding-left: 20px
+}
+
+.Btn:hover .text,
+.Btn_login:hover .text {
+    opacity: 1;
+    width: 70%;
+    transition-duration: .3s;
+    padding-right: 10px
+}
+
+.Btn:active,
+.Btn_login:active {
+    transform: translate(2px, 2px)
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #820000;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px
+}

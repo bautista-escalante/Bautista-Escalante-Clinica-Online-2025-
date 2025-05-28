@@ -1,1 +1,133 @@
-<p>registro works!</p>
+<div class="grid">
+
+    <form [formGroup]="formulario">
+        <div class="group">
+            <input required type="text" class="input" formControlName="nombre">
+            <span class="highlight"></span>
+            <span class="bar"></span>
+            <label>nombre</label>
+            <div *ngIf="formulario.controls['nombre'].touched && formulario.controls['nombre'].hasError('required')"
+                class="error">
+                <P class="mensaje-error">Nombre es obligatorio</P>
+                
+            </div>
+        </div>
+
+        <div class="group">
+            <input required type="text" class="input" formControlName="apellido">
+            <span class="highlight"></span>
+            <span class="bar"></span>
+            <label>apellido</label>
+            <div *ngIf="formulario.controls['apellido'].touched && formulario.controls['apellido'].hasError('required')"
+                class="error">
+                <P class="mensaje-error">Apellido es obligatoria</P>
+            </div>
+        </div>
+
+        <div class="group">
+            <input required type="text" class="input" formControlName="edad">
+            <span class="highlight"></span>
+            <span class="bar"></span>
+            <label>edad</label>
+            <div *ngIf="formulario.controls['edad'].touched && formulario.controls['edad'].hasError('required')"
+                class="error">
+                <P class="mensaje-error">Edad es obligatoria</P>
+            </div>
+            <div *ngIf="formulario.controls['edad'].touched && (formulario.controls['edad'].hasError('min') || formulario.controls['edad'].hasError('max'))"
+                class="error">
+                <P class="mensaje-error">Edad debe estar entre 1 y 100</P>
+            </div>
+        </div>
+
+        <div class="group">
+            <input required type="text" class="input" formControlName="dni">
+            <span class="highlight"></span>
+            <span class="bar"></span>
+            <label>DNI</label>
+            <div *ngIf="formulario.controls['dni'].touched && formulario.controls['dni'].hasError('required')"
+                class="error">
+                <P class="mensaje-error">DNI es obligatoria</P>
+            </div>
+        </div>
+
+        <div class="group">
+            <input required type="text" class="input" formControlName="email">
+            <span class="highlight"></span>
+            <span class="bar"></span>
+            <label>correo</label>
+            <div *ngIf="formulario.controls['email'].touched && formulario.controls['email'].hasError('required')"
+                class="error">
+                <P class="mensaje-error">correo es obligatoria</P>
+            </div>
+            <div *ngIf="formulario.controls['email'].touched && formulario.controls['email'].hasError('email')"
+                class="error">
+                <P class="mensaje-error">Correo no válido</P>
+            </div>
+        </div>
+
+        <div class="group">
+            <input required type="password" class="input" formControlName="clave">
+            <span class="highlight"></span>
+            <span class="bar"></span>
+            <label>clave</label>
+            <div *ngIf="formulario.controls['clave'].touched && formulario.controls['clave'].hasError('required')"
+                class="error">
+                <P class="mensaje-error">Clave es obligatoria</P>
+            </div>
+            <div *ngIf="formulario.controls['clave'].touched && formulario.controls['clave'].hasError('minlength')"
+                class="error">
+                <P class="mensaje-error">Clave debe tener al menos 6 caracteres</P>
+                
+            </div>
+        </div>
+
+        <label>
+            <input type="radio" name="tipo" formControlName="tipoSeleccionado" value="paciente">
+            paciente
+        </label>
+
+        <label>
+            <input type="radio" name="tipo" formControlName="tipoSeleccionado" value="especialista">
+            especialista
+        </label>
+
+        <!-- SOLO PACIENTES -->
+        <div *ngIf="tipoSeleccionado === 'paciente'">
+            <div class="group">
+                <input required type="text" class="input" formControlName="obraSocial">
+                <label>Obra social</label>
+                <!-- validaciones -->
+            </div>
+            <input type="file" (change)="onFileSelected($event, 'imagen1')" accept="image/*">
+            <input type="file" (change)="onFileSelected($event, 'imagen2')" accept="image/*">
+        </div>
+
+        <!-- SOLO ESPECIALISTAS -->
+        <div *ngIf="tipoSeleccionado === 'especialista'">
+            <div class="group">
+                <input required type="text" class="input" formControlName="especialidad">
+                <input type="file" (change)="onFileSelected($event, 'imagenEspecialista')" accept="image/*">
+                <label>Especialidad</label>
+                <!-- validaciones -->
+            </div>
+        </div>
+
+
+
+        <!-- Botón para probar -->
+        <button (click)="crearCuenta()">Registrarse</button>
+    </form>
+
+    <div *ngIf="mensajeError" class="mensaje-error">
+        <strong>{{ mensajeError }}</strong>
+    </div>
+
+    <!-- Componente: formulario.component.html -->
+
+
+    <a *ngIf="mensajeError === 'la cuenta ya existe'" routerLink="/login" class="btn">si ya tenes cuenta click aqui</a>
+
+    <!--   <button
+    (click)="crearCuenta(email.value, claveRepetida.value, edad.value, nombre.value, apellido.value)">
+    Registrarse</button> -->
+</div>

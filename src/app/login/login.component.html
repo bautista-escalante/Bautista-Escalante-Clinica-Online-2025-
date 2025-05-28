@@ -1,1 +1,28 @@
-<p>login works!</p>
+<div class="grid">
+
+  <div class="group">
+    <input required="" type="text" class="input" #email>
+    <span class="highlight"></span>
+    <span class="bar"></span>
+    <label> correo</label>
+  </div>
+
+  <div class="group">
+    <input required="" type="password" class="input" #pswd>
+    <span class="highlight"></span>
+    <span class="bar"></span>
+    <label>clave</label>
+  </div>
+
+  <div *ngIf="mensajeError" class="mensaje-error">
+    <strong> {{ mensajeError }}</strong>
+  </div>
+
+  <div class="form__field">
+    <button (click)="login(email.value, pswd.value)">ingresa</button>
+
+    <a routerLink="/registro" class="btn">
+      <span> si todavia no tenes cuenta click aqui</span>
+    </a>
+  </div>
+</div>
