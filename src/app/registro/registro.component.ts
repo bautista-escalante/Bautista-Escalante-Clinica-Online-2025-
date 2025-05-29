@@ -5,6 +5,7 @@ import { AccesoService } from '../servicios/acceso.service';
 import { ViewChild, ElementRef, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
+
 @Component({
   selector: 'app-registro',
   imports: [RouterModule, CommonModule, FormsModule, ReactiveFormsModule],
@@ -35,104 +36,78 @@ export class RegistroComponent implements OnInit {
     }),
     dni: new FormControl("", {
       nonNullable: true,
+      validators: [Validators.required, Validators.maxLength(8), Validators.minLength(7),
+      Validators.pattern('^[0-9]+$')]
+    }),
+    imagenes: new FormControl("", {
+      nonNullable: true,
       validators: [Validators.required]
     }),
-    tipoSeleccionado: new FormControl('paciente', { validators: [Validators.required] }),
-    obraSocial: new FormControl(''),
-    especialidad: new FormControl('') 
+    obraSocial: new FormControl("", {
+      nonNullable: true
+    }),
+    especialidad: new FormControl("", {
+      nonNullable: true
+    })
+
   });
-mensajeError: any;
-imagen1: File | null = null;
-imagen2: File | null = null;
-imagenEspecialista: File | null = null;
+  mensajeError: any;
+  imagen1: File | null = null;
+  imagen2: File | null = null;
+  imagenEspecialista: File | null = null;
+  perfilElegido: string | null = null
 
-constructor(
-  private acceso: AccesoService,
-  private supabase: SupabaseService,
-  private router: Router
-) { }
+  constructor(
+    private acceso: AccesoService,
+    private supabase: SupabaseService,
+    private router: Router
+  ) { }
 
-get tipoSeleccionado() {
-  return this.formulario.get('tipoSeleccionado')?.value;
-}
+  ngOnInit(): void { }
 
-ngOnInit(): void {}
-
-onFileSelected(event: Event, tipo: string): void {
-  const file = (event.target as HTMLInputElement)?.files?.[0];
-  if (file) {
-    if (tipo === 'imagen1') this.imagen1 = file;
-    if (tipo === 'imagen2') this.imagen2 = file;
-    if (tipo === 'imagenEspecialista') this.imagenEspecialista = file;
+  asignarArchivo(event: Event, tipo: string): void {
+    const file = (event.target as HTMLInputElement)?.files?.[0];
+    if (file) {
+      if (tipo === 'imagen1') this.imagen1 = file;
+      if (tipo === 'imagen2') this.imagen2 = file;
+      if (tipo === 'imagenEspecialista') this.imagenEspecialista = file;
+    }
   }
-}
-
-validar() {
-  try {
-    const controls = this.formulario.controls;
-
-    if (controls['nombre'].touched && controls['nombre'].hasError('required')) {
-      throw new Error('Nombre es obligatorio');
-    }
-    if (controls['apellido'].touched && controls['apellido'].hasError('required')) {
-      throw new Error('Apellido es obligatorio');
-    }
-    if (controls['edad'].touched && controls['edad'].hasError('required')) {
-      throw new Error('Edad es obligatoria');
-    }
-    if (
-      controls['edad'].touched &&
-      (controls['edad'].hasError('min') || controls['edad'].hasError('max'))
-    ) {
-      throw new Error('Edad debe estar entre 1 y 100');
-    }
-    if (
-      controls['edad'].touched &&
-      controls['edad'].value &&
-      !Number.isInteger(Number(controls['edad'].value))
-    ) {
-      throw new Error('La edad debe ser un número entero');
-    }
-    if (controls['email'].touched && controls['email'].hasError('required')) {
-      throw new Error('Email es obligatorio');
-    }
-    if (controls['email'].touched && controls['email'].hasError('email')) {
-      throw new Error('El correo no es correcto');
-    }
-    if (controls['clave'].touched && controls['clave'].hasError('required')) {
-      throw new Error('Clave es obligatoria');
-    }
-    if (controls['clave'].touched && controls['clave'].hasError('minlength')) {
-      throw new Error('La clave debe tener al menos 6 caracteres');
-    }
-    if (controls['dni'].touched && controls['dni'].hasError('required')) {
-      throw new Error('DNI es obligatorio');
-    }
-    if (controls['obraSocial'].touched && controls['obraSocial'].hasError('required')) {
-      throw new Error('Obra social es obligatoria');
-    }
-  } catch (error: any) {
-    this.mensajeError = error.message
-  }
-}
-
 
   async crearCuenta() {
-  try {
- this.formulario.statusChanges.subscribe((status) => {
-    if (status === 'INVALID') {
-      /* await this.acceso.registrarse(this.email, this.clave);
-      //await this.supabase.insertarDatosUsuario(correo, nombre, apellido, parseInt(edad));
-      await this.supabase.client.auth.signInWithPassword({ email: this.email, password: this.clave });
-  
-      this.router.navigate(['/bienvenido']);
-      return; */
-    
-    }
-  })
+    try {
+      const status = this.formulario.status;
+      console.log(status); // ← Esto siempre se ejecuta
 
-  } catch (error: any) {
-    this.mensajeError = error.message
+      if (status !== 'INVALID') {
+        // Lógica para crear cuenta aquí
+      }
+
+    } catch (error: any) {
+      this.mensajeError = error.message;
+    }
   }
-}
+
+
+  definirRegistro(perfil: string) {
+    this.perfilElegido = perfil;
+
+    if (perfil === 'paciente') {
+
+      this.formulario.get('obraSocial')?.setValidators([Validators.required]);
+      this.formulario.get('especialidad')?.clearValidators();
+      this.formulario.get('especialidad')?.reset();
+    } else if (perfil === 'especialista') {
+
+      this.formulario.get('especialidad')?.setValidators([Validators.required]);
+      this.formulario.get('obraSocial')?.clearValidators();
+      this.formulario.get('obraSocial')?.reset();
+    }
+
+
+    this.formulario.get('obraSocial')?.updateValueAndValidity();
+    this.formulario.get('especialidad')?.updateValueAndValidity();
+  }
+
+
 }

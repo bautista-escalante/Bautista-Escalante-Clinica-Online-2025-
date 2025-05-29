@@ -1,6 +1,17 @@
-<div class="grid">
+<div *ngIf="perfilElegido === null" class="elegirRegistro">
+    <button (click)="definirRegistro('especialista')" class="especialista">
+        <img src="especialista.svg">
+    </button>
+    <button (click)="definirRegistro('paciente')" class="paciente">
+        <img src="paciente.svg">
+    </button>
+</div>
+
+
+<div *ngIf="perfilElegido !== null" class="grid">
 
     <form [formGroup]="formulario">
+
         <div class="group">
             <input required type="text" class="input" formControlName="nombre">
             <span class="highlight"></span>
@@ -9,7 +20,7 @@
             <div *ngIf="formulario.controls['nombre'].touched && formulario.controls['nombre'].hasError('required')"
                 class="error">
                 <P class="mensaje-error">Nombre es obligatorio</P>
-                
+
             </div>
         </div>
 
@@ -48,6 +59,15 @@
                 class="error">
                 <P class="mensaje-error">DNI es obligatoria</P>
             </div>
+            <div *ngIf="formulario.controls['dni'].touched && formulario.controls['dni'].hasError('minlength') || 
+            formulario.controls['dni'].hasError('maxLength')"              
+                class="error">
+                <P class="mensaje-error">DNI no valido</P>
+            </div>
+            <div *ngIf="formulario.controls['dni'].touched && formulario.controls['dni'].hasError('pattern')"
+                class="error">
+                <P class="mensaje-error">debe ser numerico</P>
+            </div>
         </div>
 
         <div class="group">
@@ -77,57 +97,57 @@
             <div *ngIf="formulario.controls['clave'].touched && formulario.controls['clave'].hasError('minlength')"
                 class="error">
                 <P class="mensaje-error">Clave debe tener al menos 6 caracteres</P>
-                
+
             </div>
         </div>
 
-        <label>
-            <input type="radio" name="tipo" formControlName="tipoSeleccionado" value="paciente">
-            paciente
-        </label>
-
-        <label>
-            <input type="radio" name="tipo" formControlName="tipoSeleccionado" value="especialista">
-            especialista
-        </label>
-
-        <!-- SOLO PACIENTES -->
-        <div *ngIf="tipoSeleccionado === 'paciente'">
+        <!-- PACIENTES -->
+        <div *ngIf="perfilElegido === 'paciente'">
             <div class="group">
-                <input required type="text" class="input" formControlName="obraSocial">
-                <label>Obra social</label>
-                <!-- validaciones -->
+                <select id="obraSocial" class="opciones" formControlName="obraSocial">
+                    <option value="">obra social</option>
+                    <option>ninguna</option>
+                    <option>pami</option>
+                    <option>osecac</option>
+                    <option>swiss medical</option>
+                    <option>osde</option>
+                </select>
+                <div *ngIf="formulario.controls['obraSocial'].touched && formulario.controls['obraSocial'].hasError('required')"
+                    class="error">
+                    <p class="mensaje-error">Obra social es obligatoria</p>
+                </div>
             </div>
-            <input type="file" (change)="onFileSelected($event, 'imagen1')" accept="image/*">
-            <input type="file" (change)="onFileSelected($event, 'imagen2')" accept="image/*">
+            
+            <input formControlName="imagenes" class="imagen" type="file"  (change)="asignarArchivo($event, 'imagen1')" accept="image/*">
+            <input formControlName="imagenes" class="imagen"  type="file"  (change)="asignarArchivo($event, 'imagenE2')" accept="image/*">
+            <div *ngIf="formulario.controls['imagenes'].touched && formulario.controls['imagenes'].hasError('required')"
+                class="error">
+                <p class="mensaje-error">las imagenes son obligatoria</p>
+            </div>
+
         </div>
 
-        <!-- SOLO ESPECIALISTAS -->
-        <div *ngIf="tipoSeleccionado === 'especialista'">
+
+        <!-- ESPECIALISTAS -->
+        <div *ngIf="perfilElegido === 'especialista'">
             <div class="group">
-                <input required type="text" class="input" formControlName="especialidad">
-                <input type="file" (change)="onFileSelected($event, 'imagenEspecialista')" accept="image/*">
+
                 <label>Especialidad</label>
-                <!-- validaciones -->
+                <input required type="text" class="input" formControlName="especialidad">
+
+                <input class="imagen" type="file" (change)="asignarArchivo($event, 'imagenEspecialista')" accept="image/*">
             </div>
         </div>
 
 
-
-        <!-- Botón para probar -->
-        <button (click)="crearCuenta()">Registrarse</button>
+        <button class="Registrarse-btn" (click)="crearCuenta()">Registrarse</button>
     </form>
 
     <div *ngIf="mensajeError" class="mensaje-error">
         <strong>{{ mensajeError }}</strong>
     </div>
 
-    <!-- Componente: formulario.component.html -->
+    <a *ngIf="mensajeError === 'la cuenta ya existe'" routeLink="/login" class="btn">si ya tenes cuenta click
+        aqui</a>
 
-
-    <a *ngIf="mensajeError === 'la cuenta ya existe'" routerLink="/login" class="btn">si ya tenes cuenta click aqui</a>
-
-    <!--   <button
-    (click)="crearCuenta(email.value, claveRepetida.value, edad.value, nombre.value, apellido.value)">
-    Registrarse</button> -->
-</div>
+</div>r
