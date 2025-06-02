@@ -20,7 +20,7 @@
     overflow: hidden;
     transition-duration: .3s;
     box-shadow: 0 4px 8px rgba(0, 0, 0, .3);
-    background-color: #820000;
+    background-color: #007acc;
     font-size: 15px;
     position: fixed;
     bottom: 20px;
@@ -100,7 +100,7 @@
 button {
     width: 100%;
     padding: 10px;
-    background-color: #820000;
+    background-color: #007acc;
     color: white;
     border: none;
     border-radius: 5px;

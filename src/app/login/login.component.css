@@ -1,9 +1,3 @@
-.icon {
-    width: 20px;
-    height: 20px;
-    fill: white;
-}
-
 .hidden {
     display: none;
 }
@@ -13,8 +7,6 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.2);
     backdrop-filter: blur(10px);
     border-radius: 16px;
     padding: 40px;
@@ -43,7 +35,6 @@
 .form__input {
     padding: 14px;
     font-size: 1rem;
-    background: rgba(255, 255, 255, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.3);
     border-radius: 8px;
     color: #fff;
@@ -72,9 +63,41 @@ a:hover {
     text-decoration: underline;
 }
 
-button{
-    background-color: #820000;
+button {
+    background-color: #007acc;
     padding-top: 10px;
     padding-bottom: 10px;
     font-size: 2rem;
+    width: 100%;
+    color: #333333;
+}
+.accesoRapido {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.botonAcceso {
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  display: flex; /* Para centrar el contenido internamente */
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  cursor: pointer;
+}
+
+.foto {
+  width: 40px;
+  height: 40px;
+  object-fit: cover; /* Mantiene la proporción de la imagen */
+  border-radius: 50%;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
 }

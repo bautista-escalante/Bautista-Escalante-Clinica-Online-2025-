@@ -2,23 +2,37 @@ import { Component, OnInit } from '@angular/core';
 import { Router, RouterModule, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { SupabaseService } from '../servicios/supabase.service';
+import { FormsModule } from '@angular/forms';
+import { UsuarioService } from '../servicios/usuario.service';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
-  imports: [CommonModule, RouterModule]
+  imports: [CommonModule, RouterModule, FormsModule]
 })
 export class LoginComponent implements OnInit {
   mensajeError: any;
+  email: string = ""
+  clave: string = ""
 
   constructor(
     private supabase: SupabaseService,
-    private router: Router
+    private router: Router,
+    private usuario: UsuarioService
   ) { }
+
+  rellenarCampos(email: string) {
+    this.email = email;
+    this.clave = "123456";
+  }
 
   async login(email: string, password: string) {
     try {
+      let usuario = await this.usuario.getUserByEmail(email)
+      if (usuario && !(usuario.habilitado)) {
+        throw new Error("tu cuenta no esta habilitada aun");
+      }
       if (email.trim() == "" || password.trim() == "") {
         throw new Error("no puede haber campos vacios");
       }

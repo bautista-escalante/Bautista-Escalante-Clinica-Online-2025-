@@ -4,6 +4,8 @@ import { CommonModule } from '@angular/common';
 import { AccesoService } from '../servicios/acceso.service';
 import { ViewChild, ElementRef, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { UsuarioService } from '../servicios/usuario.service';
+import Swal from 'sweetalert2'
 
 
 @Component({
@@ -43,12 +45,8 @@ export class RegistroComponent implements OnInit {
       nonNullable: true,
       validators: [Validators.required]
     }),
-    obraSocial: new FormControl("", {
-      nonNullable: true
-    }),
-    especialidad: new FormControl("", {
-      nonNullable: true
-    })
+    obraSocial: new FormControl("", {}),
+    especialidad: new FormControl("", {})
 
   });
   mensajeError: any;
@@ -56,11 +54,13 @@ export class RegistroComponent implements OnInit {
   imagen2: File | null = null;
   imagenEspecialista: File | null = null;
   perfilElegido: string | null = null
+  imagenesPaciente: Blob[] = [];
 
   constructor(
     private acceso: AccesoService,
     private supabase: SupabaseService,
-    private router: Router
+    private router: Router,
+    private usuarios: UsuarioService
   ) { }
 
   ngOnInit(): void { }
@@ -68,26 +68,107 @@ export class RegistroComponent implements OnInit {
   asignarArchivo(event: Event, tipo: string): void {
     const file = (event.target as HTMLInputElement)?.files?.[0];
     if (file) {
-      if (tipo === 'imagen1') this.imagen1 = file;
-      if (tipo === 'imagen2') this.imagen2 = file;
-      if (tipo === 'imagenEspecialista') this.imagenEspecialista = file;
+      if (tipo === 'imagen1') {
+        this.imagen1 = file;
+        this.imagenesPaciente.push(file);
+      }
+      if (tipo === 'imagen2') {
+        this.imagen2 = file;
+        this.imagenesPaciente.push(file);
+      }
+      if (tipo === 'imagenEspecialista') {
+        this.imagenEspecialista = file;
+      }
     }
   }
+
 
   async crearCuenta() {
     try {
       const status = this.formulario.status;
-      console.log(status); // ← Esto siempre se ejecuta
 
-      if (status !== 'INVALID') {
-        // Lógica para crear cuenta aquí
+      if (status === 'VALID') {
+
+        if (this.perfilElegido == "paciente") {
+
+          for (let i = 0; i < this.imagenesPaciente.length; i++) {
+
+            const nombreArchivo = `${this.perfilElegido}_${this.formulario.value.nombre}_(${i + 1})`;
+            const { data, error } = await this.supabase.client.storage
+              .from("usuarios")
+              .upload(nombreArchivo, this.imagenesPaciente[i]!);
+
+            if (!error) {
+              const URL = this.supabase.client.storage.from('usuarios').getPublicUrl(nombreArchivo).data.publicUrl;
+
+              await this.usuarios.insertarDatos(
+                this.formulario.value.nombre!,
+                this.formulario.value.apellido!,
+                parseInt(this.formulario.value.edad!),
+                this.formulario.value.email!,
+                URL!,
+                this.formulario.value.obraSocial!,
+                null,
+                parseInt(this.formulario.value.dni!),
+                this.perfilElegido
+              )
+            }
+          }
+        }
+
+        if (this.perfilElegido == "especialista") {
+
+          let especialidades = this.formulario.value.especialidad!.split(',');
+          console.log(especialidades)
+
+          const nombreArchivo = `${this.perfilElegido}_${this.formulario.value.nombre}`;
+          const { data, error } = await this.supabase.client.storage
+            .from("usuarios")
+            .upload(nombreArchivo, this.imagenEspecialista!);
+
+          if (!error) {
+            const URL = this.supabase.client.storage.from('usuarios').getPublicUrl(nombreArchivo).data.publicUrl;
+            for (let i = 0; i < especialidades.length; i++) {
+
+              await this.usuarios.insertarDatos(
+                this.formulario.value.nombre!,
+                this.formulario.value.apellido!,
+                parseInt(this.formulario.value.edad!),
+                this.formulario.value.email!,
+                URL!, null,
+                especialidades[i],
+                parseInt(this.formulario.value.dni!),
+                this.perfilElegido
+              )
+            }
+          }
+        }
+        const { data, error } = await this.supabase.client.auth.signUp({
+          email: this.formulario.value.email!,
+          password: this.formulario.value.clave!
+        });
+        if (error) throw error;
+
+        this.acceso.salir();
+
+        Swal.fire({
+          title: "cuenta creada con exito",
+          text: "solo queda esperar a que sea habilitada",
+          icon: "success",
+          draggable: true
+        });
+
+        this.router.navigate(['/login']);
       }
 
     } catch (error: any) {
-      this.mensajeError = error.message;
+      if (error.message == "User already registered") {
+        this.mensajeError = "el usuario ya esta registrado";
+      } else {
+        this.mensajeError = error.message;
+      }
     }
   }
-
 
   definirRegistro(perfil: string) {
     this.perfilElegido = perfil;
@@ -103,7 +184,6 @@ export class RegistroComponent implements OnInit {
       this.formulario.get('obraSocial')?.clearValidators();
       this.formulario.get('obraSocial')?.reset();
     }
-
 
     this.formulario.get('obraSocial')?.updateValueAndValidity();
     this.formulario.get('especialidad')?.updateValueAndValidity();
