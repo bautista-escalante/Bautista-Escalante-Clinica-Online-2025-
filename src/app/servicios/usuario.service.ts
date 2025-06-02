@@ -29,16 +29,54 @@ export class UsuarioService {
         if (error) throw error;
         return data[0];
     }
-    
-   /*  async traerInhabilitado(mail:string){
+
+    async traerInhabilitados() {
         const { data, error } = await this.supabase.client
             .from('usuarios')
             .select('*')
-            .eq('mail', mail)
-            .maybeSingle();
+            .eq("habilitado", false)
+            .eq("cancelada", false)
 
         if (error) throw error;
         return data;
-    } */
+    }
+
+    async habilitarCuenta(correo: string) {
+        const { data, error } = await this.supabase.client
+            .from('usuarios')
+            .select('*')
+            .eq("habilitado", false)
+            .eq("mail", correo)
+
+        if (error) throw error;
+        if (!data) return null
+
+        const { error: errorUpdate } = await this.supabase.client
+            .from('usuarios')
+            .update({ habilitado: true })
+            .eq("mail", correo)
+
+        if (errorUpdate) throw errorUpdate;
+        return data;
+    }
+    
+    async cancelarCuenta(correo: string) {
+        const { data, error } = await this.supabase.client
+            .from('usuarios')
+            .select('*')
+            .eq("cancelada", false)
+            .eq("mail", correo)
+
+        if (error) throw error;
+        if (!data) return null
+
+        const { error: errorUpdate } = await this.supabase.client
+            .from('usuarios')
+            .update({ cancelada: true })
+            .eq("mail", correo)
+
+        if (errorUpdate) throw errorUpdate;
+        return data;
+    }
 
 }

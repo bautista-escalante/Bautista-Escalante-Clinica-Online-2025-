@@ -1,0 +1,36 @@
+.aceptar,
+.cancelar {
+    width: 50px;
+    height: 50px;
+    background-color: #28a745;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.cancelar{
+    background-color: #a72828;
+}
+
+.botones{
+    display: flex;
+    flex-direction: row;
+    gap: 40px;
+}
+
+.fotoPerfil{
+    width: 70px;
+    height: 70px;
+    margin-bottom: 0px;
+}
+
+.card{
+    background-color: rgb(200, 20, 200, 0.01);
+}
+
+.card{
+    margin-top: 20px;
+    margin-bottom: 20px;
+    background-color: #007acc;
+    width: 400px;
+    height: 250px;
+}

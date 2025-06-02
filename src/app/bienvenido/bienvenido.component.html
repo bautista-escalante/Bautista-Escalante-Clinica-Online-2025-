@@ -44,6 +44,12 @@
     <div class="text">cerrar sesion</div>
 </button>
 
+<!-- admin -->
+<button *ngIf="usuario.perfil === 'admin'" routerLink="/seleccionUsuario">
+    solicitudes
+</button>
+
+
 <div *ngIf="mensajeError" class="mensaje-error">
     <strong> {{ mensajeError }}</strong>
 </div>

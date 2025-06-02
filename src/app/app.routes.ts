@@ -18,6 +18,10 @@ export const routes: Routes = [
     loadComponent: () => import("./bienvenido/bienvenido.component").then(c => c.BienvenidoComponent),
   },
   {
+    path: 'seleccionUsuario',
+    loadComponent: () => import("./seccion-usuario/seccion-usuario.component").then(c => c.SeccionUsuarioComponent),
+  },
+  {
     path: '**',
     redirectTo: 'login',
     pathMatch: 'full'
