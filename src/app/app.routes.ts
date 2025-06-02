@@ -2,6 +2,8 @@ import { Routes } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { BienvenidoComponent } from './bienvenido/bienvenido.component';
 import { RegistroComponent } from './registro/registro.component';
+import { accesoGuard } from './guards/acceso.guard';
+import { adminGuard } from './guards/admin.guard';
 
 export const routes: Routes = [
 
@@ -16,10 +18,12 @@ export const routes: Routes = [
   {
     path: 'bienvenido',
     loadComponent: () => import("./bienvenido/bienvenido.component").then(c => c.BienvenidoComponent),
+    canActivate: [accesoGuard]
   },
   {
     path: 'seleccionUsuario',
     loadComponent: () => import("./seccion-usuario/seccion-usuario.component").then(c => c.SeccionUsuarioComponent),
+    canActivate: [accesoGuard, adminGuard]
   },
   {
     path: '**',

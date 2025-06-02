@@ -29,7 +29,6 @@
 
 <!-- cerrar sesion -->
 <button *ngIf="estalogeado" class="Btn" (click)="cerrarSesion()">
-
     <div class="sign">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
             <path fill-rule="evenodd"
@@ -41,13 +40,126 @@
         </svg>
     </div>
 
-    <div class="text">cerrar sesion</div>
+    <div class="text">cerrar</div>
 </button>
 
 <!-- admin -->
-<button *ngIf="usuario.perfil === 'admin'" routerLink="/seleccionUsuario">
-    solicitudes
-</button>
+<div *ngIf="estalogeado && usuario.perfil === 'admin'" class="admin">
+    <button routerLink="/seleccionUsuario" class="btn_notificacion">
+        <div class="sign">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+                <path
+                    d="M5.85 3.5a.75.75 0 0 0-1.117-1 9.719 9.719 0 0 0-2.348 4.876.75.75 0 0 0 1.479.248A8.219 8.219 0 0 1 5.85 3.5ZM19.267 2.5a.75.75 0 1 0-1.118 1 8.22 8.22 0 0 1 1.987 4.124.75.75 0 0 0 1.48-.248A9.72 9.72 0 0 0 19.266 2.5Z" />
+                <path fill-rule="evenodd"
+                    d="M12 2.25A6.75 6.75 0 0 0 5.25 9v.75a8.217 8.217 0 0 1-2.119 5.52.75.75 0 0 0 .298 1.206c1.544.57 3.16.99 4.831 1.243a3.75 3.75 0 1 0 7.48 0 24.583 24.583 0 0 0 4.83-1.244.75.75 0 0 0 .298-1.205 8.217 8.217 0 0 1-2.118-5.52V9A6.75 6.75 0 0 0 12 2.25ZM9.75 18c0-.034 0-.067.002-.1a25.05 25.05 0 0 0 4.496 0l.002.1a2.25 2.25 0 1 1-4.5 0Z"
+                    clip-rule="evenodd" />
+            </svg>
+        </div>
+        <span *ngIf="cantidadNoitificaciones !== 0" class="badge">{{ cantidadNoitificaciones }}</span>
+    </button>
+
+    <form [formGroup]="formulario">
+
+        <div class="group">
+            <input required type="text" class="input" formControlName="nombre">
+            <span class="highlight"></span>
+            <span class="bar"></span>
+            <label>nombre</label>
+            <div *ngIf="formulario.controls['nombre'].touched && formulario.controls['nombre'].hasError('required')"
+                class="error">
+                <P class="mensaje-error">Nombre es obligatorio</P>
+
+            </div>
+        </div>
+
+        <div class="group">
+            <input required type="text" class="input" formControlName="apellido">
+            <span class="highlight"></span>
+            <span class="bar"></span>
+            <label>apellido</label>
+            <div *ngIf="formulario.controls['apellido'].touched && formulario.controls['apellido'].hasError('required')"
+                class="error">
+                <P class="mensaje-error">Apellido es obligatoria</P>
+            </div>
+        </div>
+
+        <div class="group">
+            <input required type="text" class="input" formControlName="edad">
+            <span class="highlight"></span>
+            <span class="bar"></span>
+            <label>edad</label>
+            <div *ngIf="formulario.controls['edad'].touched && formulario.controls['edad'].hasError('required')"
+                class="error">
+                <P class="mensaje-error">Edad es obligatoria</P>
+            </div>
+            <div *ngIf="formulario.controls['edad'].touched && (formulario.controls['edad'].hasError('min') || formulario.controls['edad'].hasError('max'))"
+                class="error">
+                <P class="mensaje-error">Edad debe estar entre 1 y 100</P>
+            </div>
+        </div>
+
+        <div class="group">
+            <input required type="text" class="input" formControlName="dni">
+            <span class="highlight"></span>
+            <span class="bar"></span>
+            <label>DNI</label>
+            <div *ngIf="formulario.controls['dni'].touched && formulario.controls['dni'].hasError('required')"
+                class="error">
+                <P class="mensaje-error">DNI es obligatoria</P>
+            </div>
+            <div *ngIf="formulario.controls['dni'].touched && formulario.controls['dni'].hasError('minlength') || 
+            formulario.controls['dni'].hasError('maxLength')" class="error">
+                <P class="mensaje-error">DNI no valido</P>
+            </div>
+            <div *ngIf="formulario.controls['dni'].touched && formulario.controls['dni'].hasError('pattern')"
+                class="error">
+                <P class="mensaje-error">debe ser numerico</P>
+            </div>
+        </div>
+
+        <div class="group">
+            <input required type="text" class="input" formControlName="email">
+            <span class="highlight"></span>
+            <span class="bar"></span>
+            <label>correo</label>
+            <div *ngIf="formulario.controls['email'].touched && formulario.controls['email'].hasError('required')"
+                class="error">
+                <P class="mensaje-error">correo es obligatoria</P>
+            </div>
+            <div *ngIf="formulario.controls['email'].touched && formulario.controls['email'].hasError('email')"
+                class="error">
+                <P class="mensaje-error">Correo no válido</P>
+            </div>
+        </div>
+
+        <div class="group">
+            <input required type="password" class="input" formControlName="clave">
+            <span class="highlight"></span>
+            <span class="bar"></span>
+            <label>clave</label>
+            <div *ngIf="formulario.controls['clave'].touched && formulario.controls['clave'].hasError('required')"
+                class="error">
+                <P class="mensaje-error">Clave es obligatoria</P>
+            </div>
+            <div *ngIf="formulario.controls['clave'].touched && formulario.controls['clave'].hasError('minlength')"
+                class="error">
+                <P class="mensaje-error">Clave debe tener al menos 6 caracteres</P>
+
+            </div>
+        </div>
+
+        <input formControlName="imagenes" class="imagen" type="file" (change)="guardarArchivo($event)" accept="image/*">
+        <div *ngIf="formulario.controls['imagenes'].touched && formulario.controls['imagenes'].hasError('required')"
+            class="error">
+            <p class="mensaje-error">las imagenes son obligatoria</p>
+        </div>
+
+        <button (click)="crearCuenta()">
+            registrar nuevo admin
+        </button>
+    </form>
+
+</div>
 
 
 <div *ngIf="mensajeError" class="mensaje-error">

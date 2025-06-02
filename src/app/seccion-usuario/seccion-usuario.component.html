@@ -3,12 +3,17 @@
         <img [src]="usuario.url_perfil" class="fotoPerfil">
         <h2>{{usuario.nombre}} {{usuario.apellido}}</h2>
         <p *ngIf="usuario.perfil === 'paciente'"> {{usuario.edad}} años, obra social: {{usuario.obra_social}}</p>
-        
+
         <p *ngIf="usuario.perfil === 'especialista'"> {{usuario.edad}} años, especialidades: {{especialidades}}</p>
-        
+
         <div class="botones">
-            <img src="aceptar.png" class="aceptar" (click)="habilitar(usuario.mail)">
-            <img src="cancelar.png" class="cancelar" (click)="cancelar(usuario.mail)">
+            <img src="iconos/aceptar.png" class="aceptar" (click)="habilitar(usuario.mail)">
+            <img src="iconos/cancelar.png" class="cancelar" (click)="cancelar(usuario.mail)">
         </div>
     </div>
+
+
 </div>
+<button class="Btn" routerLink="/bienvenido">
+    <img src="iconos/atras.svg">
+</button>

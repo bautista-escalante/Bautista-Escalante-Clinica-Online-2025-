@@ -82,10 +82,34 @@ export class RegistroComponent implements OnInit {
     }
   }
 
+  validarFormulario(): void {
+    if (this.formulario.invalid) {
+      // Marca todos los controles como tocados para mostrar los mensajes de error
+      this.marcarCamposComoTocados(this.formulario);
+
+      // Obtiene los errores de cada campo
+      const errores = Object.entries(this.formulario.controls)
+        .filter(([_, control]) => control.invalid)
+        .map(([nombre, control]) => {
+          const erroresControl = control.errors;
+          return `${nombre}: ${Object.keys(erroresControl || {}).join(', ')}`;
+        });
+
+      // Lanza un error con un mensaje detallado
+      throw new Error('Errores de validación:\n' + errores.join('\n'));
+    }
+  }
+
+  private marcarCamposComoTocados(formGroup: FormGroup): void {
+    Object.values(formGroup.controls).forEach(control => {
+      control.markAsTouched();
+    });
+  }
 
   async crearCuenta() {
     try {
       const status = this.formulario.status;
+      this.validarFormulario();
 
       if (status === 'VALID') {
 

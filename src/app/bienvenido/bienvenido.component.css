@@ -8,7 +8,8 @@
 }
 
 .Btn,
-.Btn_login {
+.Btn_login,
+.btn_notificacion {
     display: flex;
     align-items: center;
     justify-content: flex-start;
@@ -17,7 +18,7 @@
     border-radius: 50%;
     cursor: pointer;
     font-weight: bold;
-    overflow: hidden;
+    overflow: visible;
     transition-duration: .3s;
     box-shadow: 0 4px 8px rgba(0, 0, 0, .3);
     background-color: #007acc;
@@ -29,15 +30,13 @@
     z-index: 10
 }
 
+.btn_notificacion {
+    top: 30px;
+    width: 50px;
+    height: 50px;
+}
+
 .Btn_login {
-    bottom: 100px
-}
-
-.BtnPuntuaciones {
-    bottom: 180px
-}
-
-.Btn_quienSoy {
     bottom: 100px
 }
 
@@ -98,7 +97,7 @@
 }
 
 button {
-    width: 100%;
+    width: 300px;
     padding: 10px;
     background-color: #007acc;
     color: white;
@@ -106,4 +105,46 @@ button {
     border-radius: 5px;
     cursor: pointer;
     margin-top: 10px
+}
+
+.contenedor-admin {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin-top: 100px;
+}
+
+.sign {
+    position: relative;
+    display: inline-block;
+}
+
+.badge {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    background-color: #80ED99;
+    color: white;
+    border-radius: 50%;
+    padding: 2px 6px;
+    font-size: 0.7rem;
+    font-weight: bold;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+    height: 20px;
+    box-sizing: border-box;
+    white-space: nowrap;
+}
+
+form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    flex-direction: column;
+    gap: 30px;
 }

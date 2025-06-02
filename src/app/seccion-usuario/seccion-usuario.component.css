@@ -34,3 +34,24 @@
     width: 400px;
     height: 250px;
 }
+
+.Btn {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-weight: bold;
+    overflow: hidden;
+    transition-duration: .3s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, .3);
+    background-color: #007acc;
+    font-size: 15px;
+    position: fixed;
+    bottom: 20px;
+    right: 10px;
+    text-align: center;
+    z-index: 10
+}

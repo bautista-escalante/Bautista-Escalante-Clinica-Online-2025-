@@ -8,11 +8,11 @@ export class UsuarioService {
 
     constructor(private supabase: SupabaseService) { }
 
-    async insertarDatos(nombre: string, apellido: string, edad: number, mail: string, url_perfil: string, obra_social: string | null, especialidades: string | null, dni: number, perfil: string) {
+    async insertarDatos(nombre: string, apellido: string, edad: number, mail: string, url_perfil: string, obra_social: string | null, especialidades: string | null, dni: number, perfil: string, habilitado:boolean=false) {
         const { data, error } = await this.supabase.client
             .from('usuarios')
             .insert({
-                nombre, apellido, edad, mail, url_perfil, obra_social, especialidades, dni, perfil
+                nombre, apellido, edad, mail, habilitado, url_perfil, obra_social, especialidades, dni, perfil
             })
             .select();
 
@@ -59,7 +59,7 @@ export class UsuarioService {
         if (errorUpdate) throw errorUpdate;
         return data;
     }
-    
+
     async cancelarCuenta(correo: string) {
         const { data, error } = await this.supabase.client
             .from('usuarios')
@@ -77,6 +77,29 @@ export class UsuarioService {
 
         if (errorUpdate) throw errorUpdate;
         return data;
+    }
+
+    async traerEspecialidades(correo: string) {
+        const { data, error } = await this.supabase.client
+            .from('usuarios')
+            .select('*')
+            .eq('mail', correo);
+
+        const usuariosMap = new Map<number, any>();
+
+        data?.forEach(usuario => {
+            if (!usuariosMap.has(usuario.id)) {
+                usuariosMap.set(usuario.id, {
+                    id: usuario.id,
+                    nombre: usuario.nombre,
+                    email: usuario.mail,
+                    especialidades: [usuario.especialidades]
+                });
+            } else {
+                usuariosMap.get(usuario.id).especialidades.push(usuario.especialidad);
+            }
+        });
+        return Array.from(usuariosMap.values());
     }
 
 }
