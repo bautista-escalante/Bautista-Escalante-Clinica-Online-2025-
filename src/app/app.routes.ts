@@ -18,8 +18,23 @@ export const routes: Routes = [
   {
     path: 'bienvenido',
     loadComponent: () => import("./bienvenido/bienvenido.component").then(c => c.BienvenidoComponent),
-    canActivate: [accesoGuard]
+    canActivate: [accesoGuard],
+    children: [
+      {
+        path: 'admin',
+        loadComponent: () => import("./admin/admin.component").then(c => c.AdminComponent),
+      },
+      {
+        path: 'paciente',
+        loadComponent: () => import("./paciente/paciente.component").then(c => c.PacienteComponent),
+      },
+      {
+        path: 'especialista',
+        loadComponent: () => import("./especialista/especialista.component").then(c => c.EspecialistaComponent),
+      },
+    ]
   },
+
   {
     path: 'seleccionUsuario',
     loadComponent: () => import("./seccion-usuario/seccion-usuario.component").then(c => c.SeccionUsuarioComponent),
