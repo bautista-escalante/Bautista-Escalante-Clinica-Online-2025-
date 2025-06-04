@@ -1,1 +1,60 @@
-<p>paciente works!</p>
+<div *ngIf="mostrarTurnos">
+
+    <div class="turnos" *ngFor="let turno of turnos">
+
+        <section>
+            <h2>mis turnos</h2>
+
+            <input type="text" id="filtro-turnos" placeholder="Buscar por Especialidad o Especialista">
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Fecha y Hora</th>
+                        <th>Especialidad</th>
+                        <th>Especialista</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{`${turno.fecha} ${turno.hora}`}}</td>
+                        <td>{{turno.id_especialista.especialidades}}</td>
+                        <td>Dr. {{turno.id_especialista.apellido}}</td>
+                        <td>{{turno.estado}}</td>
+                        <td>
+                            <button *ngIf="turno.estado === 'aceptado'">Cancelar Turno</button>
+
+                            <button *ngIf="!!turno.resenia">Ver Reseña</button>
+
+                            <button *ngIf="turno.estado === 'realizado'">Completar Encuesta</button>
+                            <button *ngIf="turno.estado === 'realizado'">Calificar Atencion</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </div>
+    <button (click)="verFormulario()"> solicitar turno </button>
+
+</div>
+
+<div *ngIf="!mostrarTurnos">
+
+    <div class="group">
+        <input required="" type="text" class="input" [(ngModel)]="especialidad">
+        <span class="highlight"></span>
+        <span class="bar"></span>
+        <label>especialidad</label>
+    </div>
+    
+    <div class="group">
+        <input required="" type="datetime-local" class="input" [(ngModel)]="fechaHora">
+        <span class="highlight"></span>
+        <span class="bar"></span>
+        <label>fecha</label>
+    </div>
+
+    <button (click)="verFormulario()">volver atras</button>
+</div>

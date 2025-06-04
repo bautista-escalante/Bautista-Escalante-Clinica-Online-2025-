@@ -8,7 +8,7 @@ export class UsuarioService {
 
     constructor(private supabase: SupabaseService) { }
 
-    async insertarDatos(nombre: string, apellido: string, edad: number, mail: string, url_perfil: string, obra_social: string | null, especialidades: string | null, dni: number, perfil: string, habilitado:boolean=false) {
+    async insertarDatos(nombre: string, apellido: string, edad: number, mail: string, url_perfil: string, obra_social: string | null, especialidades: string | null, dni: number, perfil: string, habilitado: boolean = false) {
         const { data, error } = await this.supabase.client
             .from('usuarios')
             .insert({
@@ -100,6 +100,17 @@ export class UsuarioService {
             }
         });
         return Array.from(usuariosMap.values());
+    }
+
+    async traerEspecialista(especialidad: string) {
+        const { data, error } = await this.supabase.client
+            .from("usuarios")
+            .select(`apellido, id`)
+            .eq("especialidad", especialidad);
+
+        if (error) throw error;
+        console.log(data);
+        return data;
     }
 
 }
