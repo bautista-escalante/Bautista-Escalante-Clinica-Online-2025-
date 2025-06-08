@@ -1,10 +1,21 @@
 <div *ngFor="let usuario of usuarios">
     <div class="card">
-        <img [src]="usuario.url_perfil" class="fotoPerfil">
         <h2>{{usuario.nombre}} {{usuario.apellido}}</h2>
-        <p *ngIf="usuario.perfil === 'paciente'"> {{usuario.edad}} años, obra social: {{usuario.obra_social}}</p>
+        
+        <div *ngIf="usuario.perfil === 'especialista'">
+            <img [src]="usuario.url_perfil" class="fotoPerfil">
+            <p> {{usuario.edad}} años, especialidades: {{usuario.especialidades || 'Cargando...' }}</p>
+        </div>
 
-        <p *ngIf="usuario.perfil === 'especialista'"> {{usuario.edad}} años, especialidades: {{especialidades}}</p>
+        <div *ngIf="usuario.perfil === 'paciente'">
+            <div class="fotosPaciente">
+
+                <img [src]="rutas[0]" class="fotoPerfil">
+                <img [src]="rutas[1]" class="fotoPerfil">
+            </div>
+            <p> {{usuario.edad}} años, obra social: {{usuario.obra_social}}</p>
+        </div>
+
 
         <div class="botones">
             <img src="iconos/aceptar.png" class="aceptar" (click)="habilitar(usuario.mail)">

@@ -38,7 +38,14 @@ export class UsuarioService {
             .eq("cancelada", false)
 
         if (error) throw error;
-        return data;
+
+        const map = new Map();
+        for (const u of data) {
+            if (!map.has(u.mail)) {
+                map.set(u.mail, u); // usa mail como clave única
+            }
+        }
+        return Array.from(map.values());
     }
 
     async habilitarCuenta(correo: string) {
@@ -79,38 +86,27 @@ export class UsuarioService {
         return data;
     }
 
-    async traerEspecialidades(correo: string) {
-        const { data, error } = await this.supabase.client
-            .from('usuarios')
-            .select('*')
-            .eq('mail', correo);
+    async crearCuenta(nombreArchivo: string, imagen: Blob, nombre: string, apellido: string, edad: number, email: string, obraSocial: string | null = null, especialidad: string | null = null, dni: number, perfilElegido: string) {
+        const { data, error } = await this.supabase.client.storage
+            .from("usuarios")
+            .upload(nombreArchivo, imagen);
 
-        const usuariosMap = new Map<number, any>();
+        if (!error) {
+            const URL = this.supabase.client.storage.from('usuarios').getPublicUrl(nombreArchivo).data.publicUrl;
+            await this.insertarDatos(nombre, apellido, edad, email, URL, obraSocial, especialidad, dni, perfilElegido);
 
-        data?.forEach(usuario => {
-            if (!usuariosMap.has(usuario.id)) {
-                usuariosMap.set(usuario.id, {
-                    id: usuario.id,
-                    nombre: usuario.nombre,
-                    email: usuario.mail,
-                    especialidades: [usuario.especialidades]
-                });
-            } else {
-                usuariosMap.get(usuario.id).especialidades.push(usuario.especialidad);
-            }
-        });
-        return Array.from(usuariosMap.values());
+        }
     }
 
-    async traerEspecialista(especialidad: string) {
+    async traerFotos(correo: string) {
         const { data, error } = await this.supabase.client
             .from("usuarios")
-            .select(`apellido, id`)
-            .eq("especialidad", especialidad);
+            .select(`url_perfil`)
+            .eq("mail", correo);
 
         if (error) throw error;
-        console.log(data);
-        return data;
-    }
+        const fotos = data.map((item: any) => item.url_perfil)
 
+        return fotos;
+    }
 }

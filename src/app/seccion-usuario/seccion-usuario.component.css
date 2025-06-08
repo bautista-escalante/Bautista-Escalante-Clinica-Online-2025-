@@ -7,27 +7,27 @@
     cursor: pointer;
 }
 
-.cancelar{
+.cancelar {
     background-color: #a72828;
 }
 
-.botones{
+.botones {
     display: flex;
     flex-direction: row;
     gap: 40px;
 }
 
-.fotoPerfil{
+.fotoPerfil {
     width: 70px;
     height: 70px;
     margin-bottom: 0px;
 }
 
-.card{
+.card {
     background-color: rgb(200, 20, 200, 0.01);
 }
 
-.card{
+.card {
     margin-top: 20px;
     margin-bottom: 20px;
     background-color: #007acc;
@@ -54,4 +54,10 @@
     right: 10px;
     text-align: center;
     z-index: 10
+}
+
+.fotosPaciente {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
 }

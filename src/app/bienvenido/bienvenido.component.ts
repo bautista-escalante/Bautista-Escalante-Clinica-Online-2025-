@@ -23,8 +23,8 @@ export class BienvenidoComponent implements OnInit {
 
   async ngOnInit() {
     let correo = await this.acceso.verificarAcceso();
-    let usuario = await this.user.getUserByEmail(correo!)
-    this.estalogeado = !!correo
+    let usuario = await this.user.getUserByEmail(correo!);
+    this.estalogeado = !!correo;
 
     this.router.navigate([`/bienvenido/${usuario.perfil}`]);
   }
@@ -33,7 +33,7 @@ export class BienvenidoComponent implements OnInit {
     try {
       await this.acceso.salir();
       this.estalogeado = !!(await this.acceso.verificarAcceso());
-      console.log(this.estalogeado)
+      this.router.navigate(["/login"])
       return;
 
     } catch (error: any) {

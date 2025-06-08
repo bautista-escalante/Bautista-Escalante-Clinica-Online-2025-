@@ -41,10 +41,6 @@ export class RegistroComponent implements OnInit {
       validators: [Validators.required, Validators.maxLength(8), Validators.minLength(7),
       Validators.pattern('^[0-9]+$')]
     }),
-    imagenes: new FormControl("", {
-      nonNullable: true,
-      validators: [Validators.required]
-    }),
     obraSocial: new FormControl("", {}),
     especialidad: new FormControl("", {})
 
@@ -82,12 +78,10 @@ export class RegistroComponent implements OnInit {
     }
   }
 
-  validarFormulario(): void {
-    if (this.formulario.invalid) {
-      // Marca todos los controles como tocados para mostrar los mensajes de error
-      this.marcarCamposComoTocados(this.formulario);
+  validarFormulario() {
+    this.marcarCamposComoTocados(this.formulario);
 
-      // Obtiene los errores de cada campo
+    if (this.formulario.invalid) {
       const errores = Object.entries(this.formulario.controls)
         .filter(([_, control]) => control.invalid)
         .map(([nombre, control]) => {
@@ -95,8 +89,14 @@ export class RegistroComponent implements OnInit {
           return `${nombre}: ${Object.keys(erroresControl || {}).join(', ')}`;
         });
 
-      // Lanza un error con un mensaje detallado
       throw new Error('Errores de validación:\n' + errores.join('\n'));
+    }
+
+    if (this.perfilElegido === 'paciente' && this.imagenesPaciente.length < 2) {
+      throw new Error('Debe subir 2 imágenes para el paciente');
+    }
+    if (this.perfilElegido === 'especialista' && !this.imagenEspecialista) {
+      throw new Error('Debe subir una imagen para el especialista');
     }
   }
 
@@ -115,76 +115,73 @@ export class RegistroComponent implements OnInit {
 
         if (this.perfilElegido == "paciente") {
 
-          for (let i = 0; i < this.imagenesPaciente.length; i++) {
+          let nombreArchivo = `${this.perfilElegido}_${this.formulario.value.nombre}_(${1})`;
 
-            const nombreArchivo = `${this.perfilElegido}_${this.formulario.value.nombre}_(${i + 1})`;
-            const { data, error } = await this.supabase.client.storage
-              .from("usuarios")
-              .upload(nombreArchivo, this.imagenesPaciente[i]!);
+          this.usuarios.crearCuenta(nombreArchivo, this.imagen1!, this.formulario.value.nombre!,
+            this.formulario.value.apellido!,
+            parseInt(this.formulario.value.edad!),
+            this.formulario.value.email!,
+            this.formulario.value.obraSocial!,
+            null,
+            parseInt(this.formulario.value.dni!),
+            this.perfilElegido)
 
-            if (!error) {
-              const URL = this.supabase.client.storage.from('usuarios').getPublicUrl(nombreArchivo).data.publicUrl;
+          nombreArchivo = `${this.perfilElegido}_${this.formulario.value.nombre}_(${2})`;
 
-              await this.usuarios.insertarDatos(
-                this.formulario.value.nombre!,
-                this.formulario.value.apellido!,
-                parseInt(this.formulario.value.edad!),
-                this.formulario.value.email!,
-                URL!,
-                this.formulario.value.obraSocial!,
-                null,
-                parseInt(this.formulario.value.dni!),
-                this.perfilElegido
-              )
-            }
-          }
+          this.usuarios.crearCuenta(nombreArchivo, this.imagen2!, this.formulario.value.nombre!,
+            this.formulario.value.apellido!,
+            parseInt(this.formulario.value.edad!),
+            this.formulario.value.email!,
+            this.formulario.value.obraSocial!,
+            null,
+            parseInt(this.formulario.value.dni!),
+            this.perfilElegido)
         }
-
-        if (this.perfilElegido == "especialista") {
-
-          let especialidades = this.formulario.value.especialidad!.split(',');
-          console.log(especialidades)
-
-          const nombreArchivo = `${this.perfilElegido}_${this.formulario.value.nombre}`;
-          const { data, error } = await this.supabase.client.storage
-            .from("usuarios")
-            .upload(nombreArchivo, this.imagenEspecialista!);
-
-          if (!error) {
-            const URL = this.supabase.client.storage.from('usuarios').getPublicUrl(nombreArchivo).data.publicUrl;
-            for (let i = 0; i < especialidades.length; i++) {
-
-              await this.usuarios.insertarDatos(
-                this.formulario.value.nombre!,
-                this.formulario.value.apellido!,
-                parseInt(this.formulario.value.edad!),
-                this.formulario.value.email!,
-                URL!, null,
-                especialidades[i],
-                parseInt(this.formulario.value.dni!),
-                this.perfilElegido
-              )
-            }
-          }
-        }
-        const { data, error } = await this.supabase.client.auth.signUp({
-          email: this.formulario.value.email!,
-          password: this.formulario.value.clave!
-        });
-        if (error) throw error;
-
-        this.acceso.salir();
-
-        Swal.fire({
-          title: "cuenta creada con exito",
-          text: "solo queda esperar a que sea habilitada",
-          icon: "success",
-          draggable: true
-        });
-
-        this.router.navigate(['/login']);
       }
 
+      if (this.perfilElegido == "especialista") {
+
+        let especialidades = this.formulario.value.especialidad!.split(',');
+        console.log(especialidades)
+
+        const nombreArchivo = `${this.perfilElegido}_${this.formulario.value.nombre}`;
+        const { data, error } = await this.supabase.client.storage
+          .from("usuarios")
+          .upload(nombreArchivo, this.imagenEspecialista!);
+
+        if (!error) {
+          const URL = this.supabase.client.storage.from('usuarios').getPublicUrl(nombreArchivo).data.publicUrl;
+          for (let i = 0; i < especialidades.length; i++) {
+
+            await this.usuarios.insertarDatos(
+              this.formulario.value.nombre!,
+              this.formulario.value.apellido!,
+              parseInt(this.formulario.value.edad!),
+              this.formulario.value.email!,
+              URL!, null,
+              especialidades[i],
+              parseInt(this.formulario.value.dni!),
+              this.perfilElegido
+            )
+          }
+        }
+      }
+      const { data, error } = await this.supabase.client.auth.signUp({
+        email: this.formulario.value.email!,
+        password: this.formulario.value.clave!
+      });
+      if (error) throw error;
+
+      this.acceso.salir();
+
+      Swal.fire({
+        title: "cuenta creada con exito",
+        text: "solo queda esperar a que sea habilitada",
+        icon: "success",
+        draggable: true
+      });
+
+      this.router.navigate(['/login']);
     } catch (error: any) {
       if (error.message == "User already registered") {
         this.mensajeError = "el usuario ya esta registrado";
@@ -212,6 +209,5 @@ export class RegistroComponent implements OnInit {
     this.formulario.get('obraSocial')?.updateValueAndValidity();
     this.formulario.get('especialidad')?.updateValueAndValidity();
   }
-
 
 }

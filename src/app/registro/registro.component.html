@@ -117,14 +117,10 @@
                 </div>
             </div>
 
-            <input formControlName="imagenes" class="imagen" type="file" (change)="asignarArchivo($event, 'imagen1')"
+            <input class="imagen" type="file" (change)="asignarArchivo($event, 'imagen1')"
                 accept="image/*">
-            <input formControlName="imagenes" class="imagen" type="file" (change)="asignarArchivo($event, 'imagen2')"
+            <input class="imagen" type="file" (change)="asignarArchivo($event, 'imagen2')"
                 accept="image/*">
-            <div *ngIf="formulario.controls['imagenes'].touched && formulario.controls['imagenes'].hasError('required')"
-                class="error">
-                <p class="mensaje-error">las imagenes son obligatoria</p>
-            </div>
 
         </div>
 

@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
 import { SupabaseService } from './supabase.service';
-import { Time } from '@angular/common';
-import { Timestamp } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +8,7 @@ export class TurnoService {
 
   constructor(private supabase: SupabaseService) { }
 
-  async traerTurnos() {
+  async traerTurnos(id: string) {
     const { data, error } = await this.supabase.client
       .from("turnos")
       .select(`
@@ -18,23 +16,39 @@ export class TurnoService {
       cancelado,
       estado,
       fecha,
-      hora,
-      id_especialista(apellido, especialidades)`);
+      id_especialista(apellido, especialidades)`)
+      .eq("id_paciente", id);
 
     if (error) throw error;
-    console.log(data);
     return data;
   }
 
 
-  async agregarTurno(paciente: number, especialista: number, fecha: Date, hora: string) {
+  async agregarTurno(paciente: number, especialista: number, fecha: Date) {
     const { data, error } = await this.supabase.client
       .from("turnos")
-      .insert({ id_paciente: paciente, id_especialista: especialista, fecha, hora, estado: "a confirmar", cancelado: false })
+      .insert({ id_paciente: paciente, id_especialista: especialista, fecha, estado: "a confirmar", cancelado: false })
       .select();
 
     if (error) throw error;
     return data;
   }
-  
+
+  async filtrarTurnosPorEspecialista(apellido: string) {
+    const { data } = await this.supabase.client
+      .from("turnos")
+      .select("*, id_especialista(*)")
+      .eq("id_especialista.apellido", apellido);
+
+    return data;
+  }
+
+  async filtrarTurnosPorEspecialidad(especialidad: string) {
+    const { data } = await this.supabase.client
+      .from("turnos")
+      .select("*, id_especialista(*)")
+      .eq("id_especialista.especialidades", especialidad)
+
+    return data;
+  }
 }
