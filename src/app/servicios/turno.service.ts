@@ -23,6 +23,22 @@ export class TurnoService {
     return data;
   }
 
+  async traerTurnosEspecialista(id: string) {
+    const { data, error } = await this.supabase.client
+      .from("turnos")
+      .select(`
+      calificacion,
+      cancelado,
+      estado,
+      fecha,
+      id_especialista(especialidades),
+      id_paciente(nombre, apellido)`)
+      .eq("id_especialista", id);
+
+    if (error) throw error;
+    return data;
+  }
+
 
   async agregarTurno(paciente: number, especialista: number, fecha: Date) {
     const { data, error } = await this.supabase.client

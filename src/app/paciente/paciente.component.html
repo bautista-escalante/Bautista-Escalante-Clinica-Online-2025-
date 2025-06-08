@@ -31,7 +31,7 @@
 
           <td>{{ turno.estado }}</td>
           <td>
-            <button *ngIf="turno.estado === 'aceptado'">Cancelar Turno</button>
+            <button *ngIf="turno.estado !== 'realizado'">Cancelar Turno</button>
             <button *ngIf="!!turno.resenia">Ver Reseña</button>
             <button *ngIf="turno.estado === 'realizado'">Completar Encuesta</button>
             <button *ngIf="turno.estado === 'realizado'">Calificar Atencion</button>
