@@ -27,14 +27,16 @@
         <tr *ngFor="let turno of turnos">
           <td>{{ turno.fecha | date:"dd/MM/yyyy hh:mm" }}</td>
           <td>{{ turno.id_especialista.especialidades }}</td>
-          <td>Dr. {{ turno.id_especialista.apellido }}</td>
+          <td>Dr. {{ turno.id_especialista.apellido }} {{turno.id_especialista.nombre}}</td>
 
           <td>{{ turno.estado }}</td>
           <td>
-            <button *ngIf="turno.estado !== 'realizado'">Cancelar Turno</button>
-            <button *ngIf="!!turno.resenia">Ver Reseña</button>
-            <button *ngIf="turno.estado === 'realizado'">Completar Encuesta</button>
-            <button *ngIf="turno.estado === 'realizado'">Calificar Atencion</button>
+            <div class="acciones">
+              <button *ngIf="turno.estado !== 'realizado'" (click)="cancelarTurno(turno.id)"  class="btn_accion">Cancelar Turno</button>
+              <button *ngIf="!!turno.resenia" (click)="verResenia(turno.id)" class="btn_accion">Ver Reseña</button>
+              <button *ngIf="turno.estado === 'realizado'"  class="btn_accion">Completar Encuesta</button>
+            <button *ngIf="turno.estado === 'realizado'" (click)="Calificar(turno.id)" class="btn_accion">Calificar Atencion</button>
+          </div>
           </td>
         </tr>
       </tbody>
@@ -67,7 +69,7 @@
   <div *ngIf="horarios.length > 0" class="horarios">
     <!-- defirnir horarios -->
     <div *ngFor="let horario of horarios">
-      <button (click)="definirHorario(horario.horario)" class="btn_horario">
+      <button (click)="definirHorario(horario.horario, horario.id)" class="btn_horario">
         <div>{{horario.horario | date:"dd/mm hh:mm"}}</div>
       </button>
     </div>

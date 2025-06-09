@@ -31,10 +31,11 @@
                     <td>{{ turno.estado }}</td>
                     <td>
                         <div class="acciones">
-                            <button *ngIf="turno.estado !== 'realizado'" class="btn_accion">Aceptar turno</button>
-                            <button *ngIf="turno.estado !== 'a confirmar'" class="btn_accion">Cancelar Turno</button>
-                            <button *ngIf="turno.estado === 'aceptado'" class="btn_accion">Finalizar Turno</button>
-                            <button *ngIf="!!turno.resenia" class="btn_accion">Ver Reseña</button>
+                            <button *ngIf="turno.estado !== 'realizado'" (click)="cambiarEstado('aceptado')" class="btn_accion">Aceptar turno</button>
+                            <button *ngIf="turno.estado === 'aceptado'" (click)="cambiarEstado('cancelado')" class="btn_accion">Cancelar Turno</button>
+                            <button *ngIf="turno.estado === 'a confirmar'" (click)="cambiarEstadoConRazon('rechazado', turno.id)" class="btn_accion">rechazar Turno</button>
+                            <button *ngIf="turno.estado === 'aceptado'" (click)="cambiarEstadoConResenia( turno.id)" class="btn_accion">Finalizar Turno</button>
+                            <button *ngIf="!!turno.resenia" class="btn_accion" (click)="verResenia(turno.id)">Ver Reseña</button>
                         </div>
                     </td>
                 </tr>

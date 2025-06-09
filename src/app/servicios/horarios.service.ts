@@ -11,7 +11,7 @@ export class HorariosService {
   async traerHorarioisDisponibles(id: string) {
     const { data, error } = await this.supabase.client
       .from("horarios")
-      .select("horario")
+      .select("*")
       .eq("ocupado", false)
       .eq("id_especialista", id);
 
@@ -19,11 +19,11 @@ export class HorariosService {
     return data;
   }
 
-  async tomarHorario(id: string) {
+  async tomarHorario(id: number) {
     const { error: errorUpdate } = await this.supabase.client
       .from('horarios')
       .update({ ocupado: true })
-      .eq("id_especialista", id)
+      .eq("id", id)
 
     if (errorUpdate) throw errorUpdate;
   }

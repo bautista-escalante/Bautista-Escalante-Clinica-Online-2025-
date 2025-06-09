@@ -134,6 +134,13 @@
   color: black;
 }
 
-.error{
-  
+.btn_accion{
+  width: 120px;
+  margin: 0px;
+}
+
+.acciones {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
 }

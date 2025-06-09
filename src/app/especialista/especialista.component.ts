@@ -6,6 +6,7 @@ import { HorariosService } from '../servicios/horarios.service';
 import { TurnoService } from '../servicios/turno.service';
 import { UsuarioService } from '../servicios/usuario.service';
 import { AccesoService } from '../servicios/acceso.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-especialista',
@@ -31,6 +32,7 @@ export class EspecialistaComponent implements OnInit {
     let correo = await this.acceso.verificarAcceso();
     this.datosUsuario = await this.usuario.getUserByEmail(correo!);
     this.turnos = await this.turnoservice.traerTurnosEspecialista(this.datosUsuario.id);
+    console.log(this.turnos)
   }
 
   async filtrar() {
@@ -55,4 +57,56 @@ export class EspecialistaComponent implements OnInit {
       this.error = `no se encontraron turnos relacionado a ${this.input}`
     }
   }
+
+  async cambiarEstado(estado: string) {
+    await this.turnoservice.cambiarEstado(estado, this.datosUsuario.id)
+    this.turnos = await this.turnoservice.traerTurnosEspecialista(this.datosUsuario.id);
+  }
+
+  async cambiarEstadoConResenia(id: number) {
+
+    const { value: mensaje } = await Swal.fire({
+      input: "textarea",
+      inputPlaceholder: "escribe una reseña",
+      inputAttributes: {
+        "aria-label": "Type your message here"
+      },
+      showCancelButton: true
+    });
+
+    if (mensaje) {
+      await this.turnoservice.cambiarEstadoConResenia(mensaje, this.datosUsuario.id)
+      this.turnos = await this.turnoservice.traerTurnosEspecialista(id);
+      console.log(this.turnos)
+    } else {
+      await Swal.fire({ title: "error, se necesita un comentario" });
+    }
+  }
+
+  async cambiarEstadoConRazon(estado: string, id: number) {
+
+    const { value: mensaje } = await Swal.fire({
+      input: "textarea",
+      inputPlaceholder: "escribe la razon",
+      inputAttributes: {
+        "aria-label": "Type your message here"
+      },
+      showCancelButton: true
+    });
+
+    if (mensaje) {
+      await this.turnoservice.cambiarEstadoConRazon(mensaje, this.datosUsuario.id)
+      this.turnos = await this.turnoservice.traerTurnosEspecialista(id);
+      console.log(this.turnos)
+    } else {
+      await Swal.fire({ title: "error, se necesita un comentario" });
+    }
+  }
+
+  async verResenia(id: number) {
+    let reseña = await this.turnoservice.traerResenia(id);
+    console.log(reseña)
+    await Swal.fire({ title: reseña });
+  }
+
 }
