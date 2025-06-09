@@ -1,0 +1,20 @@
+<div>
+    <div class="perfil" *ngIf="usuario">
+        <img [src]="usuario.url_perfil" class="foto">
+        <div class="info">
+            <h2>{{ usuario.nombre }} {{ usuario.apellido }}</h2>
+            <p><strong>DNI:</strong> {{ usuario.dni }}</p>
+            <p><strong>Edad:</strong> {{ usuario.edad }} años</p>
+            <p><strong>Obra social:</strong> {{ usuario.obra_social || 'No registrada' }}</p>
+            <p><strong>Especialidades:</strong> {{ usuario.especialidades || 'No registradas' }}</p>
+            <p><strong>Perfil:</strong> {{ usuario.perfil }}</p>
+        </div>
+    </div>
+
+    <button class="Btn_login" routerLink="/bienvenido">
+        <div class="sign">
+            <img src="iconos/atras.svg">
+        </div>
+        <div class="text">atras</div>
+    </button>
+</div>

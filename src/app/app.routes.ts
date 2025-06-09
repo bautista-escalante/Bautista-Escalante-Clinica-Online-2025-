@@ -16,6 +16,10 @@ export const routes: Routes = [
     loadComponent: () => import("./registro/registro.component").then(c => c.RegistroComponent)
   },
   {
+    path: 'perfil',
+    loadComponent: () => import("./perfil/perfil.component").then(c => c.PerfilComponent)
+  },
+  {
     path: 'bienvenido',
     loadComponent: () => import("./bienvenido/bienvenido.component").then(c => c.BienvenidoComponent),
     canActivate: [accesoGuard],
