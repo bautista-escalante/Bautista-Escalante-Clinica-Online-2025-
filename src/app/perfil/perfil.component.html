@@ -1,13 +1,14 @@
-<div>
+<div class="fondo">
     <div class="perfil" *ngIf="usuario">
         <img [src]="usuario.url_perfil" class="foto">
         <div class="info">
             <h2>{{ usuario.nombre }} {{ usuario.apellido }}</h2>
             <p><strong>DNI:</strong> {{ usuario.dni }}</p>
             <p><strong>Edad:</strong> {{ usuario.edad }} años</p>
-            <p><strong>Obra social:</strong> {{ usuario.obra_social || 'No registrada' }}</p>
-            <p><strong>Especialidades:</strong> {{ usuario.especialidades || 'No registradas' }}</p>
+            <p *ngIf="usuario.perfil==='paciente'"><strong>Obra social:</strong> {{ usuario.obra_social }}</p>
+            <p *ngIf="usuario.perfil==='especialista'"><strong>Especialidades:</strong> {{ usuario.especialidades }}</p>
             <p><strong>Perfil:</strong> {{ usuario.perfil }}</p>
+            <button *ngIf="usuario.perfil==='especialista'" class="btn_horarios">Mis horarios</button>
         </div>
     </div>
 

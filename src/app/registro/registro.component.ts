@@ -6,13 +6,15 @@ import { ViewChild, ElementRef, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UsuarioService } from '../servicios/usuario.service';
 import Swal from 'sweetalert2'
-
+import { RecaptchaModule, RecaptchaFormsModule } from 'ng-recaptcha';
+import { RecaptchaService } from '../servicios/recaptcha.service';
 
 @Component({
   selector: 'app-registro',
-  imports: [RouterModule, CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [RouterModule, CommonModule, FormsModule, ReactiveFormsModule, RecaptchaFormsModule, RecaptchaModule],
   templateUrl: './registro.component.html',
-  styleUrl: './registro.component.css'
+  styleUrl: './registro.component.css',
+  standalone: true,
 })
 export class RegistroComponent implements OnInit {
   formulario = new FormGroup({
@@ -51,12 +53,15 @@ export class RegistroComponent implements OnInit {
   imagenEspecialista: File | null = null;
   perfilElegido: string | null = null
   imagenesPaciente: Blob[] = [];
+  captchaValid = false;
+  captchaToken: string | null = null;
 
   constructor(
     private acceso: AccesoService,
     private supabase: SupabaseService,
     private router: Router,
-    private usuarios: UsuarioService
+    private usuarios: UsuarioService,
+    private recapcha: RecaptchaService
   ) { }
 
   ngOnInit(): void { }
@@ -91,6 +96,9 @@ export class RegistroComponent implements OnInit {
 
       throw new Error('Errores de validación:\n' + errores.join('\n'));
     }
+    if (!this.captchaToken || !this.captchaValid) {
+      throw new Error('captcha no resulto');
+    }
 
     if (this.perfilElegido === 'paciente' && this.imagenesPaciente.length < 2) {
       throw new Error('Debe subir 2 imágenes para el paciente');
@@ -107,6 +115,7 @@ export class RegistroComponent implements OnInit {
   }
 
   async crearCuenta() {
+
     try {
       const status = this.formulario.status;
       this.validarFormulario();
@@ -142,7 +151,6 @@ export class RegistroComponent implements OnInit {
       if (this.perfilElegido == "especialista") {
 
         let especialidades = this.formulario.value.especialidad!.split(',');
-        console.log(especialidades)
 
         const nombreArchivo = `${this.perfilElegido}_${this.formulario.value.nombre}`;
         const { data, error } = await this.supabase.client.storage
@@ -208,6 +216,15 @@ export class RegistroComponent implements OnInit {
 
     this.formulario.get('obraSocial')?.updateValueAndValidity();
     this.formulario.get('especialidad')?.updateValueAndValidity();
+  }
+
+  async onCaptchaResolved(token: string | null) {
+    this.captchaToken = token;
+    this.captchaValid = await this.recapcha.verificarCaptchaBackend(token);
+
+    if (!this.captchaValid) {
+      throw new Error("Captcha no válido según el servidor");
+    }
   }
 
 }

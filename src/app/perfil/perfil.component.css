@@ -1,11 +1,12 @@
 .perfil {
   display: flex;
   align-items: center;
-  gap: 20px;
-  padding: 20px;
-  border: 1px solid #ddd;
+  justify-content: center;
   border-radius: 10px;
-  background-color: #253daa;
+  background-color: #007acc;
+  padding: 20px;
+  color: white;
+  gap: 20px;
 }
 
 .foto {
@@ -18,4 +19,20 @@
 .info h2 {
   margin: 0;
   font-size: 24px;
+}
+
+.btn_horarios {
+  background-color: #029aff;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.fondo {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

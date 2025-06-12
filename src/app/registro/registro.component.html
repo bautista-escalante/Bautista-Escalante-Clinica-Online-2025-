@@ -117,10 +117,8 @@
                 </div>
             </div>
 
-            <input class="imagen" type="file" (change)="asignarArchivo($event, 'imagen1')"
-                accept="image/*">
-            <input class="imagen" type="file" (change)="asignarArchivo($event, 'imagen2')"
-                accept="image/*">
+            <input class="imagen" type="file" (change)="asignarArchivo($event, 'imagen1')" accept="image/*">
+            <input class="imagen" type="file" (change)="asignarArchivo($event, 'imagen2')" accept="image/*">
 
         </div>
 
@@ -145,10 +143,13 @@
             <strong>{{ mensajeError }}</strong>
         </div>
 
+        <re-captcha siteKey="6Ld-g10rAAAAAOchbh8bvWarS5x-W79K7YPs1WiS" (resolved)="onCaptchaResolved($event)">
+        </re-captcha>
+
         <a *ngIf="mensajeError === 'la cuenta ya existe'" routeLink="/login" class="btn">si ya tenes cuenta click
             aqui</a>
 
-        <button class="Registrarse-btn" (click)="crearCuenta()">Registrarse</button>
+        <button class="Registrarse-btn" [disabled]="!captchaValid" (click)="crearCuenta()">Registrarse</button>
     </form>
 
 </div>
