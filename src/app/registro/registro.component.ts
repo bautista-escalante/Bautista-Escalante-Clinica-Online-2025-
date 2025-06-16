@@ -153,7 +153,7 @@ export class RegistroComponent implements OnInit {
         let especialidades = this.formulario.value.especialidad!.split(',');
 
         const nombreArchivo = `${this.perfilElegido}_${this.formulario.value.nombre}`;
-        const { data, error } = await this.supabase.client.storage
+        const { error } = await this.supabase.client.storage
           .from("usuarios")
           .upload(nombreArchivo, this.imagenEspecialista!);
 
@@ -167,7 +167,7 @@ export class RegistroComponent implements OnInit {
               parseInt(this.formulario.value.edad!),
               this.formulario.value.email!,
               URL!, null,
-              especialidades[i],
+              especialidades[i].trim(),
               parseInt(this.formulario.value.dni!),
               this.perfilElegido
             )

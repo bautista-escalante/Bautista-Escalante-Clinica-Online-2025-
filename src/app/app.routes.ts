@@ -4,6 +4,7 @@ import { BienvenidoComponent } from './bienvenido/bienvenido.component';
 import { RegistroComponent } from './registro/registro.component';
 import { accesoGuard } from './guards/acceso.guard';
 import { adminGuard } from './guards/admin.guard';
+import { rolGuard } from './guards/rol.guard';
 
 export const routes: Routes = [
 
@@ -17,7 +18,8 @@ export const routes: Routes = [
   },
   {
     path: 'perfil',
-    loadComponent: () => import("./perfil/perfil.component").then(c => c.PerfilComponent)
+    loadComponent: () => import("./perfil/perfil.component").then(c => c.PerfilComponent),
+    canActivate: [accesoGuard],
   },
   {
     path: 'bienvenido',
@@ -35,14 +37,21 @@ export const routes: Routes = [
       {
         path: 'especialista',
         loadComponent: () => import("./especialista/especialista.component").then(c => c.EspecialistaComponent),
+        children:[
+          
+        ]
       },
     ]
   },
-
   {
     path: 'seleccionUsuario',
     loadComponent: () => import("./seccion-usuario/seccion-usuario.component").then(c => c.SeccionUsuarioComponent),
     canActivate: [accesoGuard, adminGuard]
+  },
+  {
+    path: 'solicitarTurno',
+    loadComponent: () => import("./solicitar-turno/solicitar-turno.component").then(c => c.SolicitarTurnoComponent)
+    ,canActivate: [accesoGuard, rolGuard]
   },
   {
     path: '**',

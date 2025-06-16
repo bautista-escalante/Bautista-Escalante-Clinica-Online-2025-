@@ -23,6 +23,18 @@ export class AccesoService {
     return data.user?.email;
   }
 
+  async obtenerPerfil() {
+    return this.verificarAcceso().then(async email => {
+      const { data, error } = await this.supabase.client
+        .from('usuarios')
+        .select('*')
+        .eq('mail', email)
+
+      if (error) return error
+      return data[0].perfil;
+    });
+  }
+
   async salir() {
     const { error } = await this.supabase.client.auth.signOut();
 
@@ -30,13 +42,13 @@ export class AccesoService {
     return !(!!error);
   }
 
-  async esAdmin(correo: string) {
+  async esPefil(correo: string, perfil: string) {
     const { data } = await this.supabase.client
       .from('usuarios')
       .select('*')
       .eq('mail', correo)
-      .eq("perfil", "admin");
-      
+      .eq("perfil", perfil);
+
     return !!data;
   }
 }

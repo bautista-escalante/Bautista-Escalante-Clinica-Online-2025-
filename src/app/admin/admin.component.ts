@@ -22,6 +22,7 @@ export class AdminComponent implements OnInit {
   correo: any = "";
   fotoPerfil: any = "";
   cantidadNoitificaciones: any = ""
+  agregar:boolean = false
 
   formulario = new FormGroup({
     nombre: new FormControl("", {
@@ -135,5 +136,8 @@ export class AdminComponent implements OnInit {
     }
   }
 
+  agregarAdmin() {
+    this.agregar= !this.agregar;
+  }
 
 }

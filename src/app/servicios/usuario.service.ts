@@ -109,4 +109,23 @@ export class UsuarioService {
 
         return fotos;
     }
+
+    async traerPacientes() {
+        const { data, error } = await this.supabase.client
+            .from('usuarios')
+            .select('*')
+            .eq("habilitado", true)
+            .eq("cancelada", false)
+            .eq("perfil", "paciente");
+
+        if (error) throw error;
+
+        const map = new Map();
+        for (const u of data) {
+            if (!map.has(u.mail)) {
+                map.set(u.mail, u); // usa mail como clave única
+            }
+        }
+        return Array.from(map.values());
+    }
 }

@@ -1,4 +1,4 @@
-<div *ngIf="mostrarTurnos">
+<div>
   <section class="tablaTurnos">
     <h2>Mis turnos</h2>
 
@@ -11,7 +11,6 @@
     <div *ngIf="!!error" class="mensaje-error">
       <strong>{{error}}</strong>
     </div>
-
 
     <table class="tabla">
       <thead>
@@ -42,38 +41,6 @@
       </tbody>
     </table>
 
-    <button (click)="verFormulario()">Solicitar turno</button>
+    <button routerLink="/solicitarTurno">Solicitar turno</button>
   </section>
-</div>
-
-<div *ngIf="!mostrarTurnos">
-
-  <div class="especialidades" *ngIf="!especialidad">
-    <div *ngFor="let especialidad of especialidades">
-      <button class="btn_especialidades" (click)="definirEspecialidad(especialidad)">
-        <img [src]="`especialidades/${especialidad}.png`" (error)="cambiarFoto($event)" class="foto_especialidad">
-      </button>
-    </div>
-  </div>
-
-
-  <div *ngIf="especialistas.length > 0" class="especialistas-container">
-    <div *ngFor="let especialista of especialistas">
-      <button class="btn_especialistas" (click)="definirDoctor(especialista.id)">
-        <div>{{ especialista.apellido }} {{ especialista.nombre }}</div>
-        <img [src]="`${especialista.url_perfil}`" alt="Foto del especialista">
-      </button>
-    </div>
-  </div>
-
-  <div *ngIf="horarios.length > 0" class="horarios">
-    <!-- defirnir horarios -->
-    <div *ngFor="let horario of horarios">
-      <button (click)="definirHorario(horario.horario, horario.id)" class="btn_horario">
-        <div>{{horario.horario | date:"dd/mm hh:mm"}}</div>
-      </button>
-    </div>
-  </div>
-
-  <button (click)="verFormulario()">volver atras</button>
 </div>

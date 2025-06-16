@@ -8,7 +8,7 @@ export const adminGuard: CanActivateFn = async (route, state) => {
   const router = inject(Router);
 
   let usuario = await acceso.verificarAcceso()
-  let admin = await acceso.esAdmin(usuario!)
+  let admin = await acceso.esPefil(usuario!, "admin")
   
   if(!(admin)){
     router.navigate(['/bienvenido']);

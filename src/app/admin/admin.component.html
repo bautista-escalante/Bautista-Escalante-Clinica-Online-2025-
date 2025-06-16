@@ -3,102 +3,118 @@
     <span *ngIf="cantidadNoitificaciones !== 0" class="badge">{{ cantidadNoitificaciones }}</span>
 </button>
 
-<form [formGroup]="formulario">
+<div *ngIf="agregar">
+    <form [formGroup]="formulario">
 
-    <div class="group">
-        <input required type="text" class="input" formControlName="nombre">
-        <span class="highlight"></span>
-        <span class="bar"></span>
-        <label>nombre</label>
-        <div *ngIf="formulario.controls['nombre'].touched && formulario.controls['nombre'].hasError('required')"
-            class="error">
-            <P class="mensaje-error">Nombre es obligatorio</P>
+        <div class="group">
+            <input required type="text" class="input" formControlName="nombre">
+            <span class="highlight"></span>
+            <span class="bar"></span>
+            <label>nombre</label>
+            <div *ngIf="formulario.controls['nombre'].touched && formulario.controls['nombre'].hasError('required')"
+                class="error">
+                <P class="mensaje-error">Nombre es obligatorio</P>
 
+            </div>
         </div>
-    </div>
 
-    <div class="group">
-        <input required type="text" class="input" formControlName="apellido">
-        <span class="highlight"></span>
-        <span class="bar"></span>
-        <label>apellido</label>
-        <div *ngIf="formulario.controls['apellido'].touched && formulario.controls['apellido'].hasError('required')"
-            class="error">
-            <P class="mensaje-error">Apellido es obligatoria</P>
+        <div class="group">
+            <input required type="text" class="input" formControlName="apellido">
+            <span class="highlight"></span>
+            <span class="bar"></span>
+            <label>apellido</label>
+            <div *ngIf="formulario.controls['apellido'].touched && formulario.controls['apellido'].hasError('required')"
+                class="error">
+                <P class="mensaje-error">Apellido es obligatoria</P>
+            </div>
         </div>
-    </div>
 
-    <div class="group">
-        <input required type="text" class="input" formControlName="edad">
-        <span class="highlight"></span>
-        <span class="bar"></span>
-        <label>edad</label>
-        <div *ngIf="formulario.controls['edad'].touched && formulario.controls['edad'].hasError('required')"
-            class="error">
-            <P class="mensaje-error">Edad es obligatoria</P>
+        <div class="group">
+            <input required type="text" class="input" formControlName="edad">
+            <span class="highlight"></span>
+            <span class="bar"></span>
+            <label>edad</label>
+            <div *ngIf="formulario.controls['edad'].touched && formulario.controls['edad'].hasError('required')"
+                class="error">
+                <P class="mensaje-error">Edad es obligatoria</P>
+            </div>
+            <div *ngIf="formulario.controls['edad'].touched && (formulario.controls['edad'].hasError('min') || formulario.controls['edad'].hasError('max'))"
+                class="error">
+                <P class="mensaje-error">Edad debe estar entre 1 y 100</P>
+            </div>
         </div>
-        <div *ngIf="formulario.controls['edad'].touched && (formulario.controls['edad'].hasError('min') || formulario.controls['edad'].hasError('max'))"
-            class="error">
-            <P class="mensaje-error">Edad debe estar entre 1 y 100</P>
-        </div>
-    </div>
 
-    <div class="group">
-        <input required type="text" class="input" formControlName="dni">
-        <span class="highlight"></span>
-        <span class="bar"></span>
-        <label>DNI</label>
-        <div *ngIf="formulario.controls['dni'].touched && formulario.controls['dni'].hasError('required')"
-            class="error">
-            <P class="mensaje-error">DNI es obligatoria</P>
-        </div>
-        <div *ngIf="formulario.controls['dni'].touched && formulario.controls['dni'].hasError('minlength') || 
+        <div class="group">
+            <input required type="text" class="input" formControlName="dni">
+            <span class="highlight"></span>
+            <span class="bar"></span>
+            <label>DNI</label>
+            <div *ngIf="formulario.controls['dni'].touched && formulario.controls['dni'].hasError('required')"
+                class="error">
+                <P class="mensaje-error">DNI es obligatoria</P>
+            </div>
+            <div *ngIf="formulario.controls['dni'].touched && formulario.controls['dni'].hasError('minlength') || 
             formulario.controls['dni'].hasError('maxLength')" class="error">
-            <P class="mensaje-error">DNI no valido</P>
+                <P class="mensaje-error">DNI no valido</P>
+            </div>
+            <div *ngIf="formulario.controls['dni'].touched && formulario.controls['dni'].hasError('pattern')"
+                class="error">
+                <P class="mensaje-error">debe ser numerico</P>
+            </div>
         </div>
-        <div *ngIf="formulario.controls['dni'].touched && formulario.controls['dni'].hasError('pattern')" class="error">
-            <P class="mensaje-error">debe ser numerico</P>
-        </div>
-    </div>
 
-    <div class="group">
-        <input required type="text" class="input" formControlName="email">
-        <span class="highlight"></span>
-        <span class="bar"></span>
-        <label>correo</label>
-        <div *ngIf="formulario.controls['email'].touched && formulario.controls['email'].hasError('required')"
+        <div class="group">
+            <input required type="text" class="input" formControlName="email">
+            <span class="highlight"></span>
+            <span class="bar"></span>
+            <label>correo</label>
+            <div *ngIf="formulario.controls['email'].touched && formulario.controls['email'].hasError('required')"
+                class="error">
+                <P class="mensaje-error">correo es obligatoria</P>
+            </div>
+            <div *ngIf="formulario.controls['email'].touched && formulario.controls['email'].hasError('email')"
+                class="error">
+                <P class="mensaje-error">Correo no válido</P>
+            </div>
+        </div>
+
+        <div class="group">
+            <input required type="password" class="input" formControlName="clave">
+            <span class="highlight"></span>
+            <span class="bar"></span>
+            <label>clave</label>
+            <div *ngIf="formulario.controls['clave'].touched && formulario.controls['clave'].hasError('required')"
+                class="error">
+                <P class="mensaje-error">Clave es obligatoria</P>
+            </div>
+            <div *ngIf="formulario.controls['clave'].touched && formulario.controls['clave'].hasError('minlength')"
+                class="error">
+                <P class="mensaje-error">Clave debe tener al menos 6 caracteres</P>
+
+            </div>
+        </div>
+
+        <input formControlName="imagenes" class="imagen" type="file" (change)="guardarArchivo($event)" accept="image/*">
+        <div *ngIf="formulario.controls['imagenes'].touched && formulario.controls['imagenes'].hasError('required')"
             class="error">
-            <P class="mensaje-error">correo es obligatoria</P>
+            <p class="mensaje-error">las imagenes son obligatoria</p>
         </div>
-        <div *ngIf="formulario.controls['email'].touched && formulario.controls['email'].hasError('email')"
-            class="error">
-            <P class="mensaje-error">Correo no válido</P>
-        </div>
-    </div>
 
-    <div class="group">
-        <input required type="password" class="input" formControlName="clave">
-        <span class="highlight"></span>
-        <span class="bar"></span>
-        <label>clave</label>
-        <div *ngIf="formulario.controls['clave'].touched && formulario.controls['clave'].hasError('required')"
-            class="error">
-            <P class="mensaje-error">Clave es obligatoria</P>
-        </div>
-        <div *ngIf="formulario.controls['clave'].touched && formulario.controls['clave'].hasError('minlength')"
-            class="error">
-            <P class="mensaje-error">Clave debe tener al menos 6 caracteres</P>
+        <button (click)="crearCuenta()">
+            registrar nuevo admin
+        </button>
+        <button (click)="agregarAdmin()">
+            volve atras
+        </button>
+    </form>
+</div>
 
-        </div>
-    </div>
-
-    <input formControlName="imagenes" class="imagen" type="file" (change)="guardarArchivo($event)" accept="image/*">
-    <div *ngIf="formulario.controls['imagenes'].touched && formulario.controls['imagenes'].hasError('required')"
-        class="error">
-        <p class="mensaje-error">las imagenes son obligatoria</p>
-    </div>
-
-    <button (click)="crearCuenta()">
-        registrar nuevo admin
+<div class="btn_admin">
+    <button (click)="agregarAdmin()">
+        agregar un nuevo admin
     </button>
-</form>
+
+    <button routerLink="/solicitarTurno">
+        solicitar un turno
+    </button>
+</div>

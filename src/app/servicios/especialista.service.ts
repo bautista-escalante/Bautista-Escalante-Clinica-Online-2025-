@@ -33,7 +33,8 @@ export class EspecialistaService {
     const { data, error } = await this.supabase.client
       .from("usuarios")
       .select(`especialidades`)
-      .not("especialidades", "is", null);
+      .not("especialidades", "is", null)
+      .eq("habilitado", true);
 
     if (error) throw error;
     const especialidades = data

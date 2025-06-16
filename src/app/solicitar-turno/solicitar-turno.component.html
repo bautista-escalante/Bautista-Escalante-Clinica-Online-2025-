@@ -1,0 +1,46 @@
+<div class="sistemaTurnos">
+
+    <div *ngIf="esAdmin">
+
+        <div *ngIf="pacientes.length > 0" class="pacientes-container">
+            <div *ngFor="let paciente of pacientes">
+                <button (click)="elegirPaciente(paciente.id)" class="btn_pacientes">
+                    <div>{{ paciente.apellido }} {{ paciente.nombre }}</div>
+                    <img [src]="paciente.url_perfil" class="foto_paciente">
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="!esAdmin">
+        <div class="especialidades" *ngIf="!especialidad">
+            <div *ngFor="let especialidad of especialidades">
+                <button class="btn_especialidades" (click)="definirEspecialidad(especialidad)">
+                    <img [src]="`especialidades/${especialidad}.png`" (error)="cambiarFoto($event)"
+                        class="foto_especialidad">
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="especialistas.length > 0" class="especialistas-container">
+        <div *ngFor="let especialista of especialistas">
+            <button class="btn_especialistas" (click)="definirDoctor(especialista.id)">
+                <div>{{ especialista.apellido }} {{ especialista.nombre }}</div>
+                <img [src]="`${especialista.url_perfil}`">
+            </button>
+        </div>
+    </div>
+
+    <div *ngIf="horarios.length > 0" class="horarios">
+        <!-- defirnir horarios -->
+        <div *ngFor="let horario of horarios">
+            <button (click)="definirHorario(horario.horario, horario.id)" class="btn_horario">
+                <div>{{horario.horario | date:"dd/mm hh:mm"}}</div>
+            </button>
+        </div>
+    </div>
+
+    <button [routerLink]="['/bienvenido', perfil]">Volver atrás</button>
+
+</div>
