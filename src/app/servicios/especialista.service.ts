@@ -54,6 +54,18 @@ export class EspecialistaService {
       .map((item: any) => item.especialidades?.trim())
       .filter(Boolean);
 
-    return especialidades.join(", ");
+    return especialidades.join(",");
+  }
+
+  async traerPacientesAtendidos(idEspecialista: number) {
+    console.log(idEspecialista)
+    const { data, error } = await this.supabase.client
+      .from("turnos")
+      .select(`fecha, resenia, id_paciente(nombre, apellido, edad, obra_social, url_perfil)`)
+      .eq("id_especialista", idEspecialista)
+      .eq("estado", "realizado");
+
+    if (error) throw error;
+    return data;
   }
 }

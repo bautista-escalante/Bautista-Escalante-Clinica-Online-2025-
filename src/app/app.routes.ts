@@ -5,6 +5,7 @@ import { RegistroComponent } from './registro/registro.component';
 import { accesoGuard } from './guards/acceso.guard';
 import { adminGuard } from './guards/admin.guard';
 import { rolGuard } from './guards/rol.guard';
+import { especialistaGuard } from './guards/especialista.guard';
 
 export const routes: Routes = [
 
@@ -37,16 +38,18 @@ export const routes: Routes = [
       {
         path: 'especialista',
         loadComponent: () => import("./especialista/especialista.component").then(c => c.EspecialistaComponent),
-        children:[
-          
-        ]
       },
     ]
   },
   {
+    path: 'seccionPaciente',
+    loadComponent: () => import("./seccion-paciente/seccion-paciente.component").then(c => c.SeccionPacienteComponent),
+    canActivate: [especialistaGuard, accesoGuard]
+  },
+  {
     path: 'seleccionUsuario',
     loadComponent: () => import("./seccion-usuario/seccion-usuario.component").then(c => c.SeccionUsuarioComponent),
-    canActivate: [accesoGuard, adminGuard]
+    canActivate: [adminGuard, accesoGuard]
   },
   {
     path: 'solicitarTurno',

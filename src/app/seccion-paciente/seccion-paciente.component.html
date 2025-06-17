@@ -1,0 +1,23 @@
+<div *ngIf="pacientes.length !== 0" class="cards">
+    <div *ngFor="let paciente of pacientes" class="card">
+        <img [src]="paciente.id_paciente.url_perfil" class="FotoPerfil"/>
+
+        <div class="datos_paciente">
+        <h3>{{ paciente.id_paciente.apellido }}, {{ paciente.id_paciente.nombre }}</h3>
+        <p><strong>Edad:</strong> {{ paciente.id_paciente.edad }} años</p>
+        <p><strong>Obra Social:</strong> {{ paciente.id_paciente.obra_social }}</p>
+        <p><strong>Fecha de atención:</strong> {{ paciente.fecha | date:'dd/MM/yyyy HH:mm' }}</p>
+        <p><strong>Reseña médica:</strong> {{ paciente.resenia }}</p>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="pacientes.length === 0">
+    <h2 style="color: green;">
+        No hay pacientes atendidos por {{ datosUsuario.apellido }} {{ datosUsuario.nombre }}
+    </h2>
+</div>
+
+<div class="btn_atras">
+    <button routerLink="/bienvenido">volver atras</button>
+</div>

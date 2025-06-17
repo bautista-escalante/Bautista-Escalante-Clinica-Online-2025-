@@ -59,3 +59,32 @@
   flex-direction: row;
   gap: 10px;
 }
+
+.btn_paciente {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  cursor: pointer;
+  position: fixed;
+  top: 20px;
+  right: 20px;
+}
+
+.btn_paciente img{
+  position: fixed;
+  top: 40px;
+  right: 45px;
+  width: 50px;
+  height: 50px;
+}
+
+.punto {
+  display: flex;
+  background-color: green;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  position: fixed;
+  top: 55px;
+  right: 55px;
+}

@@ -1,0 +1,26 @@
+.card {
+    background-color: #007acc;
+    margin: 20px;
+    border-radius: 5%;
+    display: flex;
+    flex-direction: row;
+}
+
+.FotoPerfil {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    margin: 10px;
+}
+
+.datosPaciente {
+    display: flex;
+    text-align: left;
+}
+
+.cards{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}

@@ -5,10 +5,18 @@
             <h2>{{ usuario.nombre }} {{ usuario.apellido }}</h2>
             <p><strong>DNI:</strong> {{ usuario.dni }}</p>
             <p><strong>Edad:</strong> {{ usuario.edad }} años</p>
-            <p *ngIf="usuario.perfil==='paciente'"><strong>Obra social:</strong> {{ usuario.obra_social }}</p>
-            <p *ngIf="usuario.perfil==='especialista'"><strong>Especialidades:</strong> {{ usuario.especialidades }}</p>
             <p><strong>Perfil:</strong> {{ usuario.perfil }}</p>
-            <button *ngIf="usuario.perfil==='especialista'" class="btn_horarios">Mis horarios</button>
+            
+            <div *ngIf="usuario.perfil==='paciente'">
+                <p><strong>Obra social:</strong> {{ usuario.obra_social }}</p>
+                <button>descargar historia clinica</button>
+            </div>
+           
+            <div *ngIf="usuario.perfil==='especialista'">
+            <p ><strong>Especialidades:</strong> {{ usuario.especialidades }}</p>
+            <button class="btn_horarios">Mis horarios</button>
+           </div>
+
         </div>
     </div>
 

@@ -7,10 +7,11 @@ import { TurnoService } from '../servicios/turno.service';
 import { UsuarioService } from '../servicios/usuario.service';
 import { AccesoService } from '../servicios/acceso.service';
 import Swal from 'sweetalert2';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-especialista',
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, RouterLink],
   templateUrl: './especialista.component.html',
   styleUrl: './especialista.component.css'
 })

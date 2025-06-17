@@ -42,7 +42,6 @@ export class SolicitarTurnoComponent implements OnInit {
     if (this.perfil == "admin") {
       this.esAdmin = true;
       this.pacientes = await this.usuario.traerPacientes();
-      console.log(this.pacientes)
     }
     this.especialistaService.traerEspecialidadesExistentes().then(especialidades => {
       this.especialidades = Array.from(new Set(especialidades))
@@ -52,7 +51,6 @@ export class SolicitarTurnoComponent implements OnInit {
   async definirEspecialidad(especialidad: string) {
     this.especialidad = especialidad;
     this.especialistas = await this.especialistaService.traerEspecialistas(especialidad);
-    console.log(this.especialidad, this.especialistas)
   }
 
   cambiarFoto(evento: any) {
@@ -88,7 +86,6 @@ export class SolicitarTurnoComponent implements OnInit {
   }
 
   async elegirPaciente(idPaciente: number) {
-    console.log(idPaciente)
     this.esAdmin = false;
     this.paciente = idPaciente;
   }
