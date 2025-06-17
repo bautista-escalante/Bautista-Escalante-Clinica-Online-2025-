@@ -1,23 +1,51 @@
-<div *ngIf="pacientes.length !== 0" class="cards">
-    <div *ngFor="let paciente of pacientes" class="card">
-        <img [src]="paciente.id_paciente.url_perfil" class="FotoPerfil"/>
+<div *ngIf="perfil === 'especialista'">
+    <div *ngIf="pacientes.length !== 0" class="cards">
+        <div *ngFor="let paciente of pacientes" class="card">
+            <img [src]="paciente.id_paciente.url_perfil" class="FotoPerfil" />
 
-        <div class="datos_paciente">
-        <h3>{{ paciente.id_paciente.apellido }}, {{ paciente.id_paciente.nombre }}</h3>
-        <p><strong>Edad:</strong> {{ paciente.id_paciente.edad }} años</p>
-        <p><strong>Obra Social:</strong> {{ paciente.id_paciente.obra_social }}</p>
-        <p><strong>Fecha de atención:</strong> {{ paciente.fecha | date:'dd/MM/yyyy HH:mm' }}</p>
-        <p><strong>Reseña médica:</strong> {{ paciente.resenia }}</p>
+            <div class="datos_paciente">
+                <h3>{{ paciente.id_paciente.apellido }}, {{ paciente.id_paciente.nombre }}</h3>
+                <p><strong>Edad:</strong> {{ paciente.id_paciente.edad }} años</p>
+                <p><strong>Obra Social:</strong> {{ paciente.id_paciente.obra_social }}</p>
+                <p><strong>Fecha de atención:</strong> {{ paciente.fecha | date:'dd/MM/yyyy HH:mm' }}</p>
+                <p><strong>Reseña médica:</strong> {{ paciente.resenia }}</p>
+            </div>
         </div>
+    </div>
+
+    <div *ngIf="pacientes.length === 0">
+        <h2 style="color: green;">
+            No hay pacientes atendidos por {{ datosUsuario.apellido }} {{ datosUsuario.nombre }}
+        </h2>
     </div>
 </div>
 
-<div *ngIf="pacientes.length === 0">
-    <h2 style="color: green;">
-        No hay pacientes atendidos por {{ datosUsuario.apellido }} {{ datosUsuario.nombre }}
-    </h2>
-</div>
+<div class="botones">
+    <div *ngIf="perfil === 'admin'">
+        <table border="1px" id="data">
+            <thead>
+                <th>apellido</th>
+                <th>nombre</th>
+                <th>edad</th>
+                <th>obra social</th>
+                <th>foto perfil</th>
+            </thead>
+            <tbody>
+                <tr *ngFor="let paciente of pacientes">
+                    <td>{{ paciente.apellido }}</td>
+                    <td>{{ paciente.nombre }}</td>
+                    <td>{{ paciente.edad }}</td>
+                    <td>{{ paciente.obra_social }}</td>
+                    <td><img [src]="paciente.url_perfil" class="foto" /></td>
+                </tr>
+            </tbody>
 
-<div class="btn_atras">
-    <button routerLink="/bienvenido">volver atras</button>
+        </table>
+    </div>
+    <div *ngIf="perfil === 'admin'" class="btn_descargar" (click)="descargarExcel()">
+        <img src="iconos/descargar.svg" class="foto">
+        <strong> descargar exel </strong>
+    </div>
+
+    <button routerLink="/bienvenido"><strong>volver atras</strong></button>
 </div>
