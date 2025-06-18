@@ -1,1 +1,92 @@
-<p>turnos works!</p>
+<div>
+
+    <section class="tablaTurnos">
+        <h2>Mis turnos</h2>
+
+        <div class="filtro">
+
+            <input type="text" id="filtro" [(ngModel)]="input" placeholder="Buscar por Especialidad o Especialista">
+            <button *ngIf="perfil === 'paciente' || perfil === 'admin'" (click)="filtrarEspecialista()"
+                class="btn_filtro">
+                <img src="iconos/buscar.svg" class="img_filtro">
+            </button>
+
+            <button *ngIf="perfil === 'especialista'" (click)="filtrarPaciente()" class="btn_filtro">
+                <img src="iconos/buscar.svg" class="img_filtro">
+            </button>
+        </div>
+
+        <div *ngIf="!!error" class="mensaje-error">
+            <strong>{{error}}</strong>
+        </div>
+
+        <table class="tabla">
+            <thead>
+                <tr>
+                    <th>Fecha y Hora</th>
+                    <th>Especialidad</th>
+                    <th *ngIf="perfil === 'especialista' || perfil ==='admin'">paciente</th>
+                    <th *ngIf="perfil === 'paciente' || perfil === 'admin'">especialista</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let turno of turnos">
+                    <td>{{ turno.fecha | date:"dd/MM/yyyy hh:mm" }}</td>
+                    <td>{{ turno.id_especialista.especialidades }}</td>
+                    <td *ngIf="perfil === 'especialista'|| perfil === 'admin'">{{ turno.id_paciente.apellido }}
+                        {{turno.id_paciente.nombre}}</td>
+                    <td *ngIf="perfil === 'paciente'|| perfil === 'admin'">{{ turno.id_especialista.apellido }}
+                        {{turno.id_especialista.nombre}}</td>
+                    <td>{{ turno.estado }}</td>
+                    <td>
+                        <div class="acciones" *ngIf="perfil === 'especialista'">
+
+                            <button *ngIf="turno.estado !== 'realizado'" (click)="cambiarEstado('aceptado',turno.id)"
+                                class="btn_accion">
+                                Aceptar turno
+                            </button>
+                            <button *ngIf="turno.estado === 'aceptado'" (click)="cambiarEstado('cancelado', turno.id)"
+                                class="btn_accion">
+                                Cancelar Turno
+                            </button>
+                            <button *ngIf="turno.estado === 'a confirmar'"
+                                (click)="cambiarEstadoConRazon('rechazado', turno.id)" class="btn_accion">rechazar
+                                Turno
+                            </button>
+                            <button *ngIf="turno.estado === 'aceptado'" (click)="cambiarEstadoConResenia( turno.id)"
+                                class="btn_accion">
+                                Finalizar Turno
+                            </button>
+                            <button *ngIf="!!turno.resenia" class="btn_accion" (click)="verResenia(turno.id)">
+                                Ver Reseña
+                            </button>
+                        </div>
+                        <div class="acciones" *ngIf="perfil === 'paciente'">
+
+                            <button *ngIf="turno.estado !== 'realizado'" (click)="cancelarTurno(turno.id)"
+                                class="btn_accion">Cancelar Turno</button>
+                            <button *ngIf="!!turno.resenia" (click)="verResenia(turno.id)" class="btn_accion">Ver
+                                Reseña</button>
+                            <button *ngIf="turno.estado === 'realizado'" class="btn_accion">Completar Encuesta</button>
+                            <button *ngIf="turno.estado === 'realizado'" (click)="Calificar(turno.id)"
+                                class="btn_accion">Calificar Atencion</button>
+                        </div>
+                        <div class="acciones" *ngIf="perfil === 'admin'">
+                            <button *ngIf="turno.estado !== 'realizado'" (click)="cancelarTurno(turno.id)"
+                                class="btn_accion">Cancelar Turno</button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <button class="Btn_login" routerLink="/bienvenido">
+        <div class="sign">
+            <img src="iconos/atras.svg">
+        </div>
+        <div class="text">atras</div>
+    </button>
+</div>

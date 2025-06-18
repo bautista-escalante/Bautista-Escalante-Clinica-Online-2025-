@@ -79,7 +79,7 @@ export class SolicitarTurnoComponent implements OnInit {
       draggable: true
     });
 
-    this.turnos = await this.turnoservice.traerTurnos(this.datosUsuario.id);
+    this.turnos = await this.turnoservice.traerTurnosPaciente(this.datosUsuario.id);
     this.doctor = "";
     this.mostrarTurnos = true;
     this.especialistas.length = 0;

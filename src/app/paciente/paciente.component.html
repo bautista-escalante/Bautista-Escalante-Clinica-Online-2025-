@@ -1,46 +1,7 @@
-<div>
-  <section class="tablaTurnos">
-    <h2>Mis turnos</h2>
+<div class="btn_paciente">
 
-    <div class="filtro">
-      <input type="text" id="filtro" [(ngModel)]="input" placeholder="Buscar por Especialidad o Especialista">
-      <button (click)="filtar()" class="btn_filtro">
-        <img src="iconos/buscar.svg" class="img_filtro">
-      </button>
-    </div>
-    <div *ngIf="!!error" class="mensaje-error">
-      <strong>{{error}}</strong>
-    </div>
+  <button routerLink="/misTurnos"> ver mis turnos</button>
 
-    <table class="tabla">
-      <thead>
-        <tr>
-          <th>Fecha y Hora</th>
-          <th>Especialidad</th>
-          <th>Especialista</th>
-          <th>Estado</th>
-          <th>Acciones</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let turno of turnos">
-          <td>{{ turno.fecha | date:"dd/MM/yyyy hh:mm" }}</td>
-          <td>{{ turno.id_especialista.especialidades }}</td>
-          <td>Dr. {{ turno.id_especialista.apellido }} {{turno.id_especialista.nombre}}</td>
-
-          <td>{{ turno.estado }}</td>
-          <td>
-            <div class="acciones">
-              <button *ngIf="turno.estado !== 'realizado'" (click)="cancelarTurno(turno.id)"  class="btn_accion">Cancelar Turno</button>
-              <button *ngIf="!!turno.resenia" (click)="verResenia(turno.id)" class="btn_accion">Ver Reseña</button>
-              <button *ngIf="turno.estado === 'realizado'"  class="btn_accion">Completar Encuesta</button>
-            <button *ngIf="turno.estado === 'realizado'" (click)="Calificar(turno.id)" class="btn_accion">Calificar Atencion</button>
-          </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
-    <button routerLink="/solicitarTurno">Solicitar turno</button>
-  </section>
+  <button routerLink="/solicitarTurno">Solicitar turno</button>
+  
 </div>

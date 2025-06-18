@@ -19,7 +19,7 @@ export class TurnoService {
     return data[0].resenia;
   }
 
-  async traerTurnos(id: number) {
+  async traerTurnosPaciente(id: number) {
     const { data, error } = await this.supabase.client
       .from("turnos")
       .select(`*, id_especialista(apellido, nombre, especialidades)`)
@@ -28,7 +28,15 @@ export class TurnoService {
     if (error) throw error;
     return data;
   }
-
+  
+  async traerTurnos() {
+    const { data, error } = await this.supabase.client
+      .from("turnos")
+      .select(`*, id_especialista(apellido, nombre, especialidades), id_paciente(nombre, apellido)`)
+      
+    if (error) throw error;
+    return data;
+  }
   async traerTurnosEspecialista(id: number) {
     const { data, error } = await this.supabase.client
       .from("turnos")

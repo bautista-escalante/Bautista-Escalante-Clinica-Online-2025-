@@ -57,6 +57,16 @@ export const routes: Routes = [
     ,canActivate: [accesoGuard, rolGuard]
   },
   {
+    path: 'historiaClinica',
+    loadComponent: () => import("./historia-clinica/historia-clinica.component").then(c => c.HistoriaClinicaComponent)
+    ,canActivate: [accesoGuard]
+  },
+  {
+    path: 'misTurnos',
+    loadComponent: () => import("./turnos/turnos.component").then(c => c.TurnosComponent)
+    ,canActivate: [accesoGuard]
+  },
+  {
     path: '**',
     redirectTo: 'login',
     pathMatch: 'full'

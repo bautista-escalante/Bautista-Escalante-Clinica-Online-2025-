@@ -35,7 +35,7 @@ body {
 }
 
 .mensaje-error {
-    color: #DC3545 ;
+    color: #DC3545;
     text-align: center;
     margin-top: 10px;
     font-weight: bold;
@@ -170,7 +170,7 @@ button {
     margin-top: 10px
 }
 
-.input{
+.input {
     color: black;
 }
 
@@ -248,8 +248,9 @@ button {
     transform: translate(2px, 2px)
 }
 
-html, body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
+html,
+body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
 }

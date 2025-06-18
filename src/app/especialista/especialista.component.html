@@ -1,47 +1,8 @@
-<div>
+<div class="fondo">
 
-    <section class="tablaTurnos">
-        <h2>Mis turnos</h2>
-
-        <div class="filtro">
-            <input type="text" id="filtro" [(ngModel)]="input" placeholder="Buscar por Especialidad o Especialista">
-            <button (click)="filtrar()" class="btn_filtro">
-                <img src="iconos/buscar.svg" class="img_filtro">
-            </button>
-        </div>
-        <div *ngIf="!!error" class="mensaje-error">
-            <strong>{{error}}</strong>
-        </div>
-
-        <table class="tabla">
-            <thead>
-                <tr>
-                    <th>Fecha y Hora</th>
-                    <th>Especialidad</th>
-                    <th>paciente</th>
-                    <th>Estado</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let turno of turnos">
-                    <td>{{ turno.fecha | date:"dd/MM/yyyy hh:mm" }}</td>
-                    <td>{{ turno.id_especialista.especialidades }}</td>
-                    <td>{{ turno.id_paciente.apellido }} {{turno.id_paciente.nombre}}</td>
-                    <td>{{ turno.estado }}</td>
-                    <td>
-                        <div class="acciones">
-                            <button *ngIf="turno.estado !== 'realizado'" (click)="cambiarEstado('aceptado')" class="btn_accion">Aceptar turno</button>
-                            <button *ngIf="turno.estado === 'aceptado'" (click)="cambiarEstado('cancelado')" class="btn_accion">Cancelar Turno</button>
-                            <button *ngIf="turno.estado === 'a confirmar'" (click)="cambiarEstadoConRazon('rechazado', turno.id)" class="btn_accion">rechazar Turno</button>
-                            <button *ngIf="turno.estado === 'aceptado'" (click)="cambiarEstadoConResenia( turno.id)" class="btn_accion">Finalizar Turno</button>
-                            <button *ngIf="!!turno.resenia" class="btn_accion" (click)="verResenia(turno.id)">Ver Reseña</button>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </section>
+    <button routerLink="/misTurnos">
+        mis turnos
+    </button>
 
     <button routerLink="/seccionPaciente" class="btn_paciente">
         <span class="punto"></span>
