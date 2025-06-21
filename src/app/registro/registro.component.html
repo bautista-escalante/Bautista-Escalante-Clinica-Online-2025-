@@ -145,8 +145,10 @@
 
         <ngx-recaptcha2
             #recaptcha
-            siteKey="6Ld-g10rAAAAAOchbh8bvWarS5x-W79K7YPs1WiS"
+            [siteKey]="siteKey"
             [useGlobalDomain]="false"
+            (success)="onCaptchaSuccess($event)"
+            (expire)="onCaptchaExpire()"
             formControlName="recapcha">
         </ngx-recaptcha2>
 

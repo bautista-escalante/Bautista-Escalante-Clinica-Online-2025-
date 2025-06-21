@@ -53,6 +53,7 @@ export class RegistroComponent implements OnInit {
     especialidad: new FormControl("", {})
 
   });
+  siteKey = "6Ld-g10rAAAAAOchbh8bvWarS5x-W79K7YPs1WiS"
   mensajeError: any;
   imagen1: File | null = null;
   imagen2: File | null = null;
@@ -222,6 +223,20 @@ export class RegistroComponent implements OnInit {
 
     this.formulario.get('obraSocial')?.updateValueAndValidity();
     this.formulario.get('especialidad')?.updateValueAndValidity();
+  }
+
+  onCaptchaSuccess(token: string): void {
+    this.captchaToken = token;        
+    this.captchaValid = true;         
+    this.formulario.patchValue({
+      recapcha: token
+    });
+  }
+
+  onCaptchaExpire(): void {
+    this.captchaToken = null;
+    this.captchaValid = false;
+    this.formulario.get('recapcha')?.reset();
   }
 
 }
