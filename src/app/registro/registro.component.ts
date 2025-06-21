@@ -2,20 +2,22 @@ import { SupabaseService } from '../servicios/supabase.service';
 import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AccesoService } from '../servicios/acceso.service';
-import { ViewChild, ElementRef, Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UsuarioService } from '../servicios/usuario.service';
 import Swal from 'sweetalert2'
-import { RecaptchaModule, RecaptchaFormsModule } from 'ng-recaptcha';
-import { RecaptchaService } from '../servicios/recaptcha.service';
+import { NgxCaptchaModule } from 'ngx-captcha';
 
 @Component({
   selector: 'app-registro',
-  imports: [RouterModule, CommonModule, FormsModule, ReactiveFormsModule, RecaptchaFormsModule, RecaptchaModule],
+  imports: [NgxCaptchaModule, RouterModule, CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './registro.component.html',
   styleUrl: './registro.component.css',
   standalone: true,
 })
+
+/* 
+*/
 export class RegistroComponent implements OnInit {
   formulario = new FormGroup({
     nombre: new FormControl("", {
@@ -43,6 +45,10 @@ export class RegistroComponent implements OnInit {
       validators: [Validators.required, Validators.maxLength(8), Validators.minLength(7),
       Validators.pattern('^[0-9]+$')]
     }),
+    recapcha: new FormControl("", {
+      nonNullable: true,
+      validators: [Validators.required]
+    }),
     obraSocial: new FormControl("", {}),
     especialidad: new FormControl("", {})
 
@@ -61,7 +67,7 @@ export class RegistroComponent implements OnInit {
     private supabase: SupabaseService,
     private router: Router,
     private usuarios: UsuarioService,
-    private recapcha: RecaptchaService
+    private formBuilder: FormBuilder
   ) { }
 
   ngOnInit(): void { }
@@ -216,15 +222,6 @@ export class RegistroComponent implements OnInit {
 
     this.formulario.get('obraSocial')?.updateValueAndValidity();
     this.formulario.get('especialidad')?.updateValueAndValidity();
-  }
-
-  async onCaptchaResolved(token: string | null) {
-    this.captchaToken = token;
-    this.captchaValid = await this.recapcha.verificarCaptchaBackend(token);
-
-    if (!this.captchaValid) {
-      throw new Error("Captcha no válido según el servidor");
-    }
   }
 
 }

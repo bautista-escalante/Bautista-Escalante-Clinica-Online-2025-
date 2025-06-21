@@ -143,8 +143,17 @@
             <strong>{{ mensajeError }}</strong>
         </div>
 
-        <re-captcha siteKey="6Ld-g10rAAAAAOchbh8bvWarS5x-W79K7YPs1WiS" (resolved)="onCaptchaResolved($event)">
-        </re-captcha>
+        <ngx-recaptcha2
+            #recaptcha
+            siteKey="6Ld-g10rAAAAAOchbh8bvWarS5x-W79K7YPs1WiS"
+            [useGlobalDomain]="false"
+            formControlName="recapcha">
+        </ngx-recaptcha2>
+
+        <div *ngIf="formulario.controls['recapcha'].touched && formulario.controls['recapcha'].hasError('required')"
+                class="error">
+                <P class="mensaje-error">recaptcha no resuelto</P>
+        </div>
 
         <a *ngIf="mensajeError === 'la cuenta ya existe'" routeLink="/login" class="btn">si ya tenes cuenta click
             aqui</a>
