@@ -27,4 +27,11 @@ export class HorariosService {
 
     if (errorUpdate) throw errorUpdate;
   }
+
+  async agregarHorario(id_especialista: string, horario: string, duracion_turno: number, especialidad: string) {
+    await this.supabase.client
+      .from("horarios")
+      .insert({ id_especialista, horario, duracion_turno, especialidad });
+
+  }
 }

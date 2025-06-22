@@ -17,8 +17,8 @@ export class PerfilComponent implements OnInit {
 
   async ngOnInit() {
     let correo = await this.acceso.verificarAcceso();
-    this.usuario = await this.usuarioService.getUserByEmail(correo!)
-    console.log(this.usuario)
+    this.usuario = await this.usuarioService.getUserByEmail(correo!);
   }
+
 
 }

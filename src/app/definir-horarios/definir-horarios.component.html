@@ -1,0 +1,40 @@
+<div class="fondo">
+
+
+        <div class="group">
+            <input placeholder="expresado en min" required="" type="number" class="input" [(ngModel)]="duracion">
+            <span class="highlight"></span>
+            <span class="bar"></span>
+            <label>duracion de la consulta</label>
+        </div>
+
+        <div class="group">
+            <input required="" type="text" class="input" [(ngModel)]="especialidad">
+            <span class="highlight"></span>
+            <span class="bar"></span>
+            <label>especialidad</label>
+        </div>
+
+        <div class="group">
+            <input type="number" required class="input" [(ngModel)]="horaInicio">
+            <span class="highlight"></span>
+            <span class="bar"></span>
+            <label>Hora de inicio</label>
+        </div>
+
+        <div class="group">
+            <input type="number" required class="input" [(ngModel)]="horaFin">
+            <span class="highlight"></span>
+            <span class="bar"></span>
+            <label>Hora de fin</label>
+        </div>
+
+        <button (click)="definirHorario()">aceptar</button>
+
+    <button class="Btn_login" routerLink="/bienvenido">
+        <div class="sign">
+            <img src="iconos/atras.svg">
+        </div>
+        <div class="text">atras</div>
+    </button>
+</div>

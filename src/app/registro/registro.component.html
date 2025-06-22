@@ -143,8 +143,7 @@
             <strong>{{ mensajeError }}</strong>
         </div>
 
-        <re-captcha [siteKey]="siteKey" (resolved)="onCaptchaResolved($event)">
-        </re-captcha>
+        <re-captcha [siteKey]="claveSitio" (resolved)="onCaptchaResolved($event)"></re-captcha>
 
         <a *ngIf="mensajeError === 'la cuenta ya existe'" routeLink="/login" class="btn">si ya tenes cuenta click
             aqui</a>

@@ -14,7 +14,7 @@
            
             <div *ngIf="usuario.perfil==='especialista'">
             <p ><strong>Especialidades:</strong> {{ usuario.especialidades }}</p>
-            <button class="btn_horarios">Mis horarios</button>
+            <button class="btn_horarios" routerLink="/definirHorarios">Mis horarios</button>
            </div>
 
         </div>
@@ -24,6 +24,6 @@
         <div class="sign">
             <img src="iconos/atras.svg">
         </div>
-        <div class="text">atras</div>
+        <div class="text">atras</div> 
     </button>
 </div>

@@ -47,6 +47,7 @@ export class RegistroComponent implements OnInit {
     especialidad: new FormControl("", {})
 
   });
+  claveSitio = "6LeiLWkrAAAAABvCKsSEqq2OhQvvrtzICLaUNp8j";
   mensajeError: any;
   imagen1: File | null = null;
   imagen2: File | null = null;
@@ -55,7 +56,6 @@ export class RegistroComponent implements OnInit {
   imagenesPaciente: Blob[] = [];
   captchaValid = false;
   captchaToken: string | null = null;
-  siteKey = "6LdEKGkrAAAAADCVw3xZbs8OPXDYABIZRfD9m9oD";
 
   constructor(
     private acceso: AccesoService,

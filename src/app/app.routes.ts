@@ -67,6 +67,11 @@ export const routes: Routes = [
     ,canActivate: [accesoGuard]
   },
   {
+    path: 'definirHorarios',
+    loadComponent: () => import("./definir-horarios/definir-horarios.component").then(c => c.DefinirHorariosComponent)
+    ,canActivate: [accesoGuard]
+  },
+  {
     path: '**',
     redirectTo: 'login',
     pathMatch: 'full'
