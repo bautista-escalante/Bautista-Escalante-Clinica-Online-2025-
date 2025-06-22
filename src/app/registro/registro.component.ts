@@ -2,22 +2,20 @@ import { SupabaseService } from '../servicios/supabase.service';
 import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AccesoService } from '../servicios/acceso.service';
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ViewChild, ElementRef, Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UsuarioService } from '../servicios/usuario.service';
 import Swal from 'sweetalert2'
-import { NgxCaptchaModule } from 'ngx-captcha';
+import { RecaptchaModule, RecaptchaFormsModule } from 'ng-recaptcha';
+import { RecaptchaService } from '../servicios/recaptcha.service';
 
 @Component({
   selector: 'app-registro',
-  imports: [NgxCaptchaModule, RouterModule, CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [RouterModule, CommonModule, FormsModule, ReactiveFormsModule, RecaptchaFormsModule, RecaptchaModule],
   templateUrl: './registro.component.html',
   styleUrl: './registro.component.css',
   standalone: true,
 })
-
-/* 
-*/
 export class RegistroComponent implements OnInit {
   formulario = new FormGroup({
     nombre: new FormControl("", {
@@ -45,15 +43,10 @@ export class RegistroComponent implements OnInit {
       validators: [Validators.required, Validators.maxLength(8), Validators.minLength(7),
       Validators.pattern('^[0-9]+$')]
     }),
-    recapcha: new FormControl("", {
-      nonNullable: true,
-      validators: [Validators.required]
-    }),
     obraSocial: new FormControl("", {}),
     especialidad: new FormControl("", {})
 
   });
-  siteKey = "6Ld-g10rAAAAAOchbh8bvWarS5x-W79K7YPs1WiS"
   mensajeError: any;
   imagen1: File | null = null;
   imagen2: File | null = null;
@@ -62,13 +55,14 @@ export class RegistroComponent implements OnInit {
   imagenesPaciente: Blob[] = [];
   captchaValid = false;
   captchaToken: string | null = null;
+  siteKey = "6LdEKGkrAAAAADCVw3xZbs8OPXDYABIZRfD9m9oD";
 
   constructor(
     private acceso: AccesoService,
     private supabase: SupabaseService,
     private router: Router,
     private usuarios: UsuarioService,
-    private formBuilder: FormBuilder
+    private recapcha: RecaptchaService
   ) { }
 
   ngOnInit(): void { }
@@ -225,18 +219,13 @@ export class RegistroComponent implements OnInit {
     this.formulario.get('especialidad')?.updateValueAndValidity();
   }
 
-  onCaptchaSuccess(token: string): void {
-    this.captchaToken = token;        
-    this.captchaValid = true;         
-    this.formulario.patchValue({
-      recapcha: token
-    });
-  }
+  async onCaptchaResolved(token: string | null) {
+    this.captchaToken = token;
+    this.captchaValid = await this.recapcha.verificarCaptchaBackend(token);
 
-  onCaptchaExpire(): void {
-    this.captchaToken = null;
-    this.captchaValid = false;
-    this.formulario.get('recapcha')?.reset();
+    if (!this.captchaValid) {
+      throw new Error("Captcha no válido según el servidor");
+    }
   }
 
 }
