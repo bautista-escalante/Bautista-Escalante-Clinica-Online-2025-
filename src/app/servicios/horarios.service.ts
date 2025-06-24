@@ -8,24 +8,14 @@ export class HorariosService {
 
   constructor(private supabase: SupabaseService) { }
 
-  async traerHorarioisDisponibles(id: string) {
+  async traerHorariosPorId(id: string) {
     const { data, error } = await this.supabase.client
       .from("horarios")
       .select("*")
-      .eq("ocupado", false)
       .eq("id_especialista", id);
 
     if (error) throw error;
     return data;
-  }
-
-  async tomarHorario(id: number) {
-    const { error: errorUpdate } = await this.supabase.client
-      .from('horarios')
-      .update({ ocupado: true })
-      .eq("id", id)
-
-    if (errorUpdate) throw errorUpdate;
   }
 
   async agregarHorario(id_especialista: string, horario: string, duracion_turno: number, especialidad: string) {

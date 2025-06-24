@@ -47,7 +47,7 @@ export class RegistroComponent implements OnInit {
     especialidad: new FormControl("", {})
 
   });
-  claveSitio = "6LeiLWkrAAAAABvCKsSEqq2OhQvvrtzICLaUNp8j";
+  claveSitio = "6Lfc4WsrAAAAALMPwi03MkKapQ0DmrxHqH2W3Ycx";
   mensajeError: any;
   imagen1: File | null = null;
   imagen2: File | null = null;

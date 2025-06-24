@@ -6,11 +6,12 @@ import { UsuarioService } from '../servicios/usuario.service';
 import { AccesoService } from '../servicios/acceso.service';
 import { HorariosService } from '../servicios/horarios.service';
 import Swal from 'sweetalert2'
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { AgregarFechaPipe } from '../pipes/agregar-fecha.pipe';
 
 @Component({
   selector: 'app-solicitar-turno',
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, AgregarFechaPipe],
   templateUrl: './solicitar-turno.component.html',
   styleUrl: './solicitar-turno.component.css'
 })
@@ -35,9 +36,12 @@ export class SolicitarTurnoComponent implements OnInit {
     private turnoservice: TurnoService,
     private usuario: UsuarioService,
     private acceso: AccesoService,
-    private horariosService: HorariosService) { }
+    private horariosService: HorariosService,
+    private router: Router) { }
 
   async ngOnInit() {
+    let correo = await this.acceso.verificarAcceso();
+    this.datosUsuario = await this.usuario.getUserByEmail(correo!)
     this.perfil = await this.acceso.obtenerPerfil();
     if (this.perfil == "admin") {
       this.esAdmin = true;
@@ -58,26 +62,56 @@ export class SolicitarTurnoComponent implements OnInit {
   }
 
   async definirDoctor(id: string) {
-    this.especialistas.length = 0;
+    this.horarios = [];
+    this.especialistas = [];
     this.doctor = await this.especialistaService.traerEspecialistaPorId(id);
-    this.horarios = await this.horariosService.traerHorarioisDisponibles(id);
+
+    let estaDisponible = false;
+    this.horariosService.traerHorariosPorId(id)
+      .then(async (horariosTotales) => {
+        for (let i = 0; i < horariosTotales.length; i++) {
+          estaDisponible = await this.turnoservice.esHorarioDisponible(id, this.calcularDosSemanas(horariosTotales[i].horario))
+          console.log(estaDisponible)
+          if (estaDisponible) {
+            this.horarios.push(horariosTotales[i])
+          }
+          console.log(horariosTotales[i].horario)
+        }
+      });
   }
 
-  async definirHorario(fechaHora: Date, id: number) {
-    /* 
-    # marcar el horario como ocupado 
-    # agregar el turno vinculando el especialista con el cliente (idActual)
-    # informar al paciente que se realizo con exito
-    */
+  /*   calcularDosSemanas(hora: Date) {
+      let fecha = new Date();
+      fecha.setDate(fecha.getDate() + 15);
+      const dia = fecha.getDate().toString().padStart(2, "0");
+      const mes = (fecha.getMonth() + 1).toString().padStart(2, "0");
+      const año = fecha.getFullYear().toString();
+  
+      return new Date(`${año}-${mes}-${dia}T${hora}`);
+    } */
 
-    await this.horariosService.tomarHorario(id);
+  calcularDosSemanas(hora: string) {
+    const [hh, mm] = hora.split(':').map(n => +n);
+    const fecha = new Date();
+    fecha.setDate(fecha.getDate() + 15);
+
+    return new Date(fecha.getFullYear(), fecha.getMonth(), fecha.getDate(), hh, mm);
+  }
+
+  async definirHorario(hora: string, id: number) {
+
+    let fechaHora = this.calcularDosSemanas(hora);
+
     if (this.perfil === "paciente") await this.turnoservice.agregarTurno(this.datosUsuario.id, this.doctor.id, fechaHora);
     if (this.perfil === "admin") await this.turnoservice.agregarTurno(this.paciente, this.doctor.id, fechaHora);
+
     Swal.fire({
       title: "turno solicitado con exito",
       icon: "success",
       draggable: true
     });
+
+    this.router.navigate(["/bienvenido"])
 
     this.turnos = await this.turnoservice.traerTurnosPaciente(this.datosUsuario.id);
     this.doctor = "";

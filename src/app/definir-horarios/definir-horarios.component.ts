@@ -1,23 +1,23 @@
-import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { EspecialistaService } from '../servicios/especialista.service';
-import { AccesoService } from '../servicios/acceso.service';
-import Swal from 'sweetalert2';
 import { HorariosService } from '../servicios/horarios.service';
-import { UsuarioService } from '../servicios/usuario.service';
+import { AccesoService } from '../servicios/acceso.service';
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-definir-horarios',
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, RouterLink],
   templateUrl: './definir-horarios.component.html',
   styleUrl: './definir-horarios.component.css',
   standalone: true
 })
-export class DefinirHorariosComponent implements OnInit {
+export class DefinirHorariosComponent {
 
   especialidad: string = "";
-  duracion: any = 30;
+  duracion: any = "";
   horaInicio: any = "";
   horaFin: any = "";
   especialidades: any = "";
@@ -25,22 +25,14 @@ export class DefinirHorariosComponent implements OnInit {
 
   constructor(private especialistaService: EspecialistaService,
     private acceso: AccesoService, private horarioService: HorariosService,
-    private usuarioService: UsuarioService
   ) { }
-
-  async ngOnInit() {
-    let correo = await this.acceso.verificarAcceso();
-    this.especialidades = await this.especialistaService.traerEspecialidades(correo!);
-    let usuario = await this.usuarioService.getUserByEmail(correo!);
-    this.id = usuario.id;
-  }
 
   async verificar() {
 
     if (!this.especialidad || !(this.especialidades.includes(this.especialidad))) {
       throw new Error("la especialidad ingresada no se encontrada en tu perfil");
     }
-    if (this.duracion > 60 || this.duracion < 5) {
+    if (this.duracion == "" || this.duracion > 60 || this.duracion < 30) {
       throw new Error("duracion invalida");
     }
     if (!this.horaInicio || this.horaInicio < 800) {
@@ -57,7 +49,14 @@ export class DefinirHorariosComponent implements OnInit {
 
   async definirHorario() {
     try {
+      let correo = await this.acceso.verificarAcceso();
+      this.especialidades = await this.especialistaService.traerEspecialidades(correo!);
+
       await this.verificar();
+
+      let especialista = await this.especialistaService.obtenerEspecialista(correo!, this.especialidad);
+      this.id = especialista.id;
+
       let cantidadTurnos = this.calcularTurnos((this.horaFin - this.horaInicio));
 
       for (let i = 0; i <= cantidadTurnos; i++) {
@@ -65,6 +64,9 @@ export class DefinirHorariosComponent implements OnInit {
         console.log(horario)
         this.horarioService.agregarHorario(this.id, horario, this.duracion, this.especialidad)
       }
+
+      Swal.fire("datos gurdados", "los horarios fueron agregados", "success");
+
     } catch (error: any) {
       Swal.fire("ERROR", error.message, 'warning');
     }

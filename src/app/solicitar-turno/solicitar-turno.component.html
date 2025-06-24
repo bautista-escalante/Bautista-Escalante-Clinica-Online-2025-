@@ -36,7 +36,7 @@
         <!-- defirnir horarios -->
         <div *ngFor="let horario of horarios">
             <button (click)="definirHorario(horario.horario, horario.id)" class="btn_horario">
-                <div>{{horario.horario | date:"dd/mm hh:mm"}}</div>
+                <div>{{ horario.horario | agregarFecha }}</div>
             </button>
         </div>
     </div>

@@ -112,4 +112,15 @@ export class TurnoService {
 
     if (error) throw error;
   }
+
+  async esHorarioDisponible(id: string, fecha: Date) {
+    const { data, error } = await this.supabase.client
+      .from("turnos")
+      .select("id")
+      .eq("id_especialista", id)
+      .eq("fecha", fecha);
+
+    if (error) throw error;
+    return !(!!data);
+  }
 }
