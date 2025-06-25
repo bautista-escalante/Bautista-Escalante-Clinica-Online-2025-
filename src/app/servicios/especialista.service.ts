@@ -69,14 +69,14 @@ export class EspecialistaService {
     return data;
   }
 
-  async obtenerEspecialista(email: string, especialidad:string) {
-        const { data, error } = await this.supabase.client
-            .from('usuarios')
-            .select('*')
-            .eq('mail', email)
-            .eq("especialidades", especialidad)
-            .limit(1);
-        if (error) throw error;
-        return data[0];
-    }
+  async obtenerEspecialista(email: string, especialidad: string) {
+    const { data, error } = await this.supabase.client
+      .from('usuarios')
+      .select('*')
+      .eq('mail', email)
+      .eq("especialidades", especialidad)
+      .limit(1);
+    if (error) throw error;
+    return data[0];
+  }
 }

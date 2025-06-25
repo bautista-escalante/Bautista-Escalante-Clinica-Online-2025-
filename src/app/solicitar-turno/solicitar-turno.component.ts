@@ -70,6 +70,7 @@ export class SolicitarTurnoComponent implements OnInit {
     this.horariosService.traerHorariosPorId(id)
       .then(async (horariosTotales) => {
         for (let i = 0; i < horariosTotales.length; i++) {
+          console.log(this.calcularDosSemanas(horariosTotales[i].horario))
           estaDisponible = await this.turnoservice.esHorarioDisponible(id, this.calcularDosSemanas(horariosTotales[i].horario))
           console.log(estaDisponible)
           if (estaDisponible) {
@@ -80,23 +81,21 @@ export class SolicitarTurnoComponent implements OnInit {
       });
   }
 
-  /*   calcularDosSemanas(hora: Date) {
-      let fecha = new Date();
-      fecha.setDate(fecha.getDate() + 15);
-      const dia = fecha.getDate().toString().padStart(2, "0");
-      const mes = (fecha.getMonth() + 1).toString().padStart(2, "0");
-      const año = fecha.getFullYear().toString();
-  
-      return new Date(`${año}-${mes}-${dia}T${hora}`);
-    } */
-
   calcularDosSemanas(hora: string) {
-    const [hh, mm] = hora.split(':').map(n => +n);
     const fecha = new Date();
-    fecha.setDate(fecha.getDate() + 15);
+    fecha.setDate(fecha.getDate() + 14);
 
-    return new Date(fecha.getFullYear(), fecha.getMonth(), fecha.getDate(), hh, mm);
+    const [horaStr, minutosStr, segundosStr] = hora.split(':');
+    const horaNum = parseInt(horaStr, 10);
+    const minutosNum = parseInt(minutosStr, 10);
+    const segundosNum = segundosStr ? parseInt(segundosStr, 10) : 0;
+
+    // Aplicar la hora a la fecha futura
+    fecha.setHours((horaNum - 3), minutosNum, segundosNum, 0);
+
+    return fecha.toISOString();
   }
+
 
   async definirHorario(hora: string, id: number) {
 

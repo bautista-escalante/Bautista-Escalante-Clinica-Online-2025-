@@ -5,7 +5,7 @@ import { TurnoService } from '../servicios/turno.service';
 import { UsuarioService } from '../servicios/usuario.service';
 import { AccesoService } from '../servicios/acceso.service';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
 
@@ -23,8 +23,7 @@ export class TurnosComponent implements OnInit {
   perfil: string = "";
 
   constructor(
-    private especialistaService: EspecialistaService,
-    private horariosService: HorariosService,
+    private route: Router,
     private turnoservice: TurnoService,
     private usuario: UsuarioService,
     private acceso: AccesoService
@@ -34,15 +33,7 @@ export class TurnosComponent implements OnInit {
     let correo = await this.acceso.verificarAcceso();
     this.datosUsuario = await this.usuario.getUserByEmail(correo!);
     this.perfil = this.datosUsuario.perfil;
-    if(this.perfil === "paciente"){
-      this.turnos = await this.turnoservice.traerTurnosPaciente(this.datosUsuario.id);
-    }
-    if(this.perfil === "especialista"){
-      this.turnos = await this.turnoservice.traerTurnosEspecialista(this.datosUsuario.id);
-    }
-    if(this.perfil === "admin"){
-      this.turnos = await this.turnoservice.traerTurnos();
-    }
+    this.recargarTurnos();
   }
 
   async filtrarPaciente() {
@@ -68,11 +59,10 @@ export class TurnosComponent implements OnInit {
     }
   }
 
-  async cambiarEstadoConResenia(id: number) {
+  async cambiarEstadoConMensaje(id:number ,estado: string) {
 
     const { value: mensaje } = await Swal.fire({
       input: "textarea",
-      inputPlaceholder: "escribe una reseña",
       inputAttributes: {
         "aria-label": "Type your message here"
       },
@@ -80,29 +70,9 @@ export class TurnosComponent implements OnInit {
     });
 
     if (mensaje) {
-      await this.turnoservice.cambiarEstadoConResenia(mensaje, this.datosUsuario.id)
-      this.turnos = await this.turnoservice.traerTurnosEspecialista(id);
-      console.log(this.turnos)
-    } else {
-      await Swal.fire({ title: "error, se necesita un comentario" });
-    }
-  }
+      await this.turnoservice.cambiarEstadoConMensaje(estado, mensaje, id)
+      this.recargarTurnos();
 
-  async cambiarEstadoConRazon(estado: string, id: number) {
-
-    const { value: mensaje } = await Swal.fire({
-      input: "textarea",
-      inputPlaceholder: "escribe la razon",
-      inputAttributes: {
-        "aria-label": "Type your message here"
-      },
-      showCancelButton: true
-    });
-
-    if (mensaje) {
-      await this.turnoservice.cambiarEstadoConRazon(mensaje, this.datosUsuario.id)
-      this.turnos = await this.turnoservice.traerTurnosEspecialista(id);
-      console.log(this.turnos)
     } else {
       await Swal.fire({ title: "error, se necesita un comentario" });
     }
@@ -137,26 +107,8 @@ export class TurnosComponent implements OnInit {
   }
 
   async cambiarEstado(estado: string, id: number) {
-    await this.turnoservice.cambiarEstado(estado, id)
-    this.turnos = await this.turnoservice.traerTurnosPaciente(this.datosUsuario.id);
-  }
-
-  async cancelarTurno(id: number) {
-    const { value: mensaje } = await Swal.fire({
-      input: "textarea",
-      inputPlaceholder: "escribe la razon",
-      inputAttributes: {
-        "aria-label": "Type your message here"
-      },
-      showCancelButton: true
-    });
-
-    if (mensaje) {
-      await this.turnoservice.cambiarEstadoConRazon(mensaje, id)
-      this.turnos = await this.turnoservice.traerTurnosPaciente(this.datosUsuario.id);
-    } else {
-      await Swal.fire({ title: "error, se necesita un comentario" });
-    }
+    await this.turnoservice.cambiarEstado(estado, id);
+    this.recargarTurnos();
   }
 
   async Calificar(id: number) {
@@ -193,5 +145,19 @@ export class TurnosComponent implements OnInit {
     } catch (error: any) {
       await Swal.fire({ title: error.message, icon: "warning" });
     }
+  }
+
+  private async recargarTurnos() {
+    if (this.perfil === 'paciente') {
+      this.turnos = await this.turnoservice.traerTurnosPaciente(this.datosUsuario.id);
+    } else if (this.perfil === 'especialista') {
+      this.turnos = await this.turnoservice.traerTurnosEspecialista(this.datosUsuario.id);
+    } else {
+      this.turnos = await this.turnoservice.traerTurnos();
+    }
+  }
+
+  crearHistoriaClinica(id_turno:string){
+    this.route.navigate([`/historiaClinica/${id_turno}`]);
   }
 }

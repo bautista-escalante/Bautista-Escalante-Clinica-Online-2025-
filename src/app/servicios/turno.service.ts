@@ -28,15 +28,16 @@ export class TurnoService {
     if (error) throw error;
     return data;
   }
-  
+
   async traerTurnos() {
     const { data, error } = await this.supabase.client
       .from("turnos")
       .select(`*, id_especialista(apellido, nombre, especialidades), id_paciente(nombre, apellido)`)
-      
+
     if (error) throw error;
     return data;
   }
+
   async traerTurnosEspecialista(id: number) {
     const { data, error } = await this.supabase.client
       .from("turnos")
@@ -48,7 +49,7 @@ export class TurnoService {
   }
 
 
-  async agregarTurno(paciente: number, especialista: number, fecha: Date) {
+  async agregarTurno(paciente: number, especialista: number, fecha: string) {
     const { data, error } = await this.supabase.client
       .from("turnos")
       .insert({ id_paciente: paciente, id_especialista: especialista, fecha, estado: "a confirmar" })
@@ -77,43 +78,37 @@ export class TurnoService {
   }
 
   async cambiarEstado(estado: string, id: number) {
-    const { error } = await this.supabase.client
+    const { data, error } = await this.supabase.client
       .from('turnos')
       .update({ estado: estado })
       .eq("id", id)
+      .select();
 
     if (error) throw error;
+    console.log(data)
   }
 
-  async cambiarEstadoConResenia( mensaje: string, id: number) {
+  async cambiarEstadoConMensaje(estado: string, mensaje: string, id: number) {
     const { error } = await this.supabase.client
       .from('turnos')
-      .update({ estado: "finalizado", resenia: mensaje })
+      .update({ estado: estado, resenia: mensaje })
       .eq("id", id)
-
-    if (error) throw error;
-
-  }
-  async cambiarEstadoConRazon( razon: string, id: number) {
-    const { error } = await this.supabase.client
-      .from('turnos')
-      .update({ estado: "cancelado", razon: razon })
-      .eq("id", id)
+      .select();
 
     if (error) throw error;
 
   }
 
-  async calificar(calificacion: string, id: number, comentario:string) {
+  async calificar(calificacion: string, id: number, comentario: string) {
     const { error } = await this.supabase.client
       .from('turnos')
-      .update({ calificacion: calificacion, razon:comentario })
+      .update({ calificacion: calificacion, razon: comentario })
       .eq("id", id)
 
     if (error) throw error;
   }
 
-  async esHorarioDisponible(id: string, fecha: Date) {
+  async esHorarioDisponible(id: string, fecha: string) {
     const { data, error } = await this.supabase.client
       .from("turnos")
       .select("id")
@@ -121,6 +116,6 @@ export class TurnoService {
       .eq("fecha", fecha);
 
     if (error) throw error;
-    return !(!!data);
+    return data.length == 0;
   }
 }

@@ -47,17 +47,21 @@
                                 class="btn_accion">
                                 Aceptar turno
                             </button>
-                            <button *ngIf="turno.estado === 'aceptado'" (click)="cambiarEstado('cancelado', turno.id)"
+                            <button *ngIf="turno.estado === 'aceptado'" (click)="cambiarEstadoConMensaje(turno.id, 'cancelado')"
                                 class="btn_accion">
                                 Cancelar Turno
                             </button>
                             <button *ngIf="turno.estado === 'a confirmar'"
-                                (click)="cambiarEstadoConRazon('rechazado', turno.id)" class="btn_accion">rechazar
+                                (click)="cambiarEstadoConMensaje(turno.id,'rechazado')" class="btn_accion">rechazar
                                 Turno
                             </button>
-                            <button *ngIf="turno.estado === 'aceptado'" (click)="cambiarEstadoConResenia( turno.id)"
+                            <button *ngIf="turno.estado === 'aceptado'" (click)="cambiarEstadoConMensaje(turno.id, 'finalizado')"
                                 class="btn_accion">
                                 Finalizar Turno
+                            </button>
+                            <button *ngIf="turno.estado === 'finalizado' && perfil == 'especialista'" (click)="crearHistoriaClinica(turno.id)"
+                                class="btn_accion">
+                                crear historia clinica
                             </button>
                             <button *ngIf="!!turno.resenia" class="btn_accion" (click)="verResenia(turno.id)">
                                 Ver Reseña
@@ -65,7 +69,7 @@
                         </div>
                         <div class="acciones" *ngIf="perfil === 'paciente'">
 
-                            <button *ngIf="turno.estado !== 'realizado'" (click)="cancelarTurno(turno.id)"
+                            <button *ngIf="turno.estado !== 'realizado'" (click)="cambiarEstadoConMensaje(turno.id,'cancelado')"
                                 class="btn_accion">Cancelar Turno</button>
                             <button *ngIf="!!turno.resenia" (click)="verResenia(turno.id)" class="btn_accion">Ver
                                 Reseña</button>
@@ -74,7 +78,7 @@
                                 class="btn_accion">Calificar Atencion</button>
                         </div>
                         <div class="acciones" *ngIf="perfil === 'admin'">
-                            <button *ngIf="turno.estado !== 'realizado'" (click)="cancelarTurno(turno.id)"
+                            <button *ngIf="turno.estado !== 'realizado'" (click)="cambiarEstadoConMensaje(turno.id,'cancelado')"
                                 class="btn_accion">Cancelar Turno</button>
                         </div>
                     </td>

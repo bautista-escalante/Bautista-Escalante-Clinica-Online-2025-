@@ -57,7 +57,7 @@ export const routes: Routes = [
     ,canActivate: [accesoGuard, rolGuard]
   },
   {
-    path: 'historiaClinica',
+    path: 'historiaClinica/:turno',
     loadComponent: () => import("./historia-clinica/historia-clinica.component").then(c => c.HistoriaClinicaComponent)
     ,canActivate: [accesoGuard]
   },

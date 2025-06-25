@@ -1,4 +1,4 @@
-<div>
+<div class="fondo">
 
     <div class="group">
         <input required="" type="text" class="input" [(ngModel)]="altura">
@@ -29,6 +29,24 @@
     </div>
 
 
-    
+    <div *ngIf="mostrar" class="dinamico">
+        <div class="group">
+            <input required="" type="text" class="input" [(ngModel)]="campo">
+            <span class="highlight"></span>
+            <span class="bar"></span>
+            <label>ingrese el campo</label>
+        </div>
+
+        <div class="group">
+            <input required="" type="text" class="input" [(ngModel)]="valor">
+            <span class="highlight"></span>
+            <span class="bar"></span>
+            <label>ingrese el valor</label>
+        </div>
+    </div>
+
+    <button *ngIf="mostrar" (click)="generarJson()" style="margin-top: 50px;"> agregar </button>
+    <button (click)="mostrarCampoDinamico()">agregar un nuevo dato</button>
+    <button (click)="guardar()"> guardar historia clinica </button>
 
 </div>
