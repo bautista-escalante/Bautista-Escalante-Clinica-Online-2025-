@@ -46,4 +46,7 @@
 <div *ngIf="mensajeError" class="mensaje-error">
     <strong> {{ mensajeError }}</strong>
 </div>
-<router-outlet></router-outlet>
+
+<main [@routeAnimation]="getRouteAnimationState(outlet)">
+  <router-outlet #outlet="outlet"></router-outlet>
+</main>

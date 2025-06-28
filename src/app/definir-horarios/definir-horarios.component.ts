@@ -1,3 +1,4 @@
+import { trigger, transition, style, animate, query, group } from '@angular/animations';
 import { EspecialistaService } from '../servicios/especialista.service';
 import { HorariosService } from '../servicios/horarios.service';
 import { AccesoService } from '../servicios/acceso.service';
@@ -12,8 +13,21 @@ import Swal from 'sweetalert2';
   imports: [FormsModule, CommonModule, RouterLink],
   templateUrl: './definir-horarios.component.html',
   styleUrl: './definir-horarios.component.css',
-  standalone: true
+  standalone: true,
+  host: { '[@routeAnimation]': '' },
+  animations: [
+    trigger('routeAnimation', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('500ms ease-in', style({ opacity: 1 }))
+      ]),
+      transition(':leave', [
+        animate('500ms cubic-bezier(0.68, -0.55, 0.27, 1.55)', style({ opacity: 0 }))
+      ])
+    ])
+  ]
 })
+
 export class DefinirHorariosComponent {
 
   especialidad: string = "";

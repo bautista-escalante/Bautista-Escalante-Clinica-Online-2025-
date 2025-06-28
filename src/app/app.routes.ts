@@ -6,6 +6,7 @@ import { accesoGuard } from './guards/acceso.guard';
 import { adminGuard } from './guards/admin.guard';
 import { rolGuard } from './guards/rol.guard';
 import { especialistaGuard } from './guards/especialista.guard';
+import { animation } from '@angular/animations';
 
 export const routes: Routes = [
 
@@ -30,16 +31,19 @@ export const routes: Routes = [
       {
         path: 'admin',
         loadComponent: () => import("./admin/admin.component").then(c => c.AdminComponent),
+        data: { animation: "admin" }
       },
       {
         path: 'paciente',
         loadComponent: () => import("./paciente/paciente.component").then(c => c.PacienteComponent),
+        data: { animation: "paciente" }
       },
       {
         path: 'especialista',
         loadComponent: () => import("./especialista/especialista.component").then(c => c.EspecialistaComponent),
+        data: { animation: "especialista" }
       },
-    ]
+    ],
   },
   {
     path: 'seccionPaciente',
@@ -54,22 +58,22 @@ export const routes: Routes = [
   {
     path: 'solicitarTurno',
     loadComponent: () => import("./solicitar-turno/solicitar-turno.component").then(c => c.SolicitarTurnoComponent)
-    ,canActivate: [accesoGuard, rolGuard]
+    , canActivate: [accesoGuard, rolGuard]
   },
   {
     path: 'historiaClinica/:turno',
     loadComponent: () => import("./historia-clinica/historia-clinica.component").then(c => c.HistoriaClinicaComponent)
-    ,canActivate: [accesoGuard]
+    , canActivate: [accesoGuard]
   },
   {
     path: 'misTurnos',
     loadComponent: () => import("./turnos/turnos.component").then(c => c.TurnosComponent)
-    ,canActivate: [accesoGuard]
+    , canActivate: [accesoGuard]
   },
   {
     path: 'definirHorarios',
     loadComponent: () => import("./definir-horarios/definir-horarios.component").then(c => c.DefinirHorariosComponent)
-    ,canActivate: [accesoGuard]
+    , canActivate: [accesoGuard]
   },
   {
     path: '**',
