@@ -8,10 +8,11 @@ import { HorariosService } from '../servicios/horarios.service';
 import Swal from 'sweetalert2'
 import { Router, RouterLink } from '@angular/router';
 import { AgregarFechaPipe } from '../pipes/agregar-fecha.pipe';
+import { ImgDefaultDirective } from '../directivas/img-default.directive';
 
 @Component({
   selector: 'app-solicitar-turno',
-  imports: [CommonModule, RouterLink, AgregarFechaPipe],
+  imports: [CommonModule, RouterLink, AgregarFechaPipe, ImgDefaultDirective],
   templateUrl: './solicitar-turno.component.html',
   styleUrl: './solicitar-turno.component.css'
 })

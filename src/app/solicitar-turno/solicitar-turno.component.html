@@ -16,8 +16,7 @@
         <div class="especialidades" *ngIf="!especialidad">
             <div *ngFor="let especialidad of especialidades">
                 <button class="btn_especialidades" (click)="definirEspecialidad(especialidad)">
-                    <img [src]="`especialidades/${especialidad}.png`" (error)="cambiarFoto($event)"
-                        class="foto_especialidad">
+                    <img [src]="`especialidades/${especialidad}.png`" appImgDefault class="foto_especialidad">
                 </button>
             </div>
         </div>

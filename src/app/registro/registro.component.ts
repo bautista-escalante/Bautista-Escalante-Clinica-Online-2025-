@@ -9,10 +9,11 @@ import Swal from 'sweetalert2'
 import { RecaptchaModule, RecaptchaFormsModule } from 'ng-recaptcha';
 import { RecaptchaService } from '../servicios/recaptcha.service';
 import { AnimacionErrorDirective } from '../directivas/animacion-error.directive'
+import { LimiteVolumenDirective } from '../directivas/limite-volumen.directive';
 
 @Component({
   selector: 'app-registro',
-  imports: [AnimacionErrorDirective, RouterModule, CommonModule, FormsModule, ReactiveFormsModule, RecaptchaFormsModule, RecaptchaModule],
+  imports: [LimiteVolumenDirective, AnimacionErrorDirective, RouterModule, CommonModule, FormsModule, ReactiveFormsModule, RecaptchaFormsModule, RecaptchaModule],
   templateUrl: './registro.component.html',
   styleUrl: './registro.component.css',
   standalone: true,

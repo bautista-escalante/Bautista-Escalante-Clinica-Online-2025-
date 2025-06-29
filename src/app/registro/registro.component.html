@@ -117,8 +117,10 @@
                 </div>
             </div>
 
-            <input class="imagen" type="file" (change)="asignarArchivo($event, 'imagen1')" accept="image/*">
-            <input class="imagen" type="file" (change)="asignarArchivo($event, 'imagen2')" accept="image/*">
+            <input class="imagen" appLimiteVolumen="5" type="file" (change)="asignarArchivo($event, 'imagen1')"
+                accept="image/*">
+            <input class="imagen" appLimiteVolumen="5" type="file" (change)="asignarArchivo($event, 'imagen2')"
+                accept="image/*">
 
         </div>
 
@@ -137,7 +139,8 @@
                 <small>Para agregar más de una especialidad, sepáralas con comas. Ejemplo: Traumatología, Cirujano,
                     Reumatólogo.</small>
             </div>
-            <input class="imagen" type="file" (change)="asignarArchivo($event, 'imagenEspecialista')" accept="image/*">
+            <input class="imagen" appLimiteVolumen="5mb" type="file"
+                (change)="asignarArchivo($event, 'imagenEspecialista')" accept="image/*">
         </div>
         <div *ngIf="mensajeError" class="mensaje-error">
             <strong>{{ mensajeError }}</strong>
