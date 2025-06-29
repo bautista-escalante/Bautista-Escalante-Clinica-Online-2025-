@@ -33,33 +33,33 @@ export class TurnosComponent implements OnInit {
     let correo = await this.acceso.verificarAcceso();
     this.datosUsuario = await this.usuario.getUserByEmail(correo!);
     this.perfil = this.datosUsuario.perfil;
-    this.recargarTurnos();
+    await this.recargarTurnos();
   }
 
   async filtrarPaciente() {
-    this.turnos = await this.turnoservice.traerTurnosEspecialista(this.datosUsuario.id);
+    await this.recargarTurnos();
     this.turnos = this.turnos.filter(turno =>
       turno.id_especialista?.especialidades?.toLowerCase().includes(this.input.trim().toLowerCase()));
 
     if (this.turnos.length == 0) {
 
-      this.turnos = await this.turnoservice.traerTurnosEspecialista(this.datosUsuario.id);
+      await this.recargarTurnos()
       this.turnos = this.turnos.filter(turno =>
         turno.id_paciente?.apellido?.toLowerCase().includes(this.input.trim().toLowerCase()));
     }
     if (this.turnos.length == 0) {
 
-      this.turnos = await this.turnoservice.traerTurnosEspecialista(this.datosUsuario.id);
+      await this.recargarTurnos()
       this.turnos = this.turnos.filter(turno =>
         turno.id_paciente?.nombre?.toLowerCase().includes(this.input.trim().toLowerCase()));
     }
     if (this.turnos.length == 0) {
-      this.turnos = await this.turnoservice.traerTurnosEspecialista(this.datosUsuario.id);
+      await this.recargarTurnos()
       this.error = `no se encontraron turnos relacionado a ${this.input}`
     }
   }
 
-  async cambiarEstadoConMensaje(id:number ,estado: string) {
+  async cambiarEstadoConMensaje(id: number, estado: string) {
 
     const { value: mensaje } = await Swal.fire({
       input: "textarea",
@@ -71,7 +71,7 @@ export class TurnosComponent implements OnInit {
 
     if (mensaje) {
       await this.turnoservice.cambiarEstadoConMensaje(estado, mensaje, id)
-      this.recargarTurnos();
+      await this.recargarTurnos();
 
     } else {
       await Swal.fire({ title: "error, se necesita un comentario" });
@@ -79,24 +79,24 @@ export class TurnosComponent implements OnInit {
   }
 
   async filtrarEspecialista() {
-    this.turnos = await this.turnoservice.traerTurnosPaciente(this.datosUsuario.id);
+    await this.recargarTurnos()
     this.turnos = this.turnos.filter(turno =>
       turno.id_especialista?.especialidades?.toLowerCase().includes(this.input.trim().toLowerCase()));
 
     if (this.turnos.length == 0) {
 
-      this.turnos = await this.turnoservice.traerTurnosPaciente(this.datosUsuario.id);
+      await this.recargarTurnos()
       this.turnos = this.turnos.filter(turno =>
         turno.id_especialista?.apellido?.toLowerCase().includes(this.input.trim().toLowerCase()));
     }
     if (this.turnos.length == 0) {
 
-      this.turnos = await this.turnoservice.traerTurnosPaciente(this.datosUsuario.id);
+      await this.recargarTurnos()
       this.turnos = this.turnos.filter(turno =>
         turno.id_especialista?.nombre?.toLowerCase().includes(this.input.trim().toLowerCase()));
     }
     if (this.turnos.length == 0) {
-      this.turnos = await this.turnoservice.traerTurnosPaciente(this.datosUsuario.id);
+      await this.recargarTurnos()
       this.error = `no se encontraron turnos relacionado a ${this.input}`
     }
   }
@@ -108,7 +108,7 @@ export class TurnosComponent implements OnInit {
 
   async cambiarEstado(estado: string, id: number) {
     await this.turnoservice.cambiarEstado(estado, id);
-    this.recargarTurnos();
+    await this.recargarTurnos();
   }
 
   async Calificar(id: number) {
@@ -151,13 +151,13 @@ export class TurnosComponent implements OnInit {
     if (this.perfil === 'paciente') {
       this.turnos = await this.turnoservice.traerTurnosPaciente(this.datosUsuario.id);
     } else if (this.perfil === 'especialista') {
-      this.turnos = await this.turnoservice.traerTurnosEspecialista(this.datosUsuario.id);
+      this.turnos = await this.turnoservice.traerTurnosEspecialista(this.datosUsuario.mail);
     } else {
       this.turnos = await this.turnoservice.traerTurnos();
     }
   }
 
-  crearHistoriaClinica(id_turno:string){
+  crearHistoriaClinica(id_turno: string) {
     this.route.navigate([`/historiaClinica/${id_turno}`]);
   }
 }

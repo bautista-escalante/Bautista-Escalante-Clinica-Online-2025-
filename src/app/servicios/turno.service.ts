@@ -38,14 +38,15 @@ export class TurnoService {
     return data;
   }
 
-  async traerTurnosEspecialista(id: number) {
+  async traerTurnosEspecialista(correo: string) {
     const { data, error } = await this.supabase.client
       .from("turnos")
-      .select(`*, id_especialista(especialidades), id_paciente(nombre, apellido)`)
-      .eq("id_especialista", id);
+      .select(`*, id_especialista(mail, especialidades), id_paciente(id, nombre, apellido)`)
 
     if (error) throw error;
-    return data;
+    let filtrados = data.filter((turno: any) => (turno.id_especialista?.mail === correo));
+
+    return filtrados;
   }
 
 

@@ -57,16 +57,17 @@ export class EspecialistaService {
     return especialidades.join(",");
   }
 
-  async traerPacientesAtendidos(idEspecialista: number) {
-    console.log(idEspecialista)
+  async traerPacientesAtendidos(correo: string) {
     const { data, error } = await this.supabase.client
       .from("turnos")
-      .select(`fecha, resenia, id_paciente(nombre, apellido, edad, obra_social, url_perfil)`)
-      .eq("id_especialista", idEspecialista)
-      .eq("estado", "realizado");
+      .select(`fecha, resenia, id_paciente(id, nombre, apellido, edad, obra_social, url_perfil), id_especialista(mail)`)
+      .eq("estado", "finalizado");
 
     if (error) throw error;
-    return data;
+
+    let filtrados = data.filter((turno: any) => (turno.id_especialista?.mail === correo));
+
+    return filtrados;
   }
 
   async obtenerEspecialista(email: string, especialidad: string) {
@@ -76,6 +77,7 @@ export class EspecialistaService {
       .eq('mail', email)
       .eq("especialidades", especialidad)
       .limit(1);
+      
     if (error) throw error;
     return data[0];
   }

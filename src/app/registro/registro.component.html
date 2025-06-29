@@ -148,7 +148,11 @@
         <a *ngIf="mensajeError === 'la cuenta ya existe'" routeLink="/login" class="btn">si ya tenes cuenta click
             aqui</a>
 
-        <button class="Registrarse-btn" [disabled]="!captchaValid" (click)="crearCuenta()">Registrarse</button>
+        <button class="Registrarse-btn" (click)="crearCuenta()"
+            [appAnimacionError]="formulario.invalid && intentoEnvio">
+            Registrarse
+        </button>
+
     </form>
 
 </div>

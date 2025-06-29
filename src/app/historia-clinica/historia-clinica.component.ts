@@ -89,7 +89,7 @@ export class HistoriaClinicaComponent {
     return !isNaN(num) && isFinite(num);
   }
 
-  async verificar() {
+  async verificar() { 
     try {
       if (!this.validarFloat(this.altura)) {
         throw new Error("alturta invalida");

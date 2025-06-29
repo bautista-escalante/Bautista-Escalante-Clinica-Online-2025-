@@ -8,10 +8,11 @@ import { UsuarioService } from '../servicios/usuario.service';
 import Swal from 'sweetalert2'
 import { RecaptchaModule, RecaptchaFormsModule } from 'ng-recaptcha';
 import { RecaptchaService } from '../servicios/recaptcha.service';
+import { AnimacionErrorDirective } from '../directivas/animacion-error.directive'
 
 @Component({
   selector: 'app-registro',
-  imports: [RouterModule, CommonModule, FormsModule, ReactiveFormsModule, RecaptchaFormsModule, RecaptchaModule],
+  imports: [AnimacionErrorDirective, RouterModule, CommonModule, FormsModule, ReactiveFormsModule, RecaptchaFormsModule, RecaptchaModule],
   templateUrl: './registro.component.html',
   styleUrl: './registro.component.css',
   standalone: true,
@@ -54,8 +55,9 @@ export class RegistroComponent implements OnInit {
   imagenEspecialista: File | null = null;
   perfilElegido: string | null = null
   imagenesPaciente: Blob[] = [];
-  captchaValid = false;
   captchaToken: string | null = null;
+  captchaValid = false;
+  intentoEnvio = false;
 
   constructor(
     private acceso: AccesoService,
@@ -87,25 +89,34 @@ export class RegistroComponent implements OnInit {
   validarFormulario() {
     this.marcarCamposComoTocados(this.formulario);
 
-    if (this.formulario.invalid) {
-      const errores = Object.entries(this.formulario.controls)
-        .filter(([_, control]) => control.invalid)
-        .map(([nombre, control]) => {
-          const erroresControl = control.errors;
-          return `${nombre}: ${Object.keys(erroresControl || {}).join(', ')}`;
-        });
+    try {
 
-      throw new Error('Errores de validación:\n' + errores.join('\n'));
-    }
-    if (!this.captchaToken || !this.captchaValid) {
-      throw new Error('captcha no resulto');
-    }
+      if (this.formulario.invalid) {
+        const errores = Object.entries(this.formulario.controls)
+          .filter(([_, control]) => control.invalid)
+          .map(([nombre, control]) => {
+            const erroresControl = control.errors;
+            return `${nombre}: ${Object.keys(erroresControl || {}).join(', ')}`;
+          });
 
-    if (this.perfilElegido === 'paciente' && this.imagenesPaciente.length < 2) {
-      throw new Error('Debe subir 2 imágenes para el paciente');
-    }
-    if (this.perfilElegido === 'especialista' && !this.imagenEspecialista) {
-      throw new Error('Debe subir una imagen para el especialista');
+        throw new Error('Errores de validación:\n' + errores.join('\n'));
+      }
+      if (!this.captchaToken || !this.captchaValid) {
+        throw new Error('captcha no resulto');
+      }
+
+      if (this.perfilElegido === 'paciente' && this.imagenesPaciente.length < 2) {
+        throw new Error('Debe subir 2 imágenes para el paciente');
+      }
+      if (this.perfilElegido === 'especialista' && !this.imagenEspecialista) {
+        throw new Error('Debe subir una imagen para el especialista');
+      }
+    } catch (error: any) {
+      if (this.formulario.invalid) {
+        setTimeout(() => (this.intentoEnvio = false), 1300);
+        return;
+      }
+      throw error;
     }
   }
 
@@ -116,12 +127,12 @@ export class RegistroComponent implements OnInit {
   }
 
   async crearCuenta() {
-
     try {
-      const status = this.formulario.status;
+
+      this.intentoEnvio = true;
       this.validarFormulario();
 
-      if (status === 'VALID') {
+      if (this.formulario.valid) {
 
         if (this.perfilElegido == "paciente") {
 
@@ -147,50 +158,51 @@ export class RegistroComponent implements OnInit {
             parseInt(this.formulario.value.dni!),
             this.perfilElegido)
         }
-      }
 
-      if (this.perfilElegido == "especialista") {
 
-        let especialidades = this.formulario.value.especialidad!.split(',');
+        if (this.perfilElegido == "especialista") {
 
-        const nombreArchivo = `${this.perfilElegido}_${this.formulario.value.nombre}`;
-        const { error } = await this.supabase.client.storage
-          .from("usuarios")
-          .upload(nombreArchivo, this.imagenEspecialista!);
+          let especialidades = this.formulario.value.especialidad!.split(',');
 
-        if (!error) {
-          const URL = this.supabase.client.storage.from('usuarios').getPublicUrl(nombreArchivo).data.publicUrl;
-          for (let i = 0; i < especialidades.length; i++) {
+          const nombreArchivo = `${this.perfilElegido}_${this.formulario.value.nombre}`;
+          const { error } = await this.supabase.client.storage
+            .from("usuarios")
+            .upload(nombreArchivo, this.imagenEspecialista!);
 
-            await this.usuarios.insertarDatos(
-              this.formulario.value.nombre!,
-              this.formulario.value.apellido!,
-              parseInt(this.formulario.value.edad!),
-              this.formulario.value.email!,
-              URL!, null,
-              especialidades[i].trim(),
-              parseInt(this.formulario.value.dni!),
-              this.perfilElegido
-            )
+          if (!error) {
+            const URL = this.supabase.client.storage.from('usuarios').getPublicUrl(nombreArchivo).data.publicUrl;
+            for (let i = 0; i < especialidades.length; i++) {
+
+              await this.usuarios.insertarDatos(
+                this.formulario.value.nombre!,
+                this.formulario.value.apellido!,
+                parseInt(this.formulario.value.edad!),
+                this.formulario.value.email!,
+                URL!, null,
+                especialidades[i].trim(),
+                parseInt(this.formulario.value.dni!),
+                this.perfilElegido
+              )
+            }
           }
         }
+        const { data, error } = await this.supabase.client.auth.signUp({
+          email: this.formulario.value.email!,
+          password: this.formulario.value.clave!
+        });
+        if (error) throw error;
+
+        this.acceso.salir();
+
+        Swal.fire({
+          title: "cuenta creada con exito",
+          text: "solo queda esperar a que sea habilitada",
+          icon: "success",
+          draggable: true
+        });
+
+        this.router.navigate(['/login']);
       }
-      const { data, error } = await this.supabase.client.auth.signUp({
-        email: this.formulario.value.email!,
-        password: this.formulario.value.clave!
-      });
-      if (error) throw error;
-
-      this.acceso.salir();
-
-      Swal.fire({
-        title: "cuenta creada con exito",
-        text: "solo queda esperar a que sea habilitada",
-        icon: "success",
-        draggable: true
-      });
-
-      this.router.navigate(['/login']);
     } catch (error: any) {
       if (error.message == "User already registered") {
         this.mensajeError = "el usuario ya esta registrado";

@@ -16,16 +16,19 @@ export class SeccionPacienteComponent implements OnInit {
   pacientes: any[] = [];
   datosUsuario: any = "";
   perfil: string = "";
+  estaCargando = false;
 
   constructor(private especialistaService: EspecialistaService, private acceso: AccesoService, private usuarioService: UsuarioService) { }
 
   async ngOnInit() {
+    setTimeout(() => { this.estaCargando = true; }, 3000);
+
     this.perfil = await this.acceso.obtenerPerfil();
     let correo = await this.acceso.verificarAcceso();
     this.datosUsuario = await this.usuarioService.getUserByEmail(correo!);
 
     if (this.perfil === "especialista") {
-      this.especialistaService.traerPacientesAtendidos(this.datosUsuario.id).then(pacientes => {
+      this.especialistaService.traerPacientesAtendidos(this.datosUsuario.mail).then(pacientes => {
         this.pacientes = Array.from(new Set(pacientes))
       })
     }
