@@ -11,6 +11,7 @@
                     <p><strong>Obra Social:</strong> {{ paciente.id_paciente.obra_social }}</p>
                     <p><strong>Fecha de atención:</strong> {{ paciente.fecha | date:'dd/MM/yyyy HH:mm' }}</p>
                     <p><strong>Reseña médica:</strong> {{ paciente.resenia }}</p>
+                    <p><strong>Historia Clinica:</strong><button style="width: 100px;" (click)="irHistoriaClinica(paciente.id_paciente.id)">ver</button></p>
                 </div>
             </div>
         </div>
@@ -31,6 +32,7 @@
                     <th>edad</th>
                     <th>obra social</th>
                     <th>foto perfil</th>
+                    <th>historia clinica</th>
                 </thead>
                 <tbody>
                     <tr *ngFor="let paciente of pacientes">
@@ -39,6 +41,7 @@
                         <td>{{ paciente.edad }}</td>
                         <td>{{ paciente.obra_social }}</td>
                         <td><img [src]="paciente.url_perfil" class="foto" /></td>
+                        <td><button (click)="irHistoriaClinica(pacientes.id_paciente.id)">ver</button></td>
                     </tr>
                 </tbody>
 

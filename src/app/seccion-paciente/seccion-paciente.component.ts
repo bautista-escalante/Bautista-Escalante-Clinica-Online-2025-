@@ -3,8 +3,11 @@ import { EspecialistaService } from '../servicios/especialista.service';
 import { AccesoService } from '../servicios/acceso.service';
 import { UsuarioService } from '../servicios/usuario.service';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { Route, Router, RouterLink } from '@angular/router';
 import * as XLSX from 'xlsx'
+import Swal from 'sweetalert2';
+import { HistoriaService } from '../servicios/historia.service';
+import { TurnoService } from '../servicios/turno.service';
 @Component({
   selector: 'app-seccion-paciente',
   imports: [CommonModule, RouterLink],
@@ -13,12 +16,12 @@ import * as XLSX from 'xlsx'
 })
 export class SeccionPacienteComponent implements OnInit {
 
-  pacientes: any[] = [];
+  pacientes: any = [];
   datosUsuario: any = "";
   perfil: string = "";
   estaCargando = false;
 
-  constructor(private especialistaService: EspecialistaService, private acceso: AccesoService, private usuarioService: UsuarioService) { }
+  constructor(private turnoService: TurnoService, private historiaService: HistoriaService, private route: Router, private especialistaService: EspecialistaService, private acceso: AccesoService, private usuarioService: UsuarioService) { }
 
   async ngOnInit() {
     setTimeout(() => { this.estaCargando = true; }, 3000);
@@ -31,6 +34,7 @@ export class SeccionPacienteComponent implements OnInit {
       this.especialistaService.traerPacientesAtendidos(this.datosUsuario.mail).then(pacientes => {
         this.pacientes = Array.from(new Set(pacientes))
       })
+      console.log(this.pacientes)
     }
     if (this.perfil === "admin") {
       this.pacientes = await this.usuarioService.traerPacientes();
@@ -47,5 +51,20 @@ export class SeccionPacienteComponent implements OnInit {
     XLSX.writeFile(wb, 'pacientes.xlsx');
   }
 
+
+  async irHistoriaClinica(id: number) {
+    console.log(id)
+    let ultimoTurno = await this.turnoService.traerUltimoTurno(id);
+
+    if (ultimoTurno && ultimoTurno.length > 0) {
+      if (await this.historiaService.historiaClinicaExiste(ultimoTurno[0].id)) {
+        Swal.fire("no tenes historia clinica aun", "", "error");
+        return;
+      }
+      this.route.navigate([`/pdfHistoria/${id}`])
+    } else {
+      Swal.fire("esta paciente no historia clinica aun", "", "error");
+    }
+  }
 
 }
