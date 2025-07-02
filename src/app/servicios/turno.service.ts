@@ -145,4 +145,17 @@ export class TurnoService {
     return data?.length;
   }
 
+  async traerUltimoTurno(id_paciente: number) {
+    const { data, error } = await this.supabase.client
+      .from("turnos")
+      .select("id, id_paciente")
+      .eq("id_paciente", id_paciente)
+      .order("id", { ascending: false })
+      .limit(3)
+
+    console.log(data)
+    if (error) console.log(error)
+    return data;
+  }
+
 }

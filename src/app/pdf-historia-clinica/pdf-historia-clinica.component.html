@@ -1,0 +1,33 @@
+<div id="historia_clinica">
+    <img src="iconos/logo.jpg" class="logo" />
+
+    <div class="descripcion">
+        <h2 class="titulo">Clínica Online</h2>
+        <h3>Historia clínica de {{ datosPaciente.apellido | agregarMayuscula }}, {{ datosPaciente.nombre |
+            agregarMayuscula }}</h3>
+        <h3>Fecha de emisión: {{ fechaEmision | fechaLocal }}</h3>
+    </div>
+
+    <div class="perfil">
+        <img [src]="datos[0].url_perfil" class="foto-paciente" />
+    </div>
+
+    <ul class="datos-clinicos">
+        <li><strong>Edad:</strong> {{ datosPaciente.edad }} años</li>
+        <li><strong>Obra social:</strong> {{ datosPaciente.obra_social }}</li>
+        <li><strong>Altura:</strong> {{ datos[0].altura }} cm</li>
+        <li><strong>Temperatura:</strong> {{ datos[0].temperatura }} grados</li>
+        <li><strong>Presión:</strong> {{ datos[0].presion }}</li>
+        <li><strong>Peso:</strong> {{ datos[0].peso }}</li>
+        <ng-container *ngFor="let dato of datos; let i = index;">
+            <li *ngIf="dato.valor_dinamico !== null">
+                <strong>{{ dato.campo_dinamico }}:</strong> {{ dato.valor_dinamico }}
+            </li>
+        </ng-container>
+    </ul>
+
+    <div *ngIf="mostrarBoton" class="btn_descargar" (click)="exportarPDF()">
+        <img src="iconos/descargar.svg" class="foto" alt="Descargar">
+        <strong>Descargar PDF</strong>
+    </div>
+</div>

@@ -9,7 +9,7 @@
             
             <div *ngIf="usuario.perfil==='paciente'">
                 <p><strong>Obra social:</strong> {{ usuario.obra_social }}</p>
-                <button (click)="descargarHistorial()">descargar historia clinica</button>
+                <button (click)="descargarHistorial()">ver historia clinica</button>
             </div>
            
             <div *ngIf="usuario.perfil==='especialista'">

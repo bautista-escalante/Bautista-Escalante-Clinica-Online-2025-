@@ -81,6 +81,11 @@ export const routes: Routes = [
     , canActivate: [accesoGuard]
   },
   {
+    path: 'pdfHistoria/:id_paciente',
+    loadComponent: () => import("./pdf-historia-clinica/pdf-historia-clinica.component").then(c => c.PdfHistoriaClinicaComponent)
+    , canActivate: [accesoGuard]
+  },
+  {
     path: '**',
     redirectTo: 'login',
     pathMatch: 'full'
