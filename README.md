@@ -43,15 +43,15 @@
 
 <div>
 	<p>tiene aceso a las distintas estadisticas de la clinica y registros de ingreso, puede exportarelo a pdf</p>
-	<img src="https://jzjuzqteqihqgtkduxvc.supabase.co/storage/v1/object/public/fotos/readme/estadistica.png" style="width: 500px;">
+	<img src="https://jzjuzqteqihqgtkduxvc.supabase.co/storage/v1/object/public/fotos/readme/estadisticas.png" style="width: 500px;">
 	<p>tiene acceso a los datos de los pacientes y puede exportarlos a exel</p>
-	<img src="https://jzjuzqteqihqgtkduxvc.supabase.co/storage/v1/object/public/fotos/readme/datos_pacientes.png"  style="width: 500px;">
+	<img src="https://jzjuzqteqihqgtkduxvc.supabase.co/storage/v1/object/public/fotos/readme/datos_paciente.png"  style="width: 500px;">
 	<p>puede agregar un nuevo admin agregando la informacion correcta (no necesita aprobacion)</p>
-	<img src="https://jzjuzqteqihqgtkduxvc.supabase.co/storage/v1/object/public/fotos/readme/nuevo_admin.png"  style="width: 500px;">
+	<img src="https://jzjuzqteqihqgtkduxvc.supabase.co/storage/v1/object/public/fotos/readme/agregarAdmin.png"  style="width: 500px;">
 	<p>puede solicitar turno como lo haria un paciente con la diferencia que debe indicar para que paciente es el turno</p>
-	<img src="https://jzjuzqteqihqgtkduxvc.supabase.co/storage/v1/object/public/fotos/readme/solicitar%20turno.png"  style="width: 500px;">
+	<img src="https://jzjuzqteqihqgtkduxvc.supabase.co/storage/v1/object/public/fotos/readme/agregarTurno.png"  style="width: 500px;">
 	<p>pueda aceptar o recharar solicitudes de aceptacion</p>
-	<img src="https://jzjuzqteqihqgtkduxvc.supabase.co/storage/v1/object/public/fotos/readme/solicitud.png"  style="width: 500px;">
+	<img src="https://jzjuzqteqihqgtkduxvc.supabase.co/storage/v1/object/public/fotos/readme/aprobacion.png"  style="width: 500px;">
 </div>
 
 
