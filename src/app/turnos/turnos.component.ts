@@ -8,6 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
+import { HistoriaService } from '../servicios/historia.service';
 
 @Component({
   selector: 'app-turnos',
@@ -26,7 +27,8 @@ export class TurnosComponent implements OnInit {
     private route: Router,
     private turnoservice: TurnoService,
     private usuario: UsuarioService,
-    private acceso: AccesoService
+    private acceso: AccesoService,
+    private historiaService: HistoriaService
   ) { }
 
   async ngOnInit() {
@@ -52,6 +54,18 @@ export class TurnosComponent implements OnInit {
       await this.recargarTurnos()
       this.turnos = this.turnos.filter(turno =>
         turno.id_paciente?.nombre?.toLowerCase().includes(this.input.trim().toLowerCase()));
+    }
+    if (this.turnos.length == 0) {
+
+      await this.recargarTurnos();
+      const filtro = await this.historiaService.filtrarPorDinamicos(this.input)
+
+      if (filtro.length > 0) {
+        for (const f of filtro) {
+          const turno = await this.turnoservice.traerTurnosPorId(f.id);
+          this.turnos.push(turno);
+        }
+      }
     }
     if (this.turnos.length == 0) {
       await this.recargarTurnos()

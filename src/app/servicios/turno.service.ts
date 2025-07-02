@@ -156,6 +156,16 @@ export class TurnoService {
     console.log(data)
     if (error) console.log(error)
     return data;
+}
+
+async traerTurnosPorId(idturno: number) {
+    const { data, error } = await this.supabase.client
+      .from("turnos")
+      .select("*, id_paciente(*), id_especialista(*)")
+      .eq("id", idturno)
+    
+    if (error) return []
+    return data;
   }
 
 }

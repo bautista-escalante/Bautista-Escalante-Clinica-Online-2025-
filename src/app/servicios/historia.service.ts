@@ -34,16 +34,37 @@ export class HistoriaService {
     return data?.length === 0;
   }
 
-  async traerHistoriaClinica() {
-    const { data } = await this.supabase.client
+  async traerHistoriaClinica(id: number) {
+    const { data, error } = await this.supabase.client
       .from("historia_clinica")
       .select("*, id_turno(*, id_paciente(*), id_especialista(*))")
 
-    return data;
+    const historiasFiltradas = data?.filter(historia => { return historia.id_turno?.id_paciente.id == id; });
+
+    return historiasFiltradas;
   }
 
-  async filtrarPorDinamicos() {
+  async filtrarPorDinamicos(valor: string): Promise<any[]> {
+    const { data } = await this.supabase.client
+      .from("historia_clinica")
+      .select("*, id_turno(*, id_paciente(*), id_especialista(*))")
+      .eq("valor_dinamico", valor)
 
+    if (data && data.length > 0) {
+      return data;
+    } else {
+
+      const { data: data2 } = await this.supabase.client
+        .from("historia_clinica")
+        .select("*, id_turno(*, id_paciente(*), id_especialista(*))")
+        .eq("campo_dinamico", valor)
+
+      if (data2 && data2.length > 0) {
+        return data2;
+      } else {
+        return []
+      }
+    }
   }
 
 }

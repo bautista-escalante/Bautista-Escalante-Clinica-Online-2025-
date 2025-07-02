@@ -10,8 +10,8 @@ export class PdfService {
 
   constructor(private historiaClinicaService: HistoriaService) { }
 
-  async generarPdfHistoria() {
-    let historial = await this.historiaClinicaService.traerHistoriaClinica();
+/*   async generarPdfHistoria(id:number) {
+    let historial = await this.historiaClinicaService.traerHistoriaClinica(id);
 
     const turnosUnicos = historial!.reduce((acc: any[], item: any) => {
       if (!acc.find(t => t.id_turno.id === item.id_turno.id)) {
@@ -72,7 +72,7 @@ export class PdfService {
       //doc.save(`historia clinica ${historial![0].id_turno.id_paciente.nombre}`);
     });
   }
-
+ */
   convertirImagenABase64(url: string): Promise<string> {
     return new Promise((resolve, reject) => {
       const img = new Image();
