@@ -1,59 +1,113 @@
-# ClinicaOnline
+# 🏥 Clinica Online
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.6.
+### un sistema para la gestion de turnos, usuarios y atencion medica de manera online.
 
-## Development server
+ Perfiles de usuarios
+ * administrador
+ * especialista
+ * paciente
 
-To start a local development server, run:
 
-```bash
-ng serve
-```
+# 🔒 login 
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+### es la pagina inicial con la que podemos ingresar con una cuenta previamente aprobada
 
-## Code scaffolding
+<img src="https://jzjuzqteqihqgtkduxvc.supabase.co/storage/v1/object/public/fotos/readme/ClinicaOnline%20-%20Google%20Chrome%202_7_2025%2004_38_08.png" style="width: 500px;"/>
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+# 🔒 registro
 
-```bash
-ng generate component component-name
-```
+### en esta pagina primero se decide con quye perfil se decea registrarse, para lugo completar los campos correcpondientes de cada entidad, una vez realizada queda esperar que el admin lo apruebe
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+<div>
+	<img src="https://jzjuzqteqihqgtkduxvc.supabase.co/storage/v1/object/public/fotos/readme/registroEleccion.png" style="width: 500px;"/>
+	<p>registrar especialista</p>
+	<img src="https://jzjuzqteqihqgtkduxvc.supabase.co/storage/v1/object/public/fotos/readme/registroDoctor.png" alt="registrar especialista" style="width: 500px;"/>
+	<p>registrar paciente</p>
+	<img src="https://jzjuzqteqihqgtkduxvc.supabase.co/storage/v1/object/public/fotos/readme/registroPaciente.png" alt="registrar paciente" style="width: 500px;"/>
+</div>
 
-```bash
-ng generate --help
-```
+# 📌 bienvenido
 
-## Building
+### pagina principal que varia segun el perfi pero todos comparten 3 botones en comun que son cerrar sesion, perfil, y turnos
 
-To build the project run:
+<div>
+	<p>dentro de los botones exclusivos del admin estan el que le permite agregar  un nuevo admin, solicitar turnos, ver los datos de los pacientes, las estadisticas de la clinica y las solicitudes de aprobacion</p>
+	<img src="https://jzjuzqteqihqgtkduxvc.supabase.co/storage/v1/object/public/fotos/readme/bienvenido_admin.png" style="width: 500px;"/>
+	<p>dentro de los botones exclusivos del doctor estan los le permite gestionar los turnos y los que le permiten ver a los pacienters atendidos y su historia clinica</p>
+	<img src="https://jzjuzqteqihqgtkduxvc.supabase.co/storage/v1/object/public/fotos/readme/bienvenido_doctor.png" style="width: 500px;"/>
+	<p>dentro de los botones exclusivos de los pacientes estan los que les permiten ver los turnos agendados y los que le permiten agregar nuevos</p>
+	<img src="https://jzjuzqteqihqgtkduxvc.supabase.co/storage/v1/object/public/fotos/readme/bienvenido_paciente.png" style="width: 500px;"/>
+</div>
 
-```bash
-ng build
-```
+# usuario Admin
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+<div>
+	<p>tiene aceso a las distintas estadisticas de la clinica y registros de ingreso, puede exportarelo a pdf</p>
+	<img src="https://jzjuzqteqihqgtkduxvc.supabase.co/storage/v1/object/public/fotos/readme/estadistica.png" style="width: 500px;">
+	<p>tiene acceso a los datos de los pacientes y puede exportarlos a exel</p>
+	<img src="https://jzjuzqteqihqgtkduxvc.supabase.co/storage/v1/object/public/fotos/readme/datos_pacientes.png"  style="width: 500px;">
+	<p>puede agregar un nuevo admin agregando la informacion correcta (no necesita aprobacion)</p>
+	<img src="https://jzjuzqteqihqgtkduxvc.supabase.co/storage/v1/object/public/fotos/readme/nuevo_admin.png"  style="width: 500px;">
+	<p>puede solicitar turno como lo haria un paciente con la diferencia que debe indicar para que paciente es el turno</p>
+	<img src="https://jzjuzqteqihqgtkduxvc.supabase.co/storage/v1/object/public/fotos/readme/solicitar%20turno.png"  style="width: 500px;">
+	<p>pueda aceptar o recharar solicitudes de aceptacion</p>
+	<img src="https://jzjuzqteqihqgtkduxvc.supabase.co/storage/v1/object/public/fotos/readme/solicitud.png"  style="width: 500px;">
+</div>
 
-## Running unit tests
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+# usuario Especialista
 
-```bash
-ng test
-```
+<div>
+	<p>permite aceptar, rechazar finalizar agregar un diagnostico y una historia clinica</p>
+	<img src="https://jzjuzqteqihqgtkduxvc.supabase.co/storage/v1/object/public/fotos/readme/turnos_doctor.png" style="width: 500px;">
+	<p>permite visualizarlos datos principales del paciente </p>
+	<img src="https://jzjuzqteqihqgtkduxvc.supabase.co/storage/v1/object/public/fotos/readme/datos.png" style="width: 500px;">
+	<p>una vez finalizado el turno el doctor puede hacer una historia clinica</p>
+	<img src="https://jzjuzqteqihqgtkduxvc.supabase.co/storage/v1/object/public/fotos/readme/crearHistoria.png" style="width: 500px;">
+</div>
 
-## Running end-to-end tests
+# usuario Paciente
 
-For end-to-end (e2e) testing, run:
+<div>
+	<p> permitre visualizar, cancelar y ver el estado y la reseña del doctor </p>
+	<img src="https://jzjuzqteqihqgtkduxvc.supabase.co/storage/v1/object/public/fotos/readme/turnos_paciente.png" style="width: 500px;">
+	<p> para seleccionar un nuevo turno hay que seguir una serie de pasos consecutivos </p>
+	<p>1- elegir la especialidad</p>
+	<img src="https://jzjuzqteqihqgtkduxvc.supabase.co/storage/v1/object/public/fotos/readme/especialidades.png" style="width: 500px;">
+	<p>2- elegir al doctor</p>
+	<img src="https://jzjuzqteqihqgtkduxvc.supabase.co/storage/v1/object/public/fotos/readme/doctores.png" style="width: 500px;">
+	<p>3- elegir el horario</p>
+	<img src="https://jzjuzqteqihqgtkduxvc.supabase.co/storage/v1/object/public/fotos/readme/horarios.png" style="width: 500px;">
+</div>
 
-```bash
-ng e2e
-```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+# paginas en comun
 
-## Additional Resources
+<div>
+	<p>perfil admin</p>
+	<img src="https://jzjuzqteqihqgtkduxvc.supabase.co/storage/v1/object/public/fotos/readme/perfilAdmin.png" style="width: 500px;">
+	<p>perfil especialista</p>
+	<img src="https://jzjuzqteqihqgtkduxvc.supabase.co/storage/v1/object/public/fotos/readme/perfilDoctor.png" style="width: 500px;">
+	<p>perfil paciente</p>
+	<img src="https://jzjuzqteqihqgtkduxvc.supabase.co/storage/v1/object/public/fotos/readme/perfilPaciente.png" style="width: 500px;">
+</div>
+<p>permite exportar a pdf la historia clinica</p>
+	<img src="https://jzjuzqteqihqgtkduxvc.supabase.co/storage/v1/object/public/fotos/readme/historiaClinica.png" style="width: 500px;">
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
