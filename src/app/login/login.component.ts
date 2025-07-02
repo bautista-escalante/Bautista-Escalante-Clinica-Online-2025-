@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { SupabaseService } from '../servicios/supabase.service';
 import { FormsModule } from '@angular/forms';
 import { UsuarioService } from '../servicios/usuario.service';
+import { RegistroService } from '../servicios/registro.service';
 
 @Component({
   selector: 'app-login',
@@ -19,7 +20,8 @@ export class LoginComponent implements OnInit {
   constructor(
     private supabase: SupabaseService,
     private router: Router,
-    private usuario: UsuarioService
+    private usuario: UsuarioService,
+    private registroService: RegistroService
   ) { }
 
   rellenarCampos(email: string) {
@@ -53,7 +55,8 @@ export class LoginComponent implements OnInit {
       if (error) {
         throw error;
       }
-
+      
+      this.registroService.guardarRegistro(usuario.id);
       this.router.navigate(['/bienvenido']);
       return { data, error: null };
 

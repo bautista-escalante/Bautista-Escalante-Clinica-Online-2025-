@@ -77,8 +77,41 @@ export class EspecialistaService {
       .eq('mail', email)
       .eq("especialidades", especialidad)
       .limit(1);
-      
+
     if (error) throw error;
     return data[0];
+  }
+
+  async traerCantidadFinalizados(id: number) {
+    const { data, error } = await this.supabase.client
+      .from("turnos")
+      .select("*")
+      .eq("estado", "finalizado")
+      .eq("id_especialista", id);
+
+    if (error) return 0;
+    return data?.length;
+  }
+
+  async traerEspecialistasExistentes() {
+    const { data, error } = await this.supabase.client
+      .from("usuarios")
+      .select("*")
+      .eq("perfil", "especialista")
+      .eq("habilitado", true);
+
+    if (error) return;
+    return data;
+  }
+
+  async traerturnosSolicitados(id:number) {
+    const { data, error } = await this.supabase.client
+      .from("turnos")
+      .select("*")
+      .eq("estado", "a conrfirmar")
+      .eq("id_especialista", id);
+
+    if (error) return 0;
+    return data?.length;
   }
 }

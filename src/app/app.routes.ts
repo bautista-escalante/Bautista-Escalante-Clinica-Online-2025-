@@ -56,6 +56,11 @@ export const routes: Routes = [
     canActivate: [adminGuard, accesoGuard]
   },
   {
+    path: 'estadistica',
+    loadComponent: () => import("./estadisticas/estadisticas.component").then(c => c.EstadisticasComponent),
+    canActivate: [adminGuard, accesoGuard]
+  },
+  {
     path: 'solicitarTurno',
     loadComponent: () => import("./solicitar-turno/solicitar-turno.component").then(c => c.SolicitarTurnoComponent)
     , canActivate: [accesoGuard, rolGuard]

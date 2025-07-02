@@ -1,0 +1,45 @@
+<div  *ngIf="!estaCargando" id="graficos">
+  <h2>Cantidad de turnos por especialidad</h2>
+  <canvas id="cantEspecialidad" style="width: 40%; height: 300px;"></canvas>
+  
+  <div *ngIf="registros.length > 0">
+    <table border="1px" id="data">
+      <thead>
+        <tr>
+          <th>Usuario</th>
+          <th>Fecha de inicio</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let r of registros">
+          <td>{{ r.id_usuario.apellido }}, {{ r.id_usuario.nombre }}</td>
+          <td>{{ r.fecha | fechaLocal }}</td>
+        </tr>
+      </tbody>
+    </table>
+    
+    <div class="btn_descargar" (click)="descargarExcel()">
+      <img src="iconos/descargar.svg" class="foto" alt="Descargar">
+      <strong>Descargar Excel</strong>
+    </div>
+  </div>
+  
+  <h2>Cantidad de turnos por día</h2>
+  <canvas id="cantTurnosDia" style="width: 40%; height: 300px;"></canvas>
+  
+  <h2> Cantidad de turnos finalizados por médico</h2>
+  <canvas id="cantfinalizados" style="width: 40%; height: 300px;"></canvas>
+  
+  <h2> Cantidad de turnos solicitado por médico</h2>
+  <canvas id="cantSolicitados" style="width: 40%; height: 300px;"></canvas>
+  
+  <div class="btn_descargar" (click)="exportarPDF()">
+    <img src="iconos/descargar.svg" class="foto" alt="Descargar">
+    <strong>Descargar pdf</strong>
+  </div>
+  <button routerLink="/bienvenido"><strong>Volver atrás</strong></button>
+</div>
+
+<div class="spinner" *ngIf="estaCargando">
+  <img src="Spinner.svg">
+</div>

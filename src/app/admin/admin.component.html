@@ -3,6 +3,10 @@
     <span *ngIf="cantidadNoitificaciones !== 0" class="badge">{{ cantidadNoitificaciones }}</span>
 </button>
 
+<button routerLink="/estadistica" class="btn_estadistica">
+    <img src="iconos/estadistica.svg">
+</button>
+
 <div *ngIf="agregar">
     <form [formGroup]="formulario">
 
@@ -14,7 +18,6 @@
             <div *ngIf="formulario.controls['nombre'].touched && formulario.controls['nombre'].hasError('required')"
                 class="error">
                 <P class="mensaje-error">Nombre es obligatorio</P>
-
             </div>
         </div>
 

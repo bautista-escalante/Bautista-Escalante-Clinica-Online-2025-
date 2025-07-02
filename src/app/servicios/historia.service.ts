@@ -33,4 +33,17 @@ export class HistoriaService {
 
     return data?.length === 0;
   }
+
+  async traerHistoriaClinica() {
+    const { data } = await this.supabase.client
+      .from("historia_clinica")
+      .select("*, id_turno(*, id_paciente(*), id_especialista(*))")
+
+    return data;
+  }
+
+  async filtrarPorDinamicos() {
+
+  }
+
 }

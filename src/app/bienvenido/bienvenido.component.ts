@@ -40,12 +40,21 @@ export class BienvenidoComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
-    let correo = await this.acceso.verificarAcceso();
-    let usuario = await this.user.getUserByEmail(correo!);
-    this.estalogeado = !!correo;
+    try {
+      const correo = await this.acceso.verificarAcceso();
 
-    this.router.navigate([`/bienvenido/${usuario.perfil}`]);
+      this.estalogeado = !!correo;
+
+      if (this.estalogeado) {
+        const usuario = await this.user.getUserByEmail(correo!);
+        this.router.navigate([`/bienvenido/${usuario.perfil}`]);
+      }
+    } catch (error) {
+      this.estalogeado = false;
+      console.error("Error al verificar acceso:", error);
+    }
   }
+
 
   async cerrarSesion() {
     try {

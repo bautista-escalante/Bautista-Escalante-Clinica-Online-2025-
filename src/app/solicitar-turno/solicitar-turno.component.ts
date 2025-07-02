@@ -71,13 +71,11 @@ export class SolicitarTurnoComponent implements OnInit {
     this.horariosService.traerHorariosPorId(id)
       .then(async (horariosTotales) => {
         for (let i = 0; i < horariosTotales.length; i++) {
-          console.log(this.calcularDosSemanas(horariosTotales[i].horario))
+          
           estaDisponible = await this.turnoservice.esHorarioDisponible(id, this.calcularDosSemanas(horariosTotales[i].horario))
-          console.log(estaDisponible)
           if (estaDisponible) {
             this.horarios.push(horariosTotales[i])
           }
-          console.log(horariosTotales[i].horario)
         }
       });
   }

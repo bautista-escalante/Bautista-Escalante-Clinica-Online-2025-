@@ -9,7 +9,7 @@ export class AgregarFechaPipe implements PipeTransform {
     console.log(typeof (hora))
     let dosSemanas = new Date();
 
-    dosSemanas.setDate(dosSemanas.getDate() + 15)
+    dosSemanas.setDate(dosSemanas.getDate() + 14)
     const dia = dosSemanas.getDate().toString().padStart(2, "0");
     const mes = (dosSemanas.getMonth() + 1).toString().padStart(2, "0");
     const año = dosSemanas.getFullYear().toString();
