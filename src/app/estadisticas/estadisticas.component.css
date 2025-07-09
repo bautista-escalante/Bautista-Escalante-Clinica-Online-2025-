@@ -45,3 +45,17 @@ td {
   align-items: center;
   height: 100vh;
 }
+
+.horario {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.input_horario{
+    width: 40px;
+}
+
+.btn_graficar{
+  width: 70px;
+}

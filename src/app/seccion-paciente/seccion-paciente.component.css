@@ -53,13 +53,28 @@
     height: 100vh;
 }
 
-td{
+td {
     width: 150px;
 }
 
-.spinner{
+.spinner {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
+}
+
+.historia {
+    width: 100px;
+    background-color: #13527c;
+}
+
+.btn_foto {
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+}
+
+#turnosPaciente {
+    display: none;
 }

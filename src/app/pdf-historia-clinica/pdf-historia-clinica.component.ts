@@ -28,7 +28,6 @@ export class PdfHistoriaClinicaComponent implements OnInit {
   }
 
   async ngOnInit() {
-
     this.datos = await this.historiaService.traerHistoriaClinica(this.id);
 
     this.datosPaciente = this.datos![0].id_turno.id_paciente;

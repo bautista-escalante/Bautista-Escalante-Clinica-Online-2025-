@@ -86,6 +86,11 @@ export const routes: Routes = [
     , canActivate: [accesoGuard]
   },
   {
+    path: 'turnosEspecialidad',
+    loadComponent: () => import("./turnos-especialidad/turnos-especialidad.component").then(c => c.TurnosEspecialidadComponent)
+    , canActivate: [accesoGuard]
+  },
+  {
     path: '**',
     redirectTo: 'login',
     pathMatch: 'full'

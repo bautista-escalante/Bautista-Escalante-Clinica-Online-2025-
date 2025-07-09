@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { SupabaseService } from './supabase.service';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AccesoService {
 
-  constructor(private supabase: SupabaseService) { }
+  constructor(private supabase: SupabaseService, private router:Router) { }
 
 
   async registrarse(usuario: string, clave: string) {
@@ -18,8 +19,11 @@ export class AccesoService {
   }
 
   async verificarAcceso() {
-    const { data } = await this.supabase.client.auth.getUser();
-
+    const { data, error } = await this.supabase.client.auth.getUser();
+    if(error){
+      this.router.navigate(["/login"])
+    }
+    
     return data.user?.email;
   }
 

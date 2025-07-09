@@ -10,10 +10,11 @@ import * as XLSX from 'xlsx'
 import { RouterLink } from '@angular/router';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-estadisticas',
-  imports: [CommonModule, FechaLocalPipe, RouterLink],
+  imports: [CommonModule, FechaLocalPipe, RouterLink, FormsModule],
   standalone: true,
   templateUrl: './estadisticas.component.html',
   styleUrl: './estadisticas.component.css'
@@ -29,6 +30,8 @@ export class EstadisticasComponent implements OnInit {
   apellidosEspecialistas: string[] = [];
   cantFinalizados: number[] = [];
   cantsolicitados: number[] = [];
+  horaInicio = 1;
+  minInicio = "";
 
   constructor(
     private turno: TurnoService,
@@ -87,11 +90,17 @@ export class EstadisticasComponent implements OnInit {
 
     let especialistas = await this.especialistaService.traerEspecialistasExistentes();
     for (const esp of especialistas!) {
+      console.log(esp.id)
       const cant = await this.especialistaService.traerCantidadFinalizados(esp.id);
       this.cantFinalizados.push(cant);
       this.apellidosEspecialistas.push(`${esp.apellido}, ${esp.especialidades}`);
-    }
 
+      let index = this.apellidosEspecialistas.indexOf(`${esp.apellido}, ${esp.especialidades}`);
+      if (this.apellidosEspecialistas.includes(`${esp.apellido}, ${esp.especialidades}`)) {
+        this.apellidosEspecialistas.splice(index, 1);
+        break;
+      }
+    }
 
     for (const esp of especialistas!) {
       const cant = await this.especialistaService.traerturnosSolicitados(esp.id);

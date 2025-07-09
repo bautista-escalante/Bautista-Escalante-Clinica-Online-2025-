@@ -1,35 +1,46 @@
 <div class="fondo">
 
 
-        <div class="group">
-            <input placeholder="expresado en min" required="" type="number" class="input" [(ngModel)]="duracion">
+    <div class="group">
+        <label>duracion de la consulta</label>
+        <div class="horario">
+            <input required="" type="number" class="input" [(ngModel)]="duracion">
             <span class="highlight"></span>
-            <span class="bar"></span>
-            <label>duracion de la consulta</label>
+            <label>Min</label>
         </div>
+    </div>
 
-        <div class="group">
-            <input required="" type="text" class="input" [(ngModel)]="especialidad">
+    <div class="group">
+        <select id="obraSocial" class="opciones" [(ngModel)]="especialidad">
+            <option *ngFor="let e of arrayEspecialidades" [value]="e">{{e}}</option>
+        </select>
+    </div>
+
+
+
+    <div class="group">
+        <label>Hora de inicio</label>
+        <div class="horario">
+            <input type="number" required class="input input_horario" [(ngModel)]="horaInicio">
             <span class="highlight"></span>
-            <span class="bar"></span>
-            <label>especialidad</label>
-        </div>
-
-        <div class="group">
-            <input type="number" required class="input" [(ngModel)]="horaInicio">
+            <label><strong>:</strong></label>
+            <input type="number" required class="input input_horario" [(ngModel)]="minInicio">
             <span class="highlight"></span>
-            <span class="bar"></span>
-            <label>Hora de inicio</label>
         </div>
+    </div>
 
-        <div class="group">
-            <input type="number" required class="input" [(ngModel)]="horaFin">
+    <div class="group">
+        <label>Hora de final</label>
+        <div class="horario">
+            <input type="number" required class="input input_horario" [(ngModel)]="horaFin">
             <span class="highlight"></span>
-            <span class="bar"></span>
-            <label>Hora de fin</label>
+            <label><strong>:</strong></label>
+            <input type="number" required class="input input_horario" [(ngModel)]="minFin">
+            <span class="highlight"></span>
         </div>
+    </div>
 
-        <button (click)="definirHorario()">aceptar</button>
+    <button (click)="definirHorario()">aceptar</button>
 
     <button class="Btn_login" routerLink="/perfil">
         <div class="sign">

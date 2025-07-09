@@ -22,7 +22,7 @@ export class TurnoService {
   async traerTurnosPaciente(id: number) {
     const { data, error } = await this.supabase.client
       .from("turnos")
-      .select(`*, id_especialista(apellido, nombre, especialidades)`)
+      .select(`*, id_paciente(apellido, nombre), id_especialista(apellido, nombre, especialidades)`)
       .eq("id_paciente", id);
 
     if (error) throw error;
@@ -48,7 +48,6 @@ export class TurnoService {
 
     return filtrados;
   }
-
 
   async agregarTurno(paciente: number, especialista: number, fecha: string) {
     const { data, error } = await this.supabase.client
@@ -133,13 +132,28 @@ export class TurnoService {
     return cantidadPorEspecialidad;
   }
 
+  async traerTurnosPorEspecialidad(especialidad: string): Promise<any> {
+    const { data } = await this.supabase.client
+      .from("turnos")
+      .select("*, id_especialista(especialidades), id_paciente(nombre, apellido)")
+
+    let turnosPorEspecialidad: any = [];
+    data?.map((especialista: any) => {
+      
+      if (especialidad == especialista.id_especialista.especialidades) turnosPorEspecialidad.push(especialista);
+    })
+
+    return turnosPorEspecialidad;
+  }
+
   async traerTurnosPorDia(fecha: Date) {
     const f = new Date(fecha);
 
     const { data, error } = await this.supabase.client
       .from("turnos")
       .select("id")
-      .gte("created_at", new Date(f.getFullYear(), f.getMonth(), f.getDate()).toISOString())
+      .gte("created_at", f.toISOString())
+    //.gte("created_at", new Date(f.getFullYear(), f.getMonth(), f.getDate()).toISOString())
 
     if (error) return 0;
     return data?.length;
@@ -149,21 +163,34 @@ export class TurnoService {
     const { data, error } = await this.supabase.client
       .from("turnos")
       .select("id, id_paciente")
+      .eq("estado", "finalizado")
+      .eq("id_paciente", id_paciente)
+      .order("id", { ascending: false })
+      .limit(1)
+
+    if (error) console.log(error)
+    return data;
+  }
+
+  async traerUltimosTresTurnos(id_paciente: number) {
+    const { data, error } = await this.supabase.client
+      .from("turnos")
+      .select("id, id_paciente, fecha")
+      .eq("estado", "finalizado")
       .eq("id_paciente", id_paciente)
       .order("id", { ascending: false })
       .limit(3)
 
-    console.log(data)
     if (error) console.log(error)
     return data;
-}
+  }
 
-async traerTurnosPorId(idturno: number) {
+  async traerTurnosPorId(idturno: number) {
     const { data, error } = await this.supabase.client
       .from("turnos")
       .select("*, id_paciente(*), id_especialista(*)")
       .eq("id", idturno)
-    
+
     if (error) return []
     return data;
   }

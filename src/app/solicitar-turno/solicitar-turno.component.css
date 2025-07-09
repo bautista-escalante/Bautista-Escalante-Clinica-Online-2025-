@@ -109,3 +109,10 @@
   border-radius: 50%;
   object-fit: cover;
 }
+
+.spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}

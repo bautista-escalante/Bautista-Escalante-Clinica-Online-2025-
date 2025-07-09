@@ -1,7 +1,7 @@
-<div  *ngIf="!estaCargando" id="graficos">
+<div *ngIf="!estaCargando" id="graficos">
   <h2>Cantidad de turnos por especialidad</h2>
   <canvas id="cantEspecialidad" style="width: 40%; height: 300px;"></canvas>
-  
+
   <div *ngIf="registros.length > 0">
     <table border="1px" id="data">
       <thead>
@@ -17,22 +17,30 @@
         </tr>
       </tbody>
     </table>
-    
+
     <div class="btn_descargar" (click)="descargarExcel()">
       <img src="iconos/descargar.svg" class="foto" alt="Descargar">
       <strong>Descargar Excel</strong>
     </div>
   </div>
-  
+
   <h2>Cantidad de turnos por día</h2>
   <canvas id="cantTurnosDia" style="width: 40%; height: 300px;"></canvas>
-  
+
+  <!-- indicar el tiempo a evaluar -->
+  <div class="horario">
+    <input type="number" required class="input input_horario" [(ngModel)]="horaInicio">
+    <span class="highlight"></span>
+    <p>Horas</p>
+    <button class="btn_graficar">graficar</button>
+  </div>
+
   <h2> Cantidad de turnos finalizados por médico</h2>
   <canvas id="cantfinalizados" style="width: 40%; height: 300px;"></canvas>
-  
+
   <h2> Cantidad de turnos solicitado por médico</h2>
   <canvas id="cantSolicitados" style="width: 40%; height: 300px;"></canvas>
-  
+
   <div class="btn_descargar" (click)="exportarPDF()">
     <img src="iconos/descargar.svg" class="foto" alt="Descargar">
     <strong>Descargar pdf</strong>

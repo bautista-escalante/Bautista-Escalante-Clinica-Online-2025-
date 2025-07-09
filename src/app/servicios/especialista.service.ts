@@ -66,8 +66,11 @@ export class EspecialistaService {
     if (error) throw error;
 
     let filtrados = data.filter((turno: any) => (turno.id_especialista?.mail === correo));
+    
+    let unicos = Array.from(new Map(filtrados.map((turno: any) => [turno.id_paciente.id, turno])).values());
 
-    return filtrados;
+    return unicos;
+
   }
 
   async obtenerEspecialista(email: string, especialidad: string) {
@@ -104,7 +107,7 @@ export class EspecialistaService {
     return data;
   }
 
-  async traerturnosSolicitados(id:number) {
+  async traerturnosSolicitados(id: number) {
     const { data, error } = await this.supabase.client
       .from("turnos")
       .select("*")

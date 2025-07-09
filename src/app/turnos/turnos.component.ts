@@ -39,6 +39,7 @@ export class TurnosComponent implements OnInit {
   }
 
   async filtrarPaciente() {
+    this.error = "";
     await this.recargarTurnos();
     this.turnos = this.turnos.filter(turno =>
       turno.id_especialista?.especialidades?.toLowerCase().includes(this.input.trim().toLowerCase()));
@@ -56,19 +57,18 @@ export class TurnosComponent implements OnInit {
         turno.id_paciente?.nombre?.toLowerCase().includes(this.input.trim().toLowerCase()));
     }
     if (this.turnos.length == 0) {
+      this.turnos = [];
+      let turnosFiltrados = await this.historiaService.filtrarPorDinamicos(this.input);
 
-      await this.recargarTurnos();
-      const filtro = await this.historiaService.filtrarPorDinamicos(this.input)
-
-      if (filtro.length > 0) {
-        for (const f of filtro) {
-          const turno = await this.turnoservice.traerTurnosPorId(f.id);
-          this.turnos.push(turno);
-        }
+      for (let turnoFiltrado of turnosFiltrados!) {
+        let turno = await this.turnoservice.traerTurnosPorId(turnoFiltrado.id_turno);
+        this.turnos.push(...turno);
+        console.log(this.turnos)
       }
     }
     if (this.turnos.length == 0) {
-      await this.recargarTurnos()
+
+      await this.recargarTurnos();
       this.error = `no se encontraron turnos relacionado a ${this.input}`
     }
   }
@@ -93,6 +93,7 @@ export class TurnosComponent implements OnInit {
   }
 
   async filtrarEspecialista() {
+
     await this.recargarTurnos()
     this.turnos = this.turnos.filter(turno =>
       turno.id_especialista?.especialidades?.toLowerCase().includes(this.input.trim().toLowerCase()));
@@ -110,7 +111,17 @@ export class TurnosComponent implements OnInit {
         turno.id_especialista?.nombre?.toLowerCase().includes(this.input.trim().toLowerCase()));
     }
     if (this.turnos.length == 0) {
-      await this.recargarTurnos()
+      this.turnos = [];
+      let turnosFiltrados = await this.historiaService.filtrarPorDinamicos(this.input);
+
+      for (let turnoFiltrado of turnosFiltrados!) {
+        let turno = await this.turnoservice.traerTurnosPorId(turnoFiltrado.id_turno);
+        this.turnos.push(...turno);
+        console.log(this.turnos)
+      }
+    }
+    if (this.turnos.length == 0) {
+      await this.recargarTurnos();
       this.error = `no se encontraron turnos relacionado a ${this.input}`
     }
   }

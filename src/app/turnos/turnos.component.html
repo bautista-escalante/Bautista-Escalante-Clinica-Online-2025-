@@ -43,7 +43,7 @@
                     <td>
                         <div class="acciones" *ngIf="perfil === 'especialista'">
 
-                            <button *ngIf="turno.estado !== 'realizado'" (click)="cambiarEstado('aceptado',turno.id)"
+                            <button *ngIf="turno.estado !== 'finalizado'" (click)="cambiarEstado('aceptado',turno.id)"
                                 class="btn_accion">
                                 Aceptar turno
                             </button>
@@ -69,16 +69,16 @@
                         </div>
                         <div class="acciones" *ngIf="perfil === 'paciente'">
 
-                            <button *ngIf="turno.estado !== 'realizado'" (click)="cambiarEstadoConMensaje(turno.id,'cancelado')"
+                            <button *ngIf="turno.estado !== 'finalizado'" (click)="cambiarEstadoConMensaje(turno.id,'cancelado')"
                                 class="btn_accion">Cancelar Turno</button>
                             <button *ngIf="!!turno.resenia" (click)="verResenia(turno.id)" class="btn_accion">Ver
                                 Reseña</button>
-                            <button *ngIf="turno.estado === 'realizado'" class="btn_accion">Completar Encuesta</button>
-                            <button *ngIf="turno.estado === 'realizado'" (click)="Calificar(turno.id)"
+                            <button *ngIf="turno.estado === 'finalizado'" class="btn_accion">Completar Encuesta</button>
+                            <button *ngIf="turno.estado === 'finalizado'" (click)="Calificar(turno.id)"
                                 class="btn_accion">Calificar Atencion</button>
                         </div>
                         <div class="acciones" *ngIf="perfil === 'admin'">
-                            <button *ngIf="turno.estado !== 'realizado'" (click)="cambiarEstadoConMensaje(turno.id,'cancelado')"
+                            <button *ngIf="turno.estado !== 'finalizado'" (click)="cambiarEstadoConMensaje(turno.id,'cancelado')"
                                 class="btn_accion">Cancelar Turno</button>
                         </div>
                     </td>

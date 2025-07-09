@@ -1,10 +1,61 @@
-.fondo{
+.fondo {
     height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.group{
-    margin: 30px;
+.group {
+    position: relative;
+    margin-bottom: 40px;
+}
+
+.input {
+    font-size: 16px;
+    padding: 10px 10px 10px 5px;
+    display: block;
+    width: 200px;
+    border: none;
+    border-bottom: 1px solid #007acc;
+    background: transparent;
+    color: white;
+}
+
+label {
+    display: block;
+    color: #007acc;
+    font-size: 14px;
+    font-weight: normal;
+    margin-bottom: 5px;
+    position: static;
+    pointer-events: none;
+    transition: none;
+}
+
+.input:focus~label,
+.input:valid~label {
+    top: auto;
+    font-size: 14px;
+}
+
+.highlight {
+    display: none;
+}
+
+.horario {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.input_horario{
+    width: 40px;
+}
+
+.opciones {
+  border-color: #007acc;
+  color: #007acc;
+  background-color: transparent;
+  font-size: 1.2rem;
+  margin-top: 15px;
 }

@@ -9,12 +9,21 @@ import Swal from 'sweetalert2'
 import { Router, RouterLink } from '@angular/router';
 import { AgregarFechaPipe } from '../pipes/agregar-fecha.pipe';
 import { ImgDefaultDirective } from '../directivas/img-default.directive';
+import { trigger, transition, style, animate } from '@angular/animations';
 
 @Component({
   selector: 'app-solicitar-turno',
   imports: [CommonModule, RouterLink, AgregarFechaPipe, ImgDefaultDirective],
   templateUrl: './solicitar-turno.component.html',
-  styleUrl: './solicitar-turno.component.css'
+  styleUrl: './solicitar-turno.component.css',
+  animations: [
+    trigger('slideUp', [
+      transition(':enter', [
+        style({ transform: 'translateY(30px)', opacity: 0 }),
+        animate('500ms ease-out', style({ transform: 'translateY(0)', opacity: 1 }))
+      ])
+    ])
+  ]
 })
 export class SolicitarTurnoComponent implements OnInit {
 
@@ -32,6 +41,7 @@ export class SolicitarTurnoComponent implements OnInit {
   input: string = "";
   datosUsuario: any = "";
   esAdmin: boolean = false;
+  estaCargando = false;
 
   constructor(private especialistaService: EspecialistaService,
     private turnoservice: TurnoService,
@@ -63,6 +73,7 @@ export class SolicitarTurnoComponent implements OnInit {
   }
 
   async definirDoctor(id: string) {
+    this.estaCargando = true;
     this.horarios = [];
     this.especialistas = [];
     this.doctor = await this.especialistaService.traerEspecialistaPorId(id);
@@ -71,12 +82,13 @@ export class SolicitarTurnoComponent implements OnInit {
     this.horariosService.traerHorariosPorId(id)
       .then(async (horariosTotales) => {
         for (let i = 0; i < horariosTotales.length; i++) {
-          
+
           estaDisponible = await this.turnoservice.esHorarioDisponible(id, this.calcularDosSemanas(horariosTotales[i].horario))
           if (estaDisponible) {
             this.horarios.push(horariosTotales[i])
           }
         }
+        this.estaCargando = false;
       });
   }
 

@@ -10,8 +10,12 @@
                     <p><strong>Edad:</strong> {{ paciente.id_paciente.edad }} años</p>
                     <p><strong>Obra Social:</strong> {{ paciente.id_paciente.obra_social }}</p>
                     <p><strong>Fecha de atención:</strong> {{ paciente.fecha | date:'dd/MM/yyyy HH:mm' }}</p>
-                    <p><strong>Reseña médica:</strong> {{ paciente.resenia }}</p>
-                    <p><strong>Historia Clinica:</strong><button style="width: 100px;" (click)="irHistoriaClinica(paciente.id_paciente.id)">ver</button></p>
+                    <p><strong>ultimos turnos:</strong></p>
+                    <div *ngFor="let t of turnosAnteriores" class="ultimosTurnos">
+                        <p>● {{t.fecha | fechaLocal}}</p><br>
+                    </div>
+                    <p><strong>Historia Clinica:</strong><button class="historia"
+                            (click)="irHistoriaClinica(paciente.id_paciente.id)">ver</button></p>
                 </div>
             </div>
         </div>
@@ -27,12 +31,14 @@
         <div *ngIf="perfil === 'admin'">
             <table border="1px" id="data">
                 <thead>
-                    <th>apellido</th>
-                    <th>nombre</th>
-                    <th>edad</th>
-                    <th>obra social</th>
-                    <th>foto perfil</th>
-                    <th>historia clinica</th>
+                    <tr>
+                        <th>apellido</th>
+                        <th>nombre</th>
+                        <th>edad</th>
+                        <th>obra social</th>
+                        <th>foto perfil</th>
+                        <th>historia clinica</th>
+                    </tr>
                 </thead>
                 <tbody>
                     <tr *ngFor="let paciente of pacientes">
@@ -40,22 +46,40 @@
                         <td>{{ paciente.nombre }}</td>
                         <td>{{ paciente.edad }}</td>
                         <td>{{ paciente.obra_social }}</td>
-                        <td><img [src]="paciente.url_perfil" class="foto" /></td>
-                        <td><button (click)="irHistoriaClinica(pacientes.id_paciente.id)">ver</button></td>
+                        <td>
+                            <button class="btn_foto">
+                                <img [src]="paciente.url_perfil" class="foto" (click)="descargarDatos(paciente.id)" />
+                            </button>
+                        </td>
+                        <td><button (click)="irHistoriaClinica(paciente.id)" class="btn_foto">ver</button></td>
                     </tr>
                 </tbody>
-
             </table>
-        </div>
-        <div *ngIf="perfil === 'admin'" class="btn_descargar" (click)="descargarExcel()">
-            <img src="iconos/descargar.svg" class="foto">
-            <strong> descargar exel </strong>
-        </div>
+            <button (click)="descargarExcel()">descargar datos</button>
+            <button routerLink="/bienvenido">volver atras</button>
 
-        <button routerLink="/bienvenido"><strong>volver atras</strong></button>
+        </div>
     </div>
 </div>
 
 <div class="spinner" *ngIf="!estaCargando">
     <img src="Spinner.svg">
+
+    <table *ngIf="turnosPorPaciente.length!== 0" #tablaTurnos id="turnosPaciente">
+        <thead>
+            <tr>
+                <th>paciente</th>
+                <th>Fecha</th>
+                <th>Especialista</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let t of turnosPorPaciente">
+                <td>{{ t.id_paciente.apellido }} {{t.id_paciente.nombre}}</td>
+                <td>{{ t.fecha | fechaLocal }}</td>
+                <td>{{ t.id_especialista.nombre }} {{ t.id_especialista.apellido }}</td>
+            </tr>
+        </tbody>
+
+    </table>
 </div>

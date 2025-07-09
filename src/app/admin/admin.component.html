@@ -103,25 +103,19 @@
             <p class="mensaje-error">las imagenes son obligatoria</p>
         </div>
 
-        <button (click)="crearCuenta()">
-            registrar nuevo admin
-        </button>
-        <button (click)="agregarAdmin()">
-            volve atras
-        </button>
+        <button (click)="crearCuenta()"> registrar nuevo admin</button>
+
+
+        <button (click)="agregarAdmin()"> volver atras </button>
     </form>
 </div>
 
 <div class="btn_admin">
-    <button (click)="agregarAdmin()">
-        agregar un nuevo admin
-    </button>
+    <button (click)="agregarAdmin()"> agregar un nuevo admin </button>
 
-    <button routerLink="/solicitarTurno">
-        solicitar un turno
-    </button>
+    <button routerLink="/solicitarTurno"> solicitar un turno </button>
 
-    <button routerLink="/seccionPaciente">
-        ver datos de pacientes
-    </button>
+    <button routerLink="/seccionPaciente"> ver datos de pacientes</button>
+
+    <button routerLink="/turnosEspecialidad"> ver turnos por especialidad </button>
 </div>

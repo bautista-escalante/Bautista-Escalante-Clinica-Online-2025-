@@ -1,0 +1,32 @@
+<div class="fondo">
+
+    <div class="group">
+        <select class="opciones" [(ngModel)]="especialidad" (change)="cargarTurnos()">
+            <option *ngFor="let e of especialidades" [value]="e">{{e}}</option>
+        </select>
+    </div>
+
+    <div *ngIf="turnos.length !== 0">
+        <table border="1px" id="data">
+            <thead>
+                <th>fecha</th>
+                <th>especialidad</th>
+                <th>paciente</th>
+            </thead>
+            <tbody>
+                <tr *ngFor="let t of turnos">
+                    <td>{{t.fecha | fechaLocal}}</td>
+                    <td>{{t.id_especialista.especialidades}}</td>
+                    <td>{{t.id_paciente.apellido}}, {{t.id_paciente.nombre}}</td>
+                </tr>
+            </tbody>
+
+        </table>
+        <div class="btn_descargar" (click)="descargarExcel()">
+            <img src="iconos/descargar.svg" class="foto">
+            <strong> descargar exel </strong>
+        </div>
+    </div>
+
+    <button routerLink="/bienvenido"><strong>volver atras</strong></button>
+</div>

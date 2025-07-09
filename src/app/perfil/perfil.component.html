@@ -1,5 +1,5 @@
-<div class="fondo">
-    <div class="perfil" *ngIf="usuario">
+<div class="fondo" *ngIf="usuario.length !== 0" [@slideUp]>
+    <div class="perfil">
         <img [src]="usuario.url_perfil" class="foto">
         <div class="info">
             <h2>{{ usuario.nombre }} {{ usuario.apellido }}</h2>
@@ -13,7 +13,7 @@
             </div>
            
             <div *ngIf="usuario.perfil==='especialista'">
-            <p ><strong>Especialidades:</strong> {{ usuario.especialidades }}</p>
+            <p ><strong>Especialidades:</strong> {{ especialidades }}</p>
             <button class="btn_horarios" routerLink="/definirHorarios">Mis horarios</button>
            </div>
 

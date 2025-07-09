@@ -1,4 +1,4 @@
-<div class="sistemaTurnos">
+<div class="sistemaTurnos" *ngIf="esAdmin && pacientes.length!== 0" [@slideUp]>
 
     <div *ngIf="esAdmin">
 
@@ -11,7 +11,8 @@
             </div>
         </div>
     </div>
-
+</div>
+<div class="sistemaTurnos">
     <div *ngIf="!esAdmin">
         <div class="especialidades" *ngIf="!especialidad">
             <div *ngFor="let especialidad of especialidades">
@@ -31,12 +32,18 @@
         </div>
     </div>
 
+    <div class="spinner" *ngIf="estaCargando">
+        <img src="Spinner.svg">
+    </div> 
+    
     <div *ngIf="horarios.length > 0" class="horarios">
         <!-- defirnir horarios -->
-        <div *ngFor="let horario of horarios">
-            <button (click)="definirHorario(horario.horario, horario.id)" class="btn_horario">
-                <div>{{ horario.horario | agregarFecha }}</div>
-            </button>
+        <div *ngIf="!estaCargando">
+            <div *ngFor="let horario of horarios">
+                <button (click)="definirHorario(horario.horario, horario.id)" class="btn_horario">
+                    <div>{{ horario.horario | agregarFecha }}</div>
+                </button>
+            </div>
         </div>
     </div>
 
